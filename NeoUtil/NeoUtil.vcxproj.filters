@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="utilsystem">
+      <UniqueIdentifier>{81cc06ac-fbf5-4b0b-be9d-6dfa4cf2f88c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utilsystem\log">
+      <UniqueIdentifier>{d260172f-8f7e-4055-8b26-bced4ec84057}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="UtfToUnicode.h">
+      <Filter>utilsystem</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

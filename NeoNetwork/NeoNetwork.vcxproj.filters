@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="network">
+      <UniqueIdentifier>{2135c318-0f41-40d1-a50b-1f119c02da53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system">
+      <UniqueIdentifier>{733ef496-c14a-462f-b007-e3a8b8c78d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network\IOCP">
+      <UniqueIdentifier>{931e1fc5-f490-4a94-8c4e-b0bdc3fb28c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network\HTTP">
+      <UniqueIdentifier>{bbe72b15-1503-4db8-a39d-f74ce86c60f5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Network\SocketCommon.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\IOCPSocket.h">
+      <Filter>network\IOCP</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\IOCPServer.h">
+      <Filter>network\IOCP</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\HttpClient.h">
+      <Filter>network\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\HttpData.h">
+      <Filter>network\HTTP</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\HttpStateCode.h">
+      <Filter>network\HTTP</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Network\IOCPServer.cpp">
+      <Filter>network\IOCP</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\IOCPSocket.cpp">
+      <Filter>network\IOCP</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\HttpClient.cpp">
+      <Filter>network\HTTP</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
