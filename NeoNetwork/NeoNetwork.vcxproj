@@ -131,14 +131,24 @@
     <ClInclude Include="Network\HttpClient.h" />
     <ClInclude Include="Network\HttpData.h" />
     <ClInclude Include="Network\HttpStateCode.h" />
+    <ClInclude Include="Network\IOCPData.h" />
     <ClInclude Include="Network\IOCPServer.h" />
+    <ClInclude Include="Network\IOCPSession.h" />
     <ClInclude Include="Network\IOCPSocket.h" />
     <ClInclude Include="Network\SocketCommon.h" />
+    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="system\LogData.h" />
+    <ClInclude Include="system\LogSystem.h" />
+    <ClInclude Include="system\NeoLog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\HttpClient.cpp" />
+    <ClCompile Include="Network\IOCPData.cpp" />
     <ClCompile Include="Network\IOCPServer.cpp" />
+    <ClCompile Include="Network\IOCPSession.cpp" />
     <ClCompile Include="Network\IOCPSocket.cpp" />
+    <ClCompile Include="system\LogSystem.cpp" />
+    <ClCompile Include="time\Time.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

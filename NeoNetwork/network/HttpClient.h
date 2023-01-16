@@ -3,6 +3,8 @@
 #include <string>
 #include <locale>
 #include <sstream>
+#include <functional>
+
 
 #include "SocketCommon.h"
 #include "HttpData.h"
@@ -19,15 +21,15 @@ namespace network
 		bool InitHttp();
 		bool CloseHttp();
 
-		void Get(const std::string& url, std::string& outputData);
-		void Post(const std::string& url, const std::string& data, std::string& outputData);
-		void Put(const std::string& url, const std::string& data);
-		void Delete(const std::string& url, const std::string& data);
+		HttpData Get(const std::string& url);
+		HttpData Post(const std::string& url, const std::string& data);
+		HttpData Put(const std::string& url, const std::string& data);
+		HttpData Delete(const std::string& url);
 
 	private:
 		bool WSAInit();
 		void parseUrl(std::string& url, std::string& serverName, std::string& fileName, std::string& filePath, int& port);
-		HttpData parseResponseData(const std::string& response, std::string& outBodyData);
+		HttpData parseResponseData(const std::string& response);
 		std::ostringstream setConnection(const std::string& url, const std::string& httpMethod);
 
 	private:

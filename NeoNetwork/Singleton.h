@@ -1,7 +1,7 @@
-О╩©//Л▀╠Й╦─М└╢
+//╫л╠шео
 #pragma once
 
-namespace util
+namespace neo
 {
 	template<class T>
 	class Singleton

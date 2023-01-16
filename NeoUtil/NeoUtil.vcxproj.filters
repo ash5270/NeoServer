@@ -10,7 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
-    <ClInclude Include="Singleton.h" />
     <ClInclude Include="UtfToUnicode.h">
       <Filter>utilsystem</Filter>
     </ClInclude>

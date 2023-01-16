@@ -7,7 +7,7 @@ network::HttpClient::HttpClient()
 	mIsConnect = false;
 }
 
-network::HttpClient::HttpClient(const std::string& serverUrl, const int& port):mServerUrl(serverUrl),mPort(port)
+network::HttpClient::HttpClient(const std::string& serverUrl, const int& port) :mServerUrl(serverUrl), mPort(port)
 {
 	WSAInit();
 	mSocket = 0;
@@ -51,7 +51,7 @@ void network::HttpClient::parseUrl(std::string& url, std::string& serverName, st
 {
 	int n = 0;
 	//서버 주소가 셋팅이 되어있지 않을때.
-	if(mServerUrl=="")
+	if (mServerUrl == "")
 	{
 		//https:// 부분 제거
 		if (url.substr(0, 7) == "http://")
@@ -100,12 +100,12 @@ void network::HttpClient::parseUrl(std::string& url, std::string& serverName, st
 			fileName = filePath.substr(n + 1);
 		}
 	}
-	
+
 }
 
 
 //response된 데이터를 파싱
-network::HttpData network::HttpClient::parseResponseData(const std::string& response, std::string& outBodyData)
+network::HttpData network::HttpClient::parseResponseData(const std::string& response)
 {
 	HttpData header;
 	//http 버전, http state code
@@ -135,11 +135,11 @@ network::HttpData network::HttpClient::parseResponseData(const std::string& resp
 
 	int startBody = response.find_first_of("\r\n", headerLast + 4);
 	if (startBody < 0)
-		outBodyData = response.substr(headerLast + 4);
+		header.Body = response.substr(headerLast + 4);
 	else
 	{
 		int lastBody = response.find_first_of("\r\n", startBody + 4);
-		outBodyData = response.substr(startBody + 2,lastBody-startBody-2);
+		header.Body = response.substr(startBody + 2, lastBody - startBody - 2);
 	}
 	return header;
 }
@@ -153,7 +153,7 @@ std::ostringstream network::HttpClient::setConnection(const std::string& url, co
 	std::string copyUrl = url;
 	//request header
 	std::ostringstream request;
-	
+
 	int port;
 	parseUrl(copyUrl, serverName, file, filePath, port);
 
@@ -164,7 +164,7 @@ std::ostringstream network::HttpClient::setConnection(const std::string& url, co
 	hints.ai_socktype = SOCK_STREAM;
 
 	int result = getaddrinfo(serverName.c_str(), std::to_string(port).c_str(), &hints, &serverInfo);
-	if(result!=0)
+	if (result != 0)
 	{
 		std::cout << "getaddrinfo error\n";
 		return request;
@@ -177,7 +177,7 @@ std::ostringstream network::HttpClient::setConnection(const std::string& url, co
 		std::cout << WSAGetLastError() << "\n";
 		std::cout << "Could not connect\n";
 		return request;
-	}	
+	}
 
 	request << httpMethod << " " << filePath << " HTTP/1.1\r\n";
 	request << "Host: " << serverName << "\r\n";
@@ -188,26 +188,27 @@ std::ostringstream network::HttpClient::setConnection(const std::string& url, co
 	return request;
 }
 
-void network::HttpClient::Get(const std::string& url, __out std::string& outputData)
+network::HttpData network::HttpClient::Get(const std::string& url)
 {
 	std::ostringstream stream = setConnection(url, "GET");
 	stream << "\r\n";
 	std::string request_str = stream.str();
 	if (!mIsConnect)
-		return;
+		return HttpData();
 	send(mSocket, request_str.c_str(), strlen(request_str.c_str()), 0);
 	int dataLength;
-	char buf[1024];
-	int len = recv(mSocket, buf, 1024, 0);
+	char buf[4096];
+	int len = recv(mSocket, buf, 4096, 0);
 	std::string result(buf, len);
-	parseResponseData(result, outputData);
+
+	return parseResponseData(result);
 }
 
-void network::HttpClient::Post(const std::string& url, const std::string& data,__out std::string& outputData)
+network::HttpData network::HttpClient::Post(const std::string& url, const std::string& data)
 {
 	std::ostringstream stream = setConnection(url, "POST");
 	if (!mIsConnect)
-		return;
+		return HttpData();
 	stream << "Content-Type: application/json" << "\r\n";
 	stream << "Content-Length: " << data.length() << "\r\n\r\n";
 	stream << data << "\r\n";
@@ -219,17 +220,17 @@ void network::HttpClient::Post(const std::string& url, const std::string& data,_
 	char buf[1024];
 	int len = recv(mSocket, buf, 1024, 0);
 	std::string result(buf, len);
-	parseResponseData(result, outputData);
+	return parseResponseData(result);
 }
-void network::HttpClient::Put(const std::string& url, const std::string& data)
+network::HttpData network::HttpClient::Put(const std::string& url, const std::string& data)
 {
 	std::ostringstream stream = setConnection(url, "PUT");
 	if (!mIsConnect)
-		return;
+		return HttpData();
 	stream << "Content-Type: application/json; charset=utf-8" << "\r\n";
 	stream << "Content-Length: " << data.length() << "\r\n\r\n";
 	stream << data << "\r\n";
-	
+
 	std::string request_str = stream.str();
 	send(mSocket, request_str.c_str(), strlen(request_str.c_str()), 0);
 
@@ -238,32 +239,31 @@ void network::HttpClient::Put(const std::string& url, const std::string& data)
 	int len = recv(mSocket, buf, 1024, 0);
 	if (len < 0)
 	{
-		std::cout<<WSAGetLastError()<<"\n";
-		return;
+		std::cout << WSAGetLastError() << "\n";
+		return HttpData();
 	}
 	std::string result(buf, len);
 	std::string out;
-	parseResponseData(result, out);
+	return parseResponseData(result);
 }
 
-void network::HttpClient::Delete(const std::string& url, const std::string& data)
+network::HttpData network::HttpClient::Delete(const std::string& url)
 {
 	std::ostringstream stream = setConnection(url, "DELETE");
+	stream << "\r\n\r\n";
 	if (!mIsConnect)
-		return;
-	stream << "Content-Type: application/json" << "\r\n";
-	stream << "Content-Length: " << data.length() << "\r\n\r\n";
-	stream << data << "\r\n";
-	std::string request_str = stream.str();
+		return HttpData();
 
+	std::string request_str = stream.str();
 	send(mSocket, request_str.c_str(), strlen(request_str.c_str()), 0);
 
 	int dataLength;
 	char buf[1024];
 	int len = recv(mSocket, buf, 1024, 0);
 	if (len < 0)
-		return;
+		return HttpData();
 	std::string result(buf, len);
 	std::string out;
-	parseResponseData(result, out);
+	//std::cout << result << "\n";
+	return parseResponseData(result);
 }

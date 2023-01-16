@@ -1,7 +1,42 @@
-﻿#pragma once
+﻿//IOCP 서버
 
-class IOCPServer
+
+#pragma once
+
+#include "SocketCommon.h"
+#include "IOCPSocket.h"
+#include "IOCPData.h"
+
+namespace neo::network
 {
-public:
-	
-};
+	class IOCPServer : public IOCPSocket
+	{
+	public:
+		IOCPServer();
+		~IOCPServer();
+
+		//server 초기화
+		bool InitializeServer(const int& port);
+		//server 시작
+		void StartServer();
+		//server 중지
+		void StopServer();
+		//
+		void UpdateServer();
+
+	protected:
+		void OnAccept(const SOCKET& socket) override;
+
+	private:
+		//accept 준비//callback 함수로 사용하기 위해
+		bool readyAccept();
+
+	private:
+		SOCKET mListenSocket;
+		SOCKADDR_IN mServerAddr;
+
+		bool mIsAccept;
+
+		IOCPData mIOCPData;
+	};
+}

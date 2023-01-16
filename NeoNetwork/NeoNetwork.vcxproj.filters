@@ -13,6 +13,12 @@
     <Filter Include="network\HTTP">
       <UniqueIdentifier>{bbe72b15-1503-4db8-a39d-f74ce86c60f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\LOG">
+      <UniqueIdentifier>{b675a1f8-a852-4fd5-83d5-85e73ec8acb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\TIME">
+      <UniqueIdentifier>{785ca38f-75c6-4c27-bfd8-0681a54d1914}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\SocketCommon.h">
@@ -33,6 +39,24 @@
     <ClInclude Include="Network\HttpStateCode.h">
       <Filter>network\HTTP</Filter>
     </ClInclude>
+    <ClInclude Include="system\LogSystem.h">
+      <Filter>system\LOG</Filter>
+    </ClInclude>
+    <ClInclude Include="system\LogData.h">
+      <Filter>system\LOG</Filter>
+    </ClInclude>
+    <ClInclude Include="system\NeoLog.h">
+      <Filter>system\LOG</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\IOCPSession.h">
+      <Filter>network\IOCP</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\IOCPData.h">
+      <Filter>network\IOCP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\IOCPServer.cpp">
@@ -43,6 +67,18 @@
     </ClCompile>
     <ClCompile Include="Network\HttpClient.cpp">
       <Filter>network\HTTP</Filter>
+    </ClCompile>
+    <ClCompile Include="system\LogSystem.cpp">
+      <Filter>system\LOG</Filter>
+    </ClCompile>
+    <ClCompile Include="time\Time.cpp">
+      <Filter>system\TIME</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\IOCPSession.cpp">
+      <Filter>network\IOCP</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\IOCPData.cpp">
+      <Filter>network\IOCP</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

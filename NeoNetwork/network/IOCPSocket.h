@@ -1,11 +1,11 @@
-﻿//소켓 관련 클래스
+﻿//IOCP 소켓 관련 클래스
 
 #pragma once
 
 #include "SocketCommon.h"
 #include <memory>
 
-namespace network
+namespace neo::network
 {
 	class IOCPSocket
 	{
@@ -24,7 +24,10 @@ namespace network
 		//IOCPSocket 사용을 위한 WSA 초기화
 		bool WSAInit();
 
-	private:
+	protected:
+		virtual void OnAccept(const SOCKET& socket);
+
+	protected:
 		//IOCP Handle
 		HANDLE mIOCPHandle;
 
