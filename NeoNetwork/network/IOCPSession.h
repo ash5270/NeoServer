@@ -22,11 +22,17 @@ namespace neo::network {
 		void OnClose();
 		void AddRef();
 		void RemoveRef();
+		//데이터를 receive 하기 위한 전 단계
+		void RecvReady();
+
+	private:
+		
+
 	public:
 		std::atomic_int32_t Reference;
 	private:
-		std::weak_ptr<IOCPData> mRecvData;
-		std::weak_ptr<IOCPData> mSendData;
+		std::shared_ptr<IOCPData> mRecvData;
+		std::shared_ptr<IOCPData> mSendData;
 
 		SOCKET mSocket;
 		SOCKADDR_IN mAddrInfo;

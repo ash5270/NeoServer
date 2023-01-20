@@ -53,6 +53,8 @@ void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
 		wprintf_s(L"session io completion port error\n");
 	}
 
+	session->RecvReady();
+
 	readyAccept();
 }
 
