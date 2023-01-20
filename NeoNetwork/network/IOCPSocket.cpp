@@ -13,6 +13,7 @@ UINT WINAPI CallIOThread(LPVOID ptr)
 
 neo::network::IOCPSocket::IOCPSocket()
 {
+	//thread 실행 여부
 	mIOThreadCheck = true;
 }
 
@@ -49,8 +50,7 @@ void neo::network::IOCPSocket::WorkingThread()
 	//에러 체크용 bool 변수 
 	BOOL result;
 
-	DWORD recvBytes;
-	DWORD sendBytes;
+	DWORD transferSize;
 	//completionKey
 	IOCPSession* session;
 	//overlapped Data
@@ -59,10 +59,10 @@ void neo::network::IOCPSocket::WorkingThread()
 
 	while (mIOThreadCheck)
 	{
-		result = GetQueuedCompletionStatus(mIOCPHandle, &recvBytes, reinterpret_cast<PULONG_PTR>(&session),
+		result = GetQueuedCompletionStatus(mIOCPHandle, &transferSize, reinterpret_cast<PULONG_PTR>(&session),
 			reinterpret_cast<LPOVERLAPPED*>(&iocpData), INFINITE);
 
-		if (!result || recvBytes == 0)
+		if (!result || transferSize == 0)
 		{
 			//socket error
 			//socket close
@@ -75,10 +75,10 @@ void neo::network::IOCPSocket::WorkingThread()
 		switch (iocpData->GetIOType())
 		{
 		case IO_TYPE::IO_SEND:
-			session->OnSend(recvBytes);
+			session->OnSend(transferSize);
 			break;
 		case IO_TYPE::IO_READ:
-			session->OnRecv(recvBytes);
+			session->OnRecv(transferSize);
 			break;
 		case IO_TYPE::IO_ACCEPT:
 			OnAccept(iocpData->GetSocket());
@@ -110,6 +110,7 @@ bool neo::network::IOCPSocket::WSAInit()
 	return true;
 }
 
-void neo::network::IOCPSocket::OnAccept(const SOCKET& socket)
+void neo::network::IOCPSocket::OnAccept(const size_t& transferSize)
 {
+
 }

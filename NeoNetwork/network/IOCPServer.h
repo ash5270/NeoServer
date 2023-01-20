@@ -25,7 +25,7 @@ namespace neo::network
 		void UpdateServer();
 
 	protected:
-		void OnAccept(const SOCKET& socket) override;
+		void OnAccept(const size_t& transferSize) override;
 
 	private:
 		//accept 준비//callback 함수로 사용하기 위해

@@ -11,7 +11,7 @@ namespace neo::network
 	{
 	public:
 		IOCPSocket();
-		~IOCPSocket();
+		virtual ~IOCPSocket();
 
 		//IO Thread 생성 함수
 		bool CreateIOThread(size_t numThread);
@@ -25,7 +25,8 @@ namespace neo::network
 		bool WSAInit();
 
 	protected:
-		virtual void OnAccept(const SOCKET& socket);
+		//server에서 사용하기 위한 가상함수 선언
+		virtual void OnAccept(const size_t& transferSize);
 
 	protected:
 		//IOCP Handle

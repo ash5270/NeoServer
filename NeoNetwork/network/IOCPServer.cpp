@@ -1,6 +1,10 @@
 ﻿#include "IOCPServer.h"
-#include <sysinfoapi.h>
 
+#include <iostream>
+#include <sysinfoapi.h>
+#include <string>
+
+#include "IOCPSession.h"
 neo::network::IOCPServer::IOCPServer() :IOCPSocket(), mIOCPData(IO_TYPE::IO_ACCEPT)
 {
 	mListenSocket = 0;
@@ -8,6 +12,7 @@ neo::network::IOCPServer::IOCPServer() :IOCPSocket(), mIOCPData(IO_TYPE::IO_ACCE
 
 neo::network::IOCPServer::~IOCPServer()
 {
+
 }
 
 void neo::network::IOCPServer::StartServer()
@@ -17,25 +22,35 @@ void neo::network::IOCPServer::StartServer()
 
 void neo::network::IOCPServer::StopServer()
 {
+
 }
 
 void neo::network::IOCPServer::UpdateServer()
 {
+
 }
 
-void neo::network::IOCPServer::OnAccept(const SOCKET& socket)
+void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
 {
-	//여기서 세션 생성해서 사용하면 된다.
-	wprintf_s(L"Create Session\n");
+	//세션 생성
+	sockaddr_in localAddr;
+	memcpy(&localAddr, mIOCPData.GetBuffer() + 960, sizeof(SOCKADDR_IN));
 
-	mIOCPHandle = CreateIoCompletionPort(reinterpret_cast<HANDLE>(socket),
+	sockaddr_in remoteAddr;
+	memcpy(&remoteAddr, mIOCPData.GetBuffer() + 992, sizeof(SOCKADDR_IN));
+
+	auto session = new IOCPSession();
+	session->OnAccept(mIOCPData.GetSocket(), remoteAddr);
+
+	//register to session io completion port 
+	mIOCPHandle = CreateIoCompletionPort(reinterpret_cast<HANDLE>(mIOCPData.GetSocket()),
 		mIOCPHandle,
-		(u_long)0,
+		reinterpret_cast<ULONG_PTR>(session),
 		0);
 
 	if (mIOCPHandle == NULL)
 	{
-		wprintf_s(L"acceptex io completion port  error\n");
+		wprintf_s(L"session io completion port error\n");
 	}
 
 	readyAccept();
@@ -43,18 +58,23 @@ void neo::network::IOCPServer::OnAccept(const SOCKET& socket)
 
 bool neo::network::IOCPServer::readyAccept()
 {
-	SOCKET acceptSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	const SOCKET acceptSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (acceptSocket == SOCKET_ERROR)
 	{
-		//accept_socket create error
+		//accept_socket create error 
 		wprintf_s(L"accept socket create error\n");
 		return false;
 	}
 
 	mIOCPData.SetSocket(acceptSocket);
 	DWORD dwBytes;
-	if (AcceptEx(mListenSocket, acceptSocket, mIOCPData.GetBuffer(), 1024 - ((sizeof(sockaddr_in) + 16) * 2), sizeof(sockaddr_in) + 16,
-		sizeof(sockaddr_in) + 16, &dwBytes, mIOCPData.GetOverlapped()))
+	//비동기 accept 함수
+	if (AcceptEx(mListenSocket, acceptSocket, mIOCPData.GetBuffer(),
+		1024 - ((sizeof(sockaddr_in) + 16) * 2),
+		sizeof(sockaddr_in) + 16,
+		sizeof(sockaddr_in) + 16,
+		&dwBytes,
+		mIOCPData.GetOverlapped()))
 	{
 		//accept error
 		wprintf_s(L"acceptex function error\n");
@@ -81,7 +101,6 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 		return false;
 	}
 
-
 	int result = 0;
 	mListenSocket = socket(AF_INET,SOCK_STREAM, IPPROTO_TCP);
 	//server host ip any 
@@ -92,8 +111,7 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 	bool on = true;
 	if (setsockopt(mListenSocket, SOL_SOCKET, SO_CONDITIONAL_ACCEPT, (const char*)&on, sizeof(on)))
 		return false;
-
-
+	
 	mIOCPHandle = CreateIoCompletionPort((HANDLE)mListenSocket,
 		mIOCPHandle,
 		(u_long)0, 

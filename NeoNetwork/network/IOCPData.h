@@ -16,6 +16,11 @@ namespace neo::network
 	{
 	public:
 		IOCPData(IO_TYPE type);
+		IOCPData(IO_TYPE type,const SOCKET& socket);
+		//아직 구현 안함
+		IOCPData(IO_TYPE type,const SOCKET& socket,const size_t& bufLen);
+		~IOCPData();
+
 		WSABUF* GetWASBuf();
 		IO_TYPE GetIOType();
 		SOCKET GetSocket();

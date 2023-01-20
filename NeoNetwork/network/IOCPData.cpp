@@ -5,6 +5,21 @@ neo::network::IOCPData::IOCPData(IO_TYPE type):mIOType(type)
 	
 }
 
+neo::network::IOCPData::IOCPData(IO_TYPE type, const SOCKET& socket): mIOType(type),mSocket(socket)
+{
+
+}
+
+neo::network::IOCPData::IOCPData(IO_TYPE type, const SOCKET& socket, const size_t& bufLen):mIOType(type), mSocket(socket)
+{
+
+}
+
+neo::network::IOCPData::~IOCPData()
+{
+
+}
+
 WSABUF* neo::network::IOCPData::GetWASBuf()
 {
 	return &mWSABuf;

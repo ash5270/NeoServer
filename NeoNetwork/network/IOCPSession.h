@@ -27,7 +27,10 @@ namespace neo::network {
 	private:
 		std::weak_ptr<IOCPData> mRecvData;
 		std::weak_ptr<IOCPData> mSendData;
+
 		SOCKET mSocket;
+		SOCKADDR_IN mAddrInfo;
+
 		std::atomic_bool mIsConneting;
 		std::atomic_bool mIsSending;
 	};

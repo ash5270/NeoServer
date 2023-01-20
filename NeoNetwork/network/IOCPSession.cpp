@@ -18,7 +18,9 @@ bool neo::network::IOCPSession::OnAccept(const SOCKET& socket,const SOCKADDR_IN&
 {
 	int option = 1;
 	mSocket = socket;
-	int result = setsockopt(mSocket, IPPROTO_TCP, TCP_NODELAY, (const char*)option, sizeof(option));
+	mAddrInfo = addrInfo;
+
+	const int result = setsockopt(mSocket, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&option), sizeof(option));
 	if (result != 0)
 		return false;
 
@@ -26,7 +28,6 @@ bool neo::network::IOCPSession::OnAccept(const SOCKET& socket,const SOCKADDR_IN&
 	mIsSending.store(false);
 
 	return true;
-
 }
 
 void neo::network::IOCPSession::OnSend(size_t transferSize)
