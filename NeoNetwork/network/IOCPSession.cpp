@@ -15,7 +15,7 @@ neo::network::IOCPSession::~IOCPSession()
 
 bool neo::network::IOCPSession::OnAccept(const SOCKET& socket,const SOCKADDR_IN& addrInfo)
 {
-	int option = 1;
+	const int option = 1;
 	mSocket = socket;
 	mAddrInfo = addrInfo;
 
@@ -25,6 +25,8 @@ bool neo::network::IOCPSession::OnAccept(const SOCKET& socket,const SOCKADDR_IN&
 
 	mIsConneting.store(true);
 	mIsSending.store(false);
+
+	wprintf(L"OnAccept\n");
 
 	return true;
 }
@@ -37,6 +39,19 @@ void neo::network::IOCPSession::OnSend(size_t transferSize)
 void neo::network::IOCPSession::OnRecv(size_t transferSize)
 {
 	wprintf(L"OnRecv % d\n", transferSize);
+
+
+	WSABUF buf;
+	buf.buf = mRecvData->GetBuffer()->GetDataPtr();
+	buf.len = mRecvData->GetBuffer()->GetCapacity();
+
+	DWORD recvLen = 0;;
+	DWORD flags = 0;
+
+	const auto result = WSASend(mSocket, &buf,
+		1, &recvLen,
+		flags, mSendData->GetOverlapped(),
+		NULL); 
 }
 
 void neo::network::IOCPSession::OnClose()
@@ -60,24 +75,23 @@ void neo::network::IOCPSession::RemoveRef()
 	}
 	Reference.exchange(count + 1);
 }
-
+	
 void neo::network::IOCPSession::RecvReady()
 {
 	WSABUF buf;
-	buf.buf = mRecvData->GetBuffer();
-	buf.len = 0;
-
+	buf.buf = mRecvData->GetBuffer()->GetDataPtr();
+	buf.len = mRecvData->GetBuffer()->GetCapacity();
 
 	DWORD recvLen = 0;;
 	DWORD flags = 0;
 
-	auto result= WSARecv(mSocket, &buf,
+	const auto result= WSARecv(mSocket, &buf,
 		1, &recvLen, 
 		&flags, mRecvData->GetOverlapped(), 
 		NULL);
 
-	if(result==SOCKET_ERROR)
+	if(result==SOCKET_ERROR&& WSA_IO_PENDING!=WSAGetLastError())
 	{
-		wprintf_s(L"recv ready error : %d\n", WSAGetLastError());
+		wprintf_s(L"recv ready error : %d\n", GetLastError());
 	}
 }

@@ -71,15 +71,25 @@ bool neo::network::IOCPServer::readyAccept()
 	mIOCPData.SetSocket(acceptSocket);
 	DWORD dwBytes;
 	//비동기 accept 함수
-	if (AcceptEx(mListenSocket, acceptSocket, mIOCPData.GetBuffer(),
-		1024 - ((sizeof(sockaddr_in) + 16) * 2),
+	int result = AcceptEx(mListenSocket, acceptSocket, mIOCPData.GetBuffer(),
+		0,
 		sizeof(sockaddr_in) + 16,
 		sizeof(sockaddr_in) + 16,
 		&dwBytes,
-		mIOCPData.GetOverlapped()))
+		mIOCPData.GetOverlapped());
+
+	//int result = AcceptEx(mListenSocket, acceptSocket, mIOCPData.GetBuffer(),
+	//	1024 - ((sizeof(sockaddr_in) + 16) * 2),
+	//	sizeof(sockaddr_in) + 16,
+	//	sizeof(sockaddr_in) + 16,
+	//	&dwBytes,
+	//	mIOCPData.GetOverlapped());
+
+
+	if (!result&&WSAGetLastError()!= WSA_IO_PENDING)
 	{
 		//accept error
-		wprintf_s(L"acceptex function error\n");
+		wprintf_s(L"acceptex function error %d\n",WSAGetLastError());
 		return false;
 	}
 
@@ -124,7 +134,7 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 		wprintf_s(L"acceptex io completion port  error\n");
 	}
 
-	result = bind(mListenSocket, reinterpret_cast<SOCKADDR*>( & mServerAddr), sizeof(SOCKADDR_IN));
+	result = bind(mListenSocket, reinterpret_cast<SOCKADDR*>(&mServerAddr), sizeof(SOCKADDR_IN));
 	if(result==SOCKET_ERROR)
 	{
 		//bind error

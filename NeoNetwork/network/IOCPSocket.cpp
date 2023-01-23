@@ -6,7 +6,7 @@
 
 UINT WINAPI CallIOThread(LPVOID ptr)
 {
-	neo::network::IOCPSocket* overlapped = static_cast<neo::network::IOCPSocket*>(ptr);
+	const auto overlapped = static_cast<neo::network::IOCPSocket*>(ptr);
 	overlapped->WorkingThread();
 	return 0;
 }
@@ -62,15 +62,19 @@ void neo::network::IOCPSocket::WorkingThread()
 		result = GetQueuedCompletionStatus(mIOCPHandle, &transferSize, reinterpret_cast<PULONG_PTR>(&session),
 			reinterpret_cast<LPOVERLAPPED*>(&iocpData), INFINITE);
 
-		if (!result || transferSize == 0)
+		if (iocpData == nullptr)
+			continue;
+
+		if (!result || (transferSize == 0&&iocpData->GetIOType() != IO_TYPE::IO_ACCEPT))
 		{
 			//socket error
 			//socket close
 			session->OnClose();
 			closesocket(iocpData->GetSocket());
-			delete iocpData;
+			//delete iocpData;
 			continue;
 		}
+
 		//IO_Type 별 데이터 분류
 		switch (iocpData->GetIOType())
 		{
@@ -84,7 +88,6 @@ void neo::network::IOCPSocket::WorkingThread()
 			OnAccept(iocpData->GetSocket());
 			break;
 		default:
-			//
 			wprintf_s(L"IO_TYPE ERROR \n");
 			break;
 		}
@@ -112,5 +115,5 @@ bool neo::network::IOCPSocket::WSAInit()
 
 void neo::network::IOCPSocket::OnAccept(const size_t& transferSize)
 {
-
+	
 }

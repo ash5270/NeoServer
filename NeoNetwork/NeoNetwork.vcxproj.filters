@@ -57,6 +57,9 @@
     <ClInclude Include="Network\IOCPData.h">
       <Filter>network\IOCP</Filter>
     </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\IOCPServer.cpp">
