@@ -1,17 +1,21 @@
 ﻿//IOCP 서버
-
-
+//IOCP Server
+//서버 시작과 종료, 그리고 세션을 가지고 있음
 #pragma once
+
+#include <list>
 
 #include "SocketCommon.h"
 #include "IOCPSocket.h"
 #include "IOCPData.h"
+#include "IOCPSession.h"
+
 
 namespace neo::network
 {
 	class IOCPServer : public IOCPSocket
 	{
-	public:
+	public:	
 		IOCPServer();
 		~IOCPServer();
 
@@ -23,6 +27,8 @@ namespace neo::network
 		void StopServer();
 		//
 		void UpdateServer();
+		//CloseReady
+		void CloseServer();
 
 	protected:
 		void OnAccept(const size_t& transferSize) override;
@@ -33,10 +39,14 @@ namespace neo::network
 
 	private:
 		SOCKET mListenSocket;
+		SOCKET mClientSocket;
 		SOCKADDR_IN mServerAddr;
 
 		bool mIsAccept;
 
-		IOCPData mIOCPData;
+		std::unique_ptr<IOCPData> mIOCPData;
+		//shared_ptr은 thread_safe하지 않아서 
+		//그냥 원시 포인터 사용해야할듯
+		std::list<IOCPSession*> mSessions;
 	};
 }

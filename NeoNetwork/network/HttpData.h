@@ -4,8 +4,10 @@
 #include <string>
 #include <unordered_map>
 
-namespace network
+namespace neo::network
 {
+	
+
 	struct HttpData
 	{
 		HttpData()
@@ -18,5 +20,16 @@ namespace network
 		std::string HttpStateMsg;
 		std::unordered_map<std::string, std::string> Headers;
 		std::string Body;
+	};
+
+
+	struct HttpResponse
+	{
+
+	};
+
+	struct HttpRequest
+	{
+
 	};
 }

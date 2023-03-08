@@ -7,11 +7,23 @@
     <Filter Include="utilsystem\log">
       <UniqueIdentifier>{d260172f-8f7e-4055-8b26-bced4ec84057}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system">
+      <UniqueIdentifier>{1ce7a2cb-05e5-4209-8a25-7be40d05d0b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\lockfree">
+      <UniqueIdentifier>{a0cc480b-d52a-4e66-bad4-852c52bc17c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
     <ClInclude Include="UtfToUnicode.h">
       <Filter>utilsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="LockFreeQueue.h">
+      <Filter>system\lockfree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpinLock.h">
+      <Filter>system</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

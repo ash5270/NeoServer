@@ -9,7 +9,7 @@
 #include "SocketCommon.h"
 #include "HttpData.h"
 
-namespace network
+namespace neo::network
 {
 	class HttpClient
 	{
@@ -29,6 +29,8 @@ namespace network
 	private:
 		bool WSAInit();
 		void parseUrl(std::string& url, std::string& serverName, std::string& fileName, std::string& filePath, int& port);
+		void closeSocket();
+		
 		HttpData parseResponseData(const std::string& response);
 		std::ostringstream setConnection(const std::string& url, const std::string& httpMethod);
 

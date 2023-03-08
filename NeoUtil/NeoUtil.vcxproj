@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
+    <ClInclude Include="LockFreeQueue.h" />
+    <ClInclude Include="SpinLock.h" />
     <ClInclude Include="UtfToUnicode.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

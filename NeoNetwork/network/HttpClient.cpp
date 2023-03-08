@@ -1,25 +1,25 @@
 ﻿#include "HttpClient.h"
 #include <iostream>
-network::HttpClient::HttpClient()
+neo::network::HttpClient::HttpClient()
 {
 	WSAInit();
 	mSocket = 0;
 	mIsConnect = false;
 }
 
-network::HttpClient::HttpClient(const std::string& serverUrl, const int& port) :mServerUrl(serverUrl), mPort(port)
+neo::network::HttpClient::HttpClient(const std::string& serverUrl, const int& port) :mServerUrl(serverUrl), mPort(port)
 {
 	WSAInit();
 	mSocket = 0;
 	mIsConnect = false;
 }
 
-network::HttpClient::~HttpClient()
+neo::network::HttpClient::~HttpClient()
 {
 	WSACleanup();
 }
 
-bool network::HttpClient::InitHttp()
+bool neo::network::HttpClient::InitHttp()
 {
 	//tcp socket 초기화
 	int result = 0;
@@ -29,12 +29,12 @@ bool network::HttpClient::InitHttp()
 	mSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 }
 
-bool network::HttpClient::CloseHttp()
+bool neo::network::HttpClient::CloseHttp()
 {
 	return false;
 }
 
-bool network::HttpClient::WSAInit()
+bool neo::network::HttpClient::WSAInit()
 {
 	int result = 0;
 	WSADATA wsaData;
@@ -47,7 +47,7 @@ bool network::HttpClient::WSAInit()
 	return true;
 }
 
-void network::HttpClient::parseUrl(std::string& url, std::string& serverName, std::string& fileName, std::string& filePath, int& port)
+void neo::network::HttpClient::parseUrl(std::string& url, std::string& serverName, std::string& fileName, std::string& filePath, int& port)
 {
 	int n = 0;
 	//서버 주소가 셋팅이 되어있지 않을때.
@@ -103,9 +103,13 @@ void network::HttpClient::parseUrl(std::string& url, std::string& serverName, st
 
 }
 
+void neo::network::HttpClient::closeSocket()
+{
+}
+
 
 //response된 데이터를 파싱
-network::HttpData network::HttpClient::parseResponseData(const std::string& response)
+neo::network::HttpData neo::network::HttpClient::parseResponseData(const std::string& response)
 {
 	HttpData header;
 	//http 버전, http state code
@@ -144,7 +148,7 @@ network::HttpData network::HttpClient::parseResponseData(const std::string& resp
 	return header;
 }
 
-std::ostringstream network::HttpClient::setConnection(const std::string& url, const std::string& httpMethod)
+std::ostringstream neo::network::HttpClient::setConnection(const std::string& url, const std::string& httpMethod)
 {
 	//url파싱
 	std::string file;
@@ -188,7 +192,7 @@ std::ostringstream network::HttpClient::setConnection(const std::string& url, co
 	return request;
 }
 
-network::HttpData network::HttpClient::Get(const std::string& url)
+neo::network::HttpData neo::network::HttpClient::Get(const std::string& url)
 {
 	std::ostringstream stream = setConnection(url, "GET");
 	stream << "\r\n";
@@ -204,7 +208,7 @@ network::HttpData network::HttpClient::Get(const std::string& url)
 	return parseResponseData(result);
 }
 
-network::HttpData network::HttpClient::Post(const std::string& url, const std::string& data)
+neo::network::HttpData neo::network::HttpClient::Post(const std::string& url, const std::string& data)
 {
 	std::ostringstream stream = setConnection(url, "POST");
 	if (!mIsConnect)
@@ -222,7 +226,7 @@ network::HttpData network::HttpClient::Post(const std::string& url, const std::s
 	std::string result(buf, len);
 	return parseResponseData(result);
 }
-network::HttpData network::HttpClient::Put(const std::string& url, const std::string& data)
+neo::network::HttpData neo::network::HttpClient::Put(const std::string& url, const std::string& data)
 {
 	std::ostringstream stream = setConnection(url, "PUT");
 	if (!mIsConnect)
@@ -247,7 +251,7 @@ network::HttpData network::HttpClient::Put(const std::string& url, const std::st
 	return parseResponseData(result);
 }
 
-network::HttpData network::HttpClient::Delete(const std::string& url)
+neo::network::HttpData neo::network::HttpClient::Delete(const std::string& url)
 {
 	std::ostringstream stream = setConnection(url, "DELETE");
 	stream << "\r\n\r\n";
@@ -264,6 +268,7 @@ network::HttpData network::HttpClient::Delete(const std::string& url)
 		return HttpData();
 	std::string result(buf, len);
 	std::string out;
+	
 	//std::cout << result << "\n";
 	return parseResponseData(result);
 }

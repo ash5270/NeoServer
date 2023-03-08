@@ -15,13 +15,9 @@ neo::network::IOCPSession::~IOCPSession()
 
 bool neo::network::IOCPSession::OnAccept(const SOCKET& socket,const SOCKADDR_IN& addrInfo)
 {
-	const int option = 1;
+
 	mSocket = socket;
 	mAddrInfo = addrInfo;
-
-	const int result = setsockopt(mSocket, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&option), sizeof(option));
-	if (result != 0)
-		return false;
 
 	mIsConneting.store(true);
 	mIsSending.store(false);
@@ -40,22 +36,27 @@ void neo::network::IOCPSession::OnRecv(size_t transferSize)
 {
 	wprintf(L"OnRecv % d\n", transferSize);
 
+	//WSABUF buf;
+	//buf.buf = mRecvData->GetBuffer()->GetDataPtr();
+	////buf.len = mRecvData->GetBuffer()->GetCapacity();
+	//buf.len = transferSize;
 
-	WSABUF buf;
-	buf.buf = mRecvData->GetBuffer()->GetDataPtr();
-	buf.len = mRecvData->GetBuffer()->GetCapacity();
+	//DWORD recvLen = 0;;
+	//DWORD flags = 0;
 
-	DWORD recvLen = 0;;
-	DWORD flags = 0;
+	//const auto result = WSASend(mSocket, &buf,
+	//	1, &recvLen,
+	//	flags, mSendData->GetOverlapped(),
+	//	NULL); 
 
-	const auto result = WSASend(mSocket, &buf,
-		1, &recvLen,
-		flags, mSendData->GetOverlapped(),
-		NULL); 
+
+	//recevice 대기
+	this->RecvReady();
 }
 
 void neo::network::IOCPSession::OnClose()
 {
+	wprintf(L"OnClose\n");
 	mIsConneting.exchange(false);
 }
 
@@ -71,9 +72,9 @@ void neo::network::IOCPSession::RemoveRef()
 	if(count<=0)
 	{
 		//Session reference counting zero
-
+		OnClose();
 	}
-	Reference.exchange(count + 1);
+	Reference.exchange(count - 1);
 }
 	
 void neo::network::IOCPSession::RecvReady()

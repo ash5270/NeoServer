@@ -28,6 +28,8 @@ bool neo::network::IOCPSocket::CreateIOThread(size_t numThread)
 	UINT32 threadId;
 	mIOThreadHandle = std::make_unique<HANDLE[]>(numThread);
 
+	wprintf_s(L"Create Thread : %d\n", numThread);
+
 	for (int i = 0; i < numThread; i++)
 	{
 		//쓰레드 생성 //_beginthreadex ex아닌 함수

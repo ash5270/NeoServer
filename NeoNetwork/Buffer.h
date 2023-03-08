@@ -12,6 +12,7 @@ namespace neo
 		Buffer(const size_t& size) : mCapacity(size)
 		{
 			mBuf = std::make_unique<char[]>(size);
+			
 		}
 
 		~Buffer()
