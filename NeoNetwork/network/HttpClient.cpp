@@ -1,5 +1,6 @@
 ﻿#include "HttpClient.h"
 #include <iostream>
+#include<memory>
 neo::network::HttpClient::HttpClient()
 {
 	WSAInit();
@@ -167,14 +168,25 @@ std::ostringstream neo::network::HttpClient::setConnection(const std::string& ur
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 
-	int result = getaddrinfo(serverName.c_str(), std::to_string(port).c_str(), &hints, &serverInfo);
+	//DNS 서버에 질의후 데이터 동적할당
+	//시간이 많이 지체될 수 도있다.
+	//메인스레드에서 붙잡고 있지 않도록 별도의 스레드를 만들어서 돌리는 방안
+	//GetAddrinfoEx()를 사용하던가
+	int result = getaddrinfo(serverName.c_str(),
+		std::to_string(port).c_str(),
+		&hints, 
+		&serverInfo);
 	if (result != 0)
 	{
 		std::cout << "getaddrinfo error\n";
+		freeaddrinfo(serverInfo);
 		return request;
 	}
 
-	mSockAddr = *(SOCKADDR_IN*)serverInfo->ai_addr;
+	memcpy(&mSockAddr, serverInfo->ai_addr, sizeof(sockaddr));
+	//해제해줘야함
+	freeaddrinfo(serverInfo);
+	//mSockAddr = *(SOCKADDR_IN*)serverInfo->ai_addr;
 	if (!mIsConnect && connect(mSocket, (SOCKADDR*)&mSockAddr, sizeof(mSockAddr)) != 0)
 	{
 		//에러 출력

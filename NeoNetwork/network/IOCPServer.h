@@ -39,9 +39,12 @@ namespace neo::network
 
 	private:
 		SOCKET mListenSocket;
-		SOCKET mClientSocket;
-		SOCKADDR_IN mServerAddr;
 
+
+
+		SOCKADDR_IN mServerAddr;
+		TCPSocket mListen;
+		TCPSocket* mClient;
 		bool mIsAccept;
 
 		std::unique_ptr<IOCPData> mIOCPData;

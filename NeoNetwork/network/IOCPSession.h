@@ -6,6 +6,8 @@
 
 #include "SocketCommon.h"
 #include "IOCPData.h"
+#include "TCPSocket.h"
+#include "SocketAddress.h"
 
 namespace neo::network {
 	class IOCPSession
@@ -15,7 +17,7 @@ namespace neo::network {
 		~IOCPSession();
 
 	public:
-		bool OnAccept(const SOCKET& socket,const SOCKADDR_IN& addrInfo);
+		bool OnAccept( TCPSocket* socket, SocketAddress* addrInfo);
 		void OnSend(size_t transferSize);
 		void OnRecv(size_t transferSize);
 
@@ -34,8 +36,9 @@ namespace neo::network {
 		std::shared_ptr<IOCPData> mRecvData;
 		std::shared_ptr<IOCPData> mSendData;
 
-		SOCKET mSocket;
-		SOCKADDR_IN mAddrInfo;
+		TCPSocket* mTCPSocket;
+		SocketAddress* mSocketAddress;
+
 
 		std::atomic_bool mIsConneting;
 		std::atomic_bool mIsSending;

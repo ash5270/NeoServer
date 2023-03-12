@@ -18,6 +18,7 @@ neo::network::IOCPServer::~IOCPServer()
 
 void neo::network::IOCPServer::StartServer()
 {
+
 	bool result = readyAccept();
 	if (!result)
 		return;
@@ -62,7 +63,9 @@ void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
 		&remoteAddrSize);
 
 	auto session = new IOCPSession();
-	session->OnAccept(mIOCPData->GetSocket(), *(sockaddr_in*)remoteAddr);
+	SocketAddress clientAddr(*remoteAddr);
+
+	session->OnAccept(mClient , &clientAddr);
 
 	//register to session io completion port 
 	mIOCPHandle = CreateIoCompletionPort(reinterpret_cast<HANDLE>(mIOCPData->GetSocket()),
@@ -84,39 +87,50 @@ void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
 
 bool neo::network::IOCPServer::readyAccept()
 {
-	//clent socekt create
-	const SOCKET clientSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (clientSock == SOCKET_ERROR)
+	////client socket create 
+	mClient = mListen.AcceptEX(mIOCPData->GetBuffer(),mIOCPData->GetOverlapped());
+	if (mClient == nullptr)
 	{
-		//accept_socket create error 
-		wprintf_s(L"accept socket create error\n");
-		return false;	
-	}
-
-	//네이글 알고리즘 off 
-	const int option = 1;
-	int result = setsockopt(clientSock, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&option), sizeof(option));
-	if (result != 0)
-		return false;
-
-	mIOCPData->SetSocket(clientSock);
-	DWORD dwBytes;
-	//비동기 accept 함수
-	result = AcceptEx(mListenSocket, clientSock, mIOCPData->GetBuffer(),
-		0,
-		sizeof(sockaddr_in) + 16,
-		sizeof(sockaddr_in) + 16,
-		&dwBytes,
-		mIOCPData->GetOverlapped());
-
-	if (!result && (WSAGetLastError() != WSA_IO_PENDING))
-	{
-		//accept error
-		wprintf_s(L"acceptex function error %d\n", WSAGetLastError());
 		return false;
 	}
+
+	mIOCPData->SetSocket(mClient->GetSOCKET());
 
 	return true;
+
+	//clent socekt create
+	//const SOCKET clientSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	//if (clientSock == SOCKET_ERROR)
+	//{
+	//	//accept_socket create error 
+	//	wprintf_s(L"accept socket create error\n");
+	//	return false;	
+	//}
+
+	////네이글 알고리즘 off 
+	//const int option = 1;
+	//int result = setsockopt(clientSock, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&option), sizeof(option));
+	//if (result != 0)
+	//	return false;
+
+	//mIOCPData->SetSocket(clientSock);
+	//DWORD dwBytes;
+	////비동기 accept 함수
+	//result = AcceptEx(mListenSocket, clientSock, mIOCPData->GetBuffer(),
+	//	0,
+	//	sizeof(sockaddr_in) + 16,
+	//	sizeof(sockaddr_in) + 16,
+	//	&dwBytes,
+	//	mIOCPData->GetOverlapped());
+
+	//if (!result && (WSAGetLastError() != WSA_IO_PENDING))
+	//{
+	//	//accept error
+	//	wprintf_s(L"acceptex function error %d\n", WSAGetLastError());
+	//	return false;
+	//}
+
+	//return true;
 }
 
 bool neo::network::IOCPServer::InitializeServer(const int& port)
@@ -136,18 +150,20 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 		return false;
 	}
 
-	int result = 0;
-	mListenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	//server host ip any 
-	mServerAddr.sin_family = AF_INET;
-	mServerAddr.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
-	mServerAddr.sin_port = htons(port);
 
-	bool on = true;
-	if (setsockopt(mListenSocket, SOL_SOCKET, SO_CONDITIONAL_ACCEPT, (const char*)&on, sizeof(on)))
+	mListen.CreateSocket();
+	mListen.SetNoDelay(true);
+
+	SocketAddress address(INADDR_ANY, port);
+	int result = mListen.Bind(address);
+	if (result == SOCKET_ERROR)
+	{
+		wprintf_s(L"bind error %d\n", WSAGetLastError());
+		CloseServer();
 		return false;
+	}
 
-	mIOCPHandle = CreateIoCompletionPort((HANDLE)mListenSocket,
+	mIOCPHandle = CreateIoCompletionPort((HANDLE)mListen.GetSOCKET(),
 		mIOCPHandle,
 		(u_long)0,
 		0);
@@ -157,28 +173,60 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 		wprintf_s(L"acceptex io completion port  error\n");
 	}
 
-	//bind socket
-	result = bind(mListenSocket, reinterpret_cast<SOCKADDR*>(&mServerAddr), sizeof(SOCKADDR_IN));
+	result = mListen.Listen();
 	if (result == SOCKET_ERROR)
 	{
-		//bind error
 		wprintf_s(L"bind error %d\n", WSAGetLastError());
 		CloseServer();
 		return false;
 	}
-
-	DWORD len = 0;
-
-	//listen backlog
-	result = listen(mListenSocket, 100);
-	if (result == SOCKET_ERROR)
-	{
-		//listen error
-		wprintf_s(L"listen error\n");
-		CloseServer();
-		return false;
-	}
-
 	wprintf_s(L"Server Init........\n");
+	return true;
+
+
+	//int result = 0;
+	//mListenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	////server host ip any 
+	//mServerAddr.sin_family = AF_INET;
+	//mServerAddr.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
+	//mServerAddr.sin_port = htons(port);
+	
+	//bool on = true;
+	//if (setsockopt(mListenSocket, SOL_SOCKET, SO_CONDITIONAL_ACCEPT, (const char*)&on, sizeof(on)))
+	//	return false;
+
+	//mIOCPHandle = CreateIoCompletionPort((HANDLE)mListenSocket,
+	//	mIOCPHandle,
+	//	(u_long)0,
+	//	0);
+
+	//if (mIOCPHandle == NULL)
+	//{
+	//	wprintf_s(L"acceptex io completion port  error\n");
+	//}
+
+	////bind socket
+	//result = bind(mListenSocket, reinterpret_cast<SOCKADDR*>(&mServerAddr), sizeof(SOCKADDR_IN));
+	//if (result == SOCKET_ERROR)
+	//{
+	//	//bind error
+	//	wprintf_s(L"bind error %d\n", WSAGetLastError());
+	//	CloseServer();
+	//	return false;
+	//}
+
+	//DWORD len = 0;
+
+	////listen backlog
+	//result = listen(mListenSocket, 100);
+	//if (result == SOCKET_ERROR)
+	//{
+	//	//listen error
+	//	wprintf_s(L"listen error\n");
+	//	CloseServer();
+	//	return false;
+	//}
+
+	//wprintf_s(L"Server Init........\n");
 	return true;
 }

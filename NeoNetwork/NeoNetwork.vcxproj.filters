@@ -60,6 +60,12 @@
     <ClInclude Include="Buffer.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="network\SocketAddress.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="network\TCPSocket.h">
+      <Filter>network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\IOCPServer.cpp">
@@ -82,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="Network\IOCPData.cpp">
       <Filter>network\IOCP</Filter>
+    </ClCompile>
+    <ClCompile Include="network\TCPSocket.cpp">
+      <Filter>network</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

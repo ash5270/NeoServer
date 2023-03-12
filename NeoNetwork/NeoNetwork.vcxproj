@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -136,7 +136,9 @@
     <ClInclude Include="Network\IOCPServer.h" />
     <ClInclude Include="Network\IOCPSession.h" />
     <ClInclude Include="Network\IOCPSocket.h" />
+    <ClInclude Include="network\SocketAddress.h" />
     <ClInclude Include="Network\SocketCommon.h" />
+    <ClInclude Include="network\TCPSocket.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="system\LogData.h" />
     <ClInclude Include="system\LogSystem.h" />
@@ -148,6 +150,7 @@
     <ClCompile Include="Network\IOCPServer.cpp" />
     <ClCompile Include="Network\IOCPSession.cpp" />
     <ClCompile Include="Network\IOCPSocket.cpp" />
+    <ClCompile Include="network\TCPSocket.cpp" />
     <ClCompile Include="system\LogSystem.cpp" />
     <ClCompile Include="time\Time.cpp" />
   </ItemGroup>

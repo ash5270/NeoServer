@@ -13,11 +13,12 @@ neo::network::IOCPSession::~IOCPSession()
 	mRecvData.reset();
 }
 
-bool neo::network::IOCPSession::OnAccept(const SOCKET& socket,const SOCKADDR_IN& addrInfo)
+bool neo::network::IOCPSession::OnAccept( TCPSocket* socket, SocketAddress* addrInfo)
 {
 
-	mSocket = socket;
-	mAddrInfo = addrInfo;
+	//mSocket = socket;
+	mTCPSocket = socket;
+	mSocketAddress = addrInfo;
 
 	mIsConneting.store(true);
 	mIsSending.store(false);
@@ -86,7 +87,7 @@ void neo::network::IOCPSession::RecvReady()
 	DWORD recvLen = 0;;
 	DWORD flags = 0;
 
-	const auto result= WSARecv(mSocket, &buf,
+	const auto result= WSARecv(mTCPSocket->GetSOCKET(), &buf,
 		1, &recvLen, 
 		&flags, mRecvData->GetOverlapped(), 
 		NULL);
