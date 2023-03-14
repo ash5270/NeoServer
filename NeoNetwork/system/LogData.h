@@ -8,13 +8,13 @@ namespace neo::system
 	enum class LogType 
 	{
 		//확인을 위한 용도
-		INFO=0,
+		LOG_INFO=0,
 		//경고
-		WARNING,
+		LOG_WARNING,
 		//에러
-		ERROR,
+		LOG_ERROR,
 		//디버그 용도
-		DEBUG,
+		LOG_DEBUG,
 	};
 
 	//Log Data 
