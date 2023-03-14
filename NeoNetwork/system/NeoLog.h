@@ -7,6 +7,8 @@
 #include "LogSystem.h"
 #include "LogData.h"
 
+typedef neo::system::LogType LOG_LEVEL;
+
 template<typename... Args>
 std::wstring wstring_format(const wchar_t* format, Args... args)
 {
@@ -19,17 +21,11 @@ std::wstring wstring_format(const wchar_t* format, Args... args)
 
 	auto size = static_cast<size_t>(len);
 	auto buffer = std::make_unique<wchar_t[]>(size);
-	_snprintf_s(buffer.get(), size, size, format, args...);
+	_snwprintf_s(buffer.get(), size, size, format, args...);
 
-
-	
 	return std::wstring(buffer.get(), buffer.get() + size - 1);
 }
-
+//여기를 클래스로 만들어야할듯 
 #define LOG_PRINT(LOG_TYPE,format,...)\
-	{\
-		auto str= wstring_format(format,##__VA_ARGS__); \
-		neo::system::LogData logData(LOG_TYPE,str)\
-		neo::system::LogSystem::GetInstance().AddLogData(std::move(logData));\
-	}\
-	
+neo::system::LogSystem::GetInstance().OutPutLog(LOG_TYPE,wstring_format(format, ##__VA_ARGS__))\
+

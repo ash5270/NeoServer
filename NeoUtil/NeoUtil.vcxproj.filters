@@ -25,5 +25,10 @@
     <ClInclude Include="SpinLock.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="BuildTestCOde.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="buildtest.cpp" />
+    <ClCompile Include="BuildTestCOde.cpp" />
   </ItemGroup>
 </Project>

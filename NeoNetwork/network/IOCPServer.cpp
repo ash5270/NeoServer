@@ -5,6 +5,8 @@
 #include <string>
 
 #include "IOCPSession.h"
+#include"../system/NeoLog.h"
+
 neo::network::IOCPServer::IOCPServer() :IOCPSocket()
 {
 	mIOCPData = std::make_unique<IOCPData>(IO_TYPE::IO_ACCEPT);
@@ -18,11 +20,14 @@ neo::network::IOCPServer::~IOCPServer()
 
 void neo::network::IOCPServer::StartServer()
 {
-
+	if(!system::LogSystem::GetInstance().StartSystem())
+	{
+		wprintf_s(L"LogSystem start Error\n");
+	}
 	bool result = readyAccept();
 	if (!result)
 		return;
-	wprintf_s(L"Server Start.......\n");
+	LOG_PRINT(LOG_LEVEL::LOG_INFO, L"Server Start");
 }
 
 void neo::network::IOCPServer::StopServer()
@@ -135,6 +140,9 @@ bool neo::network::IOCPServer::readyAccept()
 
 bool neo::network::IOCPServer::InitializeServer(const int& port)
 {
+	//Log
+	system::LogSystem::GetInstance().InitSystem();
+
 	if (!WSAInit())
 		wprintf_s(L"INIT error\n");
 

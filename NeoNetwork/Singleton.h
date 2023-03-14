@@ -12,8 +12,12 @@ namespace neo
 			static T instance;
 			return  instance;
 		}
-	private:
+
+	protected:
 		Singleton() {};
+
+	private:
+
 		Singleton(const Singleton&) = delete;
 		Singleton& operator=(const Singleton&) = delete;
 	};

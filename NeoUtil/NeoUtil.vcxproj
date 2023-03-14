@@ -19,10 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BuildTestCOde.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="LockFreeQueue.h" />
     <ClInclude Include="SpinLock.h" />
     <ClInclude Include="UtfToUnicode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="buildtest.cpp" />
+    <ClCompile Include="BuildTestCOde.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
