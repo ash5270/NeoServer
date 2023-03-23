@@ -9,13 +9,14 @@ neo::network::IOCPSession::IOCPSession()
 neo::network::IOCPSession::~IOCPSession()
 {
 	//smart pointer 삭제
+	delete mSocketAddress;
+	
 	mSendData.reset();
 	mRecvData.reset();
 }
 
 bool neo::network::IOCPSession::OnAccept( TCPSocket* socket, SocketAddress* addrInfo)
 {
-
 	//mSocket = socket;
 	mTCPSocket = socket;
 	mSocketAddress = addrInfo;

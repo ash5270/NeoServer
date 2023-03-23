@@ -19,6 +19,9 @@
     <Filter Include="system\TIME">
       <UniqueIdentifier>{785ca38f-75c6-4c27-bfd8-0681a54d1914}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\STEAM">
+      <UniqueIdentifier>{d1112850-a1f1-4427-970a-5d85428af0e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\SocketCommon.h">
@@ -66,6 +69,15 @@
     <ClInclude Include="network\TCPSocket.h">
       <Filter>network</Filter>
     </ClInclude>
+    <ClInclude Include="system\InputMemoryStream.h">
+      <Filter>system\STEAM</Filter>
+    </ClInclude>
+    <ClInclude Include="system\OutputMemoryStream.h">
+      <Filter>system\STEAM</Filter>
+    </ClInclude>
+    <ClInclude Include="system\MemoryStream.h">
+      <Filter>system\STEAM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\IOCPServer.cpp">
@@ -91,6 +103,12 @@
     </ClCompile>
     <ClCompile Include="network\TCPSocket.cpp">
       <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="system\InputMemoryStream.cpp">
+      <Filter>system\STEAM</Filter>
+    </ClCompile>
+    <ClCompile Include="system\OutputMemoryStream.cpp">
+      <Filter>system\STEAM</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

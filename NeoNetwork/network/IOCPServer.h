@@ -40,8 +40,6 @@ namespace neo::network
 	private:
 		SOCKET mListenSocket;
 
-
-
 		SOCKADDR_IN mServerAddr;
 		TCPSocket mListen;
 		TCPSocket* mClient;

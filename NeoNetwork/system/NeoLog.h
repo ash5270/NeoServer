@@ -27,5 +27,6 @@ std::wstring wstring_format(const wchar_t* format, Args... args)
 }
 //여기를 클래스로 만들어야할듯 
 #define LOG_PRINT(LOG_TYPE,format,...)\
-neo::system::LogSystem::GetInstance().OutPutLog(LOG_TYPE,wstring_format(format, ##__VA_ARGS__))\
+neo::system::LogSystem::GetInstance().OutPutLog(LOG_TYPE,\
+	wstring_format(format, ##__VA_ARGS__))\
 

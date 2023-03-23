@@ -27,7 +27,7 @@ void neo::network::IOCPServer::StartServer()
 	bool result = readyAccept();
 	if (!result)
 		return;
-	LOG_PRINT(LOG_LEVEL::LOG_INFO, L"Server Start");
+	LOG_PRINT(LOG_LEVEL::LOG_INFO, L"Server Start...\n");
 }
 
 void neo::network::IOCPServer::StopServer()
@@ -68,9 +68,8 @@ void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
 		&remoteAddrSize);
 
 	auto session = new IOCPSession();
-	SocketAddress clientAddr(*remoteAddr);
-
-	session->OnAccept(mClient , &clientAddr);
+	SocketAddress* clientAddr= new SocketAddress(*remoteAddr);
+	session->OnAccept(mClient , clientAddr);
 
 	//register to session io completion port 
 	mIOCPHandle = CreateIoCompletionPort(reinterpret_cast<HANDLE>(mIOCPData->GetSocket()),
@@ -80,7 +79,7 @@ void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
 
 	if (mIOCPHandle == NULL)
 	{
-		wprintf_s(L"session io completion port error\n");
+		LOG_PRINT(LOG_LEVEL::LOG_ERROR,L"session io completion port error\n");
 	}
 
 	session->AddRef();
@@ -144,7 +143,7 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 	system::LogSystem::GetInstance().InitSystem();
 
 	if (!WSAInit())
-		wprintf_s(L"INIT error\n");
+		LOG_PRINT(LOG_LEVEL::LOG_ERROR,L"INIT error\n");
 
 	//IOCP handle 생성
 	SYSTEM_INFO systemInfo;
@@ -154,10 +153,9 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 
 	if (!CreateIOThread(threadCount))
 	{
-		wprintf_s(L"Io thread error\n");
+		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"Io thread error\n");
 		return false;
 	}
-
 
 	mListen.CreateSocket();
 	mListen.SetNoDelay(true);
@@ -166,7 +164,7 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 	int result = mListen.Bind(address);
 	if (result == SOCKET_ERROR)
 	{
-		wprintf_s(L"bind error %d\n", WSAGetLastError());
+		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"bind error %d\n", WSAGetLastError());
 		CloseServer();
 		return false;
 	}
@@ -178,17 +176,17 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 
 	if (mIOCPHandle == NULL)
 	{
-		wprintf_s(L"acceptex io completion port  error\n");
+		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"acceptex io completion port  error\n");
 	}
 
 	result = mListen.Listen();
 	if (result == SOCKET_ERROR)
 	{
-		wprintf_s(L"bind error %d\n", WSAGetLastError());
+		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"bind error %d\n", WSAGetLastError());
 		CloseServer();
 		return false;
 	}
-	wprintf_s(L"Server Init........\n");
+	LOG_PRINT(LOG_LEVEL::LOG_INFO, L"Server Init...\n");
 	return true;
 
 

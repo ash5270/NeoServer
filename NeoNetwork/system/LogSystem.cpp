@@ -10,7 +10,7 @@ bool neo::system::LogSystem::InitSystem()
 {
 	mIsUpdating = false;
 	::InitializeCriticalSection(&mCritical);
-
+	this->OutPutLog(LogType::LOG_INFO, L"LogSystem Init...\n");
 	//포트포워딩 안해서 서버 접속 불가
 	//mHttpClient = std::make_unique<network::HttpClient>("192.168.123.104",3000);
 	return false;
@@ -20,6 +20,7 @@ bool neo::system::LogSystem::StartSystem()
 {
 	mIsUpdating = true;
 	mLogThread = std::thread(&LogSystem::Update, this);
+	this->OutPutLog(LogType::LOG_INFO, L"LogSystem Start...\n");
 
 	return true;
 }

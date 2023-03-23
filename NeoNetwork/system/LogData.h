@@ -5,7 +5,7 @@
 namespace neo::system
 {
 	//LOG Type
-	enum class LogType 
+	enum class LogType : uint32_t	
 	{
 		//확인을 위한 용도
 		LOG_INFO=0,

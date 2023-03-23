@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "network/HttpClient.h"
 #include "network/IOCPServer.h"
+
+#include "system/InputMemoryStream.h"
+#include "system/OutputMemoryStream.h"
 #include "Common.h"
 
 #include <locale>
@@ -12,6 +15,26 @@ using namespace std;
 
 int main()
 {
+	/*neo::system::OutputMemoryStream out;
+
+	int32_t num = 55500;
+	out.Write(num);
+	wstring str = L"str";
+	out.Write(str);
+
+	neo::system::InputMemoryStream in(out.GetStreamPtr(), out.GetCapacity());
+
+	int32_t n;
+	wstring s;
+
+	in.Read(n);
+	in.Read(s);*/
+
+
+	//uint32_t  x = 0x123456789;
+
+
+
 	//int sum = 0;
 	//func(10, sum);
 
@@ -59,15 +82,15 @@ int main()
 	//}
 
 
-	using namespace  neo::network;
-	IOCPServer server;
-	server.InitializeServer(4560);
-	server.StartServer();
+	//using namespace  neo::network;
+	//IOCPServer server;
+	//server.InitializeServer(4560);
+	//server.StartServer();
 
-	while (true)
-	{
-		
-	}
+	//while (true)
+	//{
+	//	
+	//}
 
 	return 0;
 }

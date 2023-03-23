@@ -1,5 +1,6 @@
 #pragma once
 #include<stdint.h>
+#include<iostream>
 #include "SocketCommon.h"
 
 
@@ -14,6 +15,17 @@ namespace neo::network
 			GetSockAddrIn()->sin_family = AF_INET;
 			GetSockAddrIn()->sin_addr.S_un.S_addr = htonl(address);
 			GetSockAddrIn()->sin_port = htons(port);
+		}
+		
+		SocketAddress(const SocketAddress& socketAddress)
+		{
+			memcpy(&mSockAddr, &socketAddress.mSockAddr, sizeof(sockaddr));
+		}
+
+		SocketAddress(SocketAddress&& socketAddress) noexcept
+		{
+			memcpy(&mSockAddr, &socketAddress.mSockAddr, sizeof(sockaddr));
+			memset(&socketAddress.mSockAddr, 0, sizeof(sockaddr));
 		}
 
 		SocketAddress(const sockaddr& sockaddr)

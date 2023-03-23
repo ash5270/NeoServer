@@ -15,7 +15,6 @@ namespace neo::network
 		int Listen(int backLog = SOMAXCONN);
 		int Send(const char* buffer, int len);
 		int Recv(char* buffer, int len);
-
 		int SetNoDelay(const bool& setOption);
 
 		SOCKET GetSOCKET() {
