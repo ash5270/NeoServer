@@ -8,16 +8,16 @@
 
 #include <locale>
 #include <json.h>
-#include <Windows.h>
-#include <iostream>
+
+
 using namespace std;
 
 
 int main()
 {
-	/*neo::system::OutputMemoryStream out;
+	neo::system::OutputMemoryStream out;
 
-	int32_t num = 55500;
+	int32_t num = 0x12345678;
 	out.Write(num);
 	wstring str = L"str";
 	out.Write(str);
@@ -28,7 +28,7 @@ int main()
 	wstring s;
 
 	in.Read(n);
-	in.Read(s);*/
+	in.Read(s);
 
 
 	//uint32_t  x = 0x123456789;

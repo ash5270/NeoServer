@@ -140,6 +140,7 @@
     <ClInclude Include="Network\SocketCommon.h" />
     <ClInclude Include="network\TCPSocket.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="system\ByteSwaper.h" />
     <ClInclude Include="system\InputMemoryStream.h" />
     <ClInclude Include="system\LogData.h" />
     <ClInclude Include="system\LogSystem.h" />

@@ -21,24 +21,69 @@ namespace neo::system
 		}
 		//16
 		void Read(int16_t& outData) {
-			Read(&outData, sizeof(outData));
+			if (std::endian::native == std::endian::little)
+			{
+				Read(&outData, sizeof(outData));
+				int16_t result = ByteSwap(outData);
+				outData = result;
+			}
+			else if (std::endian::native == std::endian::big)
+			{
+				Read(&outData, sizeof(outData));
+			}
 		}
 		//32
 		void Read(int32_t& outData) {
-			Read(&outData, sizeof(outData));
+			if (std::endian::native == std::endian::little)
+			{
+				Read(&outData, sizeof(outData));
+				int32_t result = ByteSwap(outData);
+				outData = result;
+			}
+			else if (std::endian::native == std::endian::big)
+			{
+				Read(&outData, sizeof(outData));
+			}
 		}
 		//64
 		void Read(int64_t& outData) {
-			Read(&outData, sizeof(outData));
+			if (std::endian::native == std::endian::little)
+			{
+				Read(&outData, sizeof(outData));
+				int64_t result = ByteSwap(outData);
+				outData = result;
+			}
+			else if (std::endian::native == std::endian::big)
+			{
+				Read(&outData, sizeof(outData));
+			}
 		}
 
 		//32
 		void Read(float& outData) {
-			Read(&outData, sizeof(outData));
+			if (std::endian::native == std::endian::little)
+			{
+				Read(&outData, sizeof(outData));
+				float result = ByteSwap(outData);
+				outData = result;
+			}
+			else if (std::endian::native == std::endian::big)
+			{
+				Read(&outData, sizeof(outData));
+			}
 		}
 		//64
 		void Read(double& outData) {
-			Read(&outData, sizeof(outData));
+			if (std::endian::native == std::endian::little)
+			{
+				Read(&outData, sizeof(outData));
+				double result = ByteSwap(outData);
+				outData = result;
+			}
+			else if (std::endian::native == std::endian::big)
+			{
+				Read(&outData, sizeof(outData));
+			}
 		}
 
 		void Read(std::wstring& outData)

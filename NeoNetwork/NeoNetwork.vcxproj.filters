@@ -78,6 +78,9 @@
     <ClInclude Include="system\MemoryStream.h">
       <Filter>system\STEAM</Filter>
     </ClInclude>
+    <ClInclude Include="system\ByteSwaper.h">
+      <Filter>system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\IOCPServer.cpp">
