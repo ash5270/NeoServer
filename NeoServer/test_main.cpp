@@ -9,26 +9,27 @@
 #include <locale>
 #include <json.h>
 
-
 using namespace std;
 
 
 int main()
 {
-	neo::system::OutputMemoryStream out;
+	/*neo::system::Buffer buffer(1024);
+
+	neo::system::OutputMemoryStream out(buffer);
 
 	int32_t num = 0x12345678;
 	out.Write(num);
 	wstring str = L"str";
 	out.Write(str);
 
-	neo::system::InputMemoryStream in(out.GetStreamPtr(), out.GetCapacity());
+	neo::system::InputMemoryStream in(buffer);
 
 	int32_t n;
 	wstring s;
 
 	in.Read(n);
-	in.Read(s);
+	in.Read(s);*/
 
 
 	//uint32_t  x = 0x123456789;
@@ -82,15 +83,15 @@ int main()
 	//}
 
 
-	//using namespace  neo::network;
-	//IOCPServer server;
-	//server.InitializeServer(4560);
-	//server.StartServer();
+	using namespace  neo::network;
+	IOCPServer server;
+	server.InitializeServer(4560);
+	server.StartServer();
 
-	//while (true)
-	//{
-	//	
-	//}
+	while (true)
+	{
+		
+	}
 
 	return 0;
 }

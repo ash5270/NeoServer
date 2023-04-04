@@ -2,35 +2,48 @@
 #pragma once	
 #include<iostream>
 #include<memory>
+
+#include"Buffer.h"
+#include"ByteSwaper.h"
 namespace neo::system
 {
 	class MemoryStream 
 	{
 	public:
-		MemoryStream():mHead(0),mCapacity(0),mBuffer(nullptr) {
+		MemoryStream():mHead(0),mCapacity(0),mBuffer(nullptr), mIsCopyBuffer(false){
 			ReallocMemory(1024);
 		}
 		
-		MemoryStream(char* buffer, const uint32_t capacity) : mBuffer(buffer), mCapacity(capacity),mHead(0) {
+		MemoryStream(char* buffer, const int32_t capacity) : mBuffer(buffer), mCapacity(capacity),mHead(0) {
+			mIsCopyBuffer = true;
+		}
 
+		MemoryStream(const Buffer& buffer):mBuffer(buffer.GetDataPtr()),mCapacity(buffer.GetCapacity()),mHead(0)
+		{
+			mIsCopyBuffer = true;
 		}
 
 		virtual ~MemoryStream() {
-			std::free(mBuffer);
+			if (!mIsCopyBuffer)
+			{
+				std::free(mBuffer);
+				mBuffer = nullptr;
+			}
 		}
 
 	protected:
 		char* mBuffer;
-		uint32_t mHead;
-		uint32_t mCapacity;
+		int32_t mHead;
+		int32_t mCapacity;
 		
+		bool mIsCopyBuffer;
 	public:
 		char* GetStreamPtr() const { return mBuffer; }
-		uint32_t GetLength() const { return mHead; }
-		uint32_t GetCapacity() const { return mCapacity; }
+		int32_t GetLength() const { return mHead; }
+		int32_t GetCapacity() const { return mCapacity; }
 
 	protected:
-		void ReallocMemory(uint32_t inNewCapacity) {
+		void ReallocMemory(int32_t inNewCapacity) {
 			mBuffer = static_cast<char*>
 				(std::realloc(mBuffer,
 					inNewCapacity));

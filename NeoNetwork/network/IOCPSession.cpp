@@ -1,5 +1,9 @@
 ﻿#include "IOCPSession.h"
 
+#include"../packet/PacketAnalyzeAndCreate.h"
+#include"../system/InputMemoryStream.h"
+#include"../packet/Packet.h"
+
 neo::network::IOCPSession::IOCPSession()
 {
 	mSendData = std::make_shared<IOCPData>(IO_TYPE::IO_SEND);
@@ -15,7 +19,8 @@ neo::network::IOCPSession::~IOCPSession()
 	mRecvData.reset();
 }
 
-bool neo::network::IOCPSession::OnAccept( TCPSocket* socket, SocketAddress* addrInfo)
+bool neo::network::IOCPSession::OnAccept(TCPSocket* socket, SocketAddress* addrInfo,
+	const std::shared_ptr<util::system::LockFreeQueue<Packet*>>& packetQueue)
 {
 	//mSocket = socket;
 	mTCPSocket = socket;
@@ -24,19 +29,42 @@ bool neo::network::IOCPSession::OnAccept( TCPSocket* socket, SocketAddress* addr
 	mIsConneting.store(true);
 	mIsSending.store(false);
 
-	wprintf(L"OnAccept\n");
+	//weak_ptr create
+	mPacketQueue = packetQueue;
 
+	LOG_PRINT(LOG_LEVEL::LOG_INFO,L"OnAccept\n");
+
+
+	//const auto result = WSASend(mSocket, &buf,
+	//	1, &recvLen,
+	//	flags, mSendData->GetOverlapped(),
+	//	NULL); 
+
+	P_S_RES_LOGIN packet;
+	packet.status_code = 1400;
+	system::OutputMemoryStream output(*mSendData->GetBuffer());
+	packet.Serialize(output);
+
+	WSABUF buf;
+	buf.buf = mSendData->GetBuffer()->GetDataPtr();
+	buf.len = output.GetLength();
+	DWORD flags = 0;
+	DWORD len = 0;
+	//WSASend(mTCPSocket->GetSOCKET(), &buf, 1, &len, flags, mSendData->GetOverlapped(), NULL);
+	mTCPSocket->WSASend(&buf, 1, mSendData->GetOverlapped());
 	return true;
 }
 
 void neo::network::IOCPSession::OnSend(size_t transferSize)
 {
-	wprintf(L"OnSend %d\n", transferSize);
+	LOG_PRINT(LOG_LEVEL::LOG_INFO,L"OnSend %d\n", transferSize);
 }
 
 void neo::network::IOCPSession::OnRecv(size_t transferSize)
 {
-	wprintf(L"OnRecv % d\n", transferSize);
+	LOG_PRINT(LOG_LEVEL::LOG_INFO,L"OnRecv %d \n", transferSize);
+	InputMemoryStream inputStream(*mRecvData->GetBuffer());
+	//packet::PacketAnalyzeAndCreate::GetInstance().Analyzer(inputStream);
 
 	//WSABUF buf;
 	//buf.buf = mRecvData->GetBuffer()->GetDataPtr();
@@ -50,7 +78,6 @@ void neo::network::IOCPSession::OnRecv(size_t transferSize)
 	//	1, &recvLen,
 	//	flags, mSendData->GetOverlapped(),
 	//	NULL); 
-
 
 	//recevice 대기
 	this->RecvReady();

@@ -84,6 +84,7 @@ int neo::network::TCPSocket::Recv(char* buffer, int len)
 
 int neo::network::TCPSocket::SetNoDelay(const bool& setOption)
 {
+   
     const int option = static_cast<int>(setOption);
     int result = setsockopt(mSocket, IPPROTO_TCP,
         TCP_NODELAY,
@@ -92,4 +93,19 @@ int neo::network::TCPSocket::SetNoDelay(const bool& setOption)
     if (result != 0)
         return false;
     return true;
+}
+
+int neo::network::TCPSocket::WSARecv(LPWSABUF lpBuffes, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)
+{
+    DWORD flags = 0;
+    DWORD len = 0;
+    return ::WSARecv(mSocket, lpBuffes, dwBufferCount, NULL, &flags, lpOverlapped, lpCompletionRoutine);
+}
+
+int neo::network::TCPSocket::WSASend(LPWSABUF lpBuffes, DWORD dwBufferCount, LPOVERLAPPED lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)
+{
+    DWORD flags = 0;
+    DWORD len = 0;
+    return ::WSASend(mSocket, lpBuffes, dwBufferCount, NULL, flags, lpOverlapped, lpCompletionRoutine);
+    return 0;
 }

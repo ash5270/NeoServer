@@ -10,6 +10,10 @@
 #include "IOCPData.h"
 #include "IOCPSession.h"
 
+#include"../packet/PacketID.h"
+
+
+#include "LockFreeQueue.h"
 
 namespace neo::network
 {
@@ -44,6 +48,9 @@ namespace neo::network
 		TCPSocket mListen;
 		TCPSocket* mClient;
 		bool mIsAccept;
+
+		//packet queue
+		std::shared_ptr<util::system::LockFreeQueue<Packet*>> mPacketQueue;
 
 		std::unique_ptr<IOCPData> mIOCPData;
 		//shared_ptr은 thread_safe하지 않아서 

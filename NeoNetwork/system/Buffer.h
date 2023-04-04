@@ -1,10 +1,9 @@
-ï»¿//buffer
-//í†µì‹ ê°„ ë°ì´í„°ë¥¼ ì£¼ê³  ë°›ì„ ë°ì´í„° ê³µê°„
-
+//±âº»ÀûÀÎ ½ºÆ®¸² Å¬·¡½º
+//¹öÆÛ¶û ºñ½ÁÇÑ °³³äÀÌ¶ó°í º¸ÀÚ
 
 #pragma once
 #include <memory>
-namespace neo
+namespace neo::system
 {
 	class Buffer
 	{
@@ -12,7 +11,6 @@ namespace neo
 		Buffer(const size_t& size) : mCapacity(size)
 		{
 			mBuf = std::make_unique<char[]>(size);
-			
 		}
 
 		~Buffer()
@@ -43,7 +41,6 @@ namespace neo
 
 	private:
 		size_t mCapacity;
-
 		std::unique_ptr<char[]> mBuf;
 	};
 }

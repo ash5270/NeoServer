@@ -2,7 +2,7 @@
 
 #pragma once
 #include "SocketCommon.h"
-#include "../Buffer.h"
+#include "../system/Buffer.h"
 
 namespace neo::network
 {
@@ -29,17 +29,16 @@ namespace neo::network
 		OVERLAPPED* GetOverlapped();
 		//socket 할당 : 세션 풀링을 위해
 		void SetSocket(SOCKET socket);
-		Buffer* GetBuffer() const;
-
+		system::Buffer* GetBuffer() const;
 
 	private:
-
+		void InitIOCPData();
 
 	private:
 		OVERLAPPED mOverlapped;
 		IO_TYPE mIOType;
 		//임시 버퍼
-		std::unique_ptr<Buffer> mBuffer;
+		std::unique_ptr<system::Buffer> mBuffer;
 		WSABUF mWSABuf;
 		SOCKET mSocket;
 	};

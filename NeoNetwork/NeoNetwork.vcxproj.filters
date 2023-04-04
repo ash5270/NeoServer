@@ -22,6 +22,9 @@
     <Filter Include="system\STEAM">
       <UniqueIdentifier>{d1112850-a1f1-4427-970a-5d85428af0e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="packet">
+      <UniqueIdentifier>{70ecae3b-0a18-4192-a3e1-ad8c0cfb04ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\SocketCommon.h">
@@ -60,9 +63,6 @@
     <ClInclude Include="Network\IOCPData.h">
       <Filter>network\IOCP</Filter>
     </ClInclude>
-    <ClInclude Include="Buffer.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="network\SocketAddress.h">
       <Filter>network</Filter>
     </ClInclude>
@@ -80,6 +80,18 @@
     </ClInclude>
     <ClInclude Include="system\ByteSwaper.h">
       <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\Buffer.h">
+      <Filter>system\STEAM</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\Packet.h">
+      <Filter>packet</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\PacketID.h">
+      <Filter>packet</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\PacketAnalyzeAndCreate.h">
+      <Filter>packet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="system\OutputMemoryStream.cpp">
       <Filter>system\STEAM</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp">
+      <Filter>packet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

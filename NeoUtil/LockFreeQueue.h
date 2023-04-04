@@ -17,7 +17,6 @@ namespace neo::util::system
 			Node* node = new Node();
 			mHead.store(node);
 			mTail.store(node);
-			
 		}
 
 		~LockFreeQueue()
@@ -47,7 +46,8 @@ namespace neo::util::system
 				next = tail->Next.load(std::memory_order_acquire);
 				if (!next)
 				{
-					if (tail->Next.compare_exchange_strong(next, node, std::memory_order_relaxed))
+					if (tail->Next.compare_exchange_strong(next, node,
+						std::memory_order_relaxed))
 						break;
 				}
 				//tail nullptr이 아니라면 

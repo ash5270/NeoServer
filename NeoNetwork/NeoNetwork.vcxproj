@@ -70,6 +70,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)\NeoUtil;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>$(SolutionDir)\NeoUtil;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -128,7 +132,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Buffer.h" />
     <ClInclude Include="Network\HttpClient.h" />
     <ClInclude Include="Network\HttpData.h" />
     <ClInclude Include="Network\HttpStateCode.h" />
@@ -139,6 +142,9 @@
     <ClInclude Include="network\SocketAddress.h" />
     <ClInclude Include="Network\SocketCommon.h" />
     <ClInclude Include="network\TCPSocket.h" />
+    <ClInclude Include="packet\Packet.h" />
+    <ClInclude Include="packet\PacketAnalyzeAndCreate.h" />
+    <ClInclude Include="packet\PacketID.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="system\ByteSwaper.h" />
     <ClInclude Include="system\InputMemoryStream.h" />
@@ -147,6 +153,7 @@
     <ClInclude Include="system\NeoLog.h" />
     <ClInclude Include="system\OutputMemoryStream.h" />
     <ClInclude Include="system\MemoryStream.h" />
+    <ClInclude Include="system\Buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\HttpClient.cpp" />
@@ -155,6 +162,7 @@
     <ClCompile Include="Network\IOCPSession.cpp" />
     <ClCompile Include="Network\IOCPSocket.cpp" />
     <ClCompile Include="network\TCPSocket.cpp" />
+    <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp" />
     <ClCompile Include="system\InputMemoryStream.cpp" />
     <ClCompile Include="system\LogSystem.cpp" />
     <ClCompile Include="system\OutputMemoryStream.cpp" />

@@ -9,6 +9,7 @@ namespace neo::system
 	{
 	public:
 		InputMemoryStream(char* buffer,const uint32_t& capacity);
+		InputMemoryStream(const Buffer& buffer);
 		~InputMemoryStream();
 
 		uint32_t GetRemainingSize()const { return mCapacity - mHead; }

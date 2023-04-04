@@ -1,5 +1,5 @@
-﻿//IOCP 소켓 관련 클래스
-
+﻿//IOCP 소켓 관리 클래스
+//
 #pragma once
 
 #include "SocketCommon.h"

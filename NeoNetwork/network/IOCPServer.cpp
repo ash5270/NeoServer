@@ -4,12 +4,14 @@
 #include <sysinfoapi.h>
 #include <string>
 
+
 #include "IOCPSession.h"
 #include"../system/NeoLog.h"
 
 neo::network::IOCPServer::IOCPServer() :IOCPSocket()
 {
 	mIOCPData = std::make_unique<IOCPData>(IO_TYPE::IO_ACCEPT);
+	mPacketQueue = std::make_shared<util::system::LockFreeQueue<Packet*>>();
 	mListenSocket = 0;
 }
 
@@ -69,7 +71,7 @@ void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
 
 	auto session = new IOCPSession();
 	SocketAddress* clientAddr= new SocketAddress(*remoteAddr);
-	session->OnAccept(mClient , clientAddr);
+	session->OnAccept(mClient , clientAddr,mPacketQueue);
 
 	//register to session io completion port 
 	mIOCPHandle = CreateIoCompletionPort(reinterpret_cast<HANDLE>(mIOCPData->GetSocket()),
@@ -99,7 +101,6 @@ bool neo::network::IOCPServer::readyAccept()
 	}
 
 	mIOCPData->SetSocket(mClient->GetSOCKET());
-
 	return true;
 
 	//clent socekt create
