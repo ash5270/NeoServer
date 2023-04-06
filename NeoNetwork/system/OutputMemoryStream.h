@@ -7,8 +7,8 @@ namespace neo::system
 	class OutputMemoryStream : public MemoryStream
 	{
 	public:
-		OutputMemoryStream();
 		OutputMemoryStream(const Buffer& buffer);
+		OutputMemoryStream(char* buffer, const size_t& capacity);
 		~OutputMemoryStream();
 
 		//기본적인 포인터로 데이터 쓰기

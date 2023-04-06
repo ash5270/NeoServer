@@ -2,19 +2,16 @@
 
 neo::network::IOCPData::IOCPData(IO_TYPE type):mIOType(type)
 {
-	mBuffer = std::make_unique<system::Buffer>(1024);
 	InitIOCPData();
 }
 
 neo::network::IOCPData::IOCPData(IO_TYPE type, const SOCKET& socket): mIOType(type),mSocket(socket)
 {
-	mBuffer = std::make_unique<system::Buffer>(1024);
 	InitIOCPData();
 }
 
 neo::network::IOCPData::IOCPData(IO_TYPE type, const SOCKET& socket, const size_t& bufLen):mIOType(type), mSocket(socket)
 {
-	mBuffer = std::make_unique<system::Buffer>(1024);
 	InitIOCPData();
 }
 
@@ -23,13 +20,12 @@ void neo::network::IOCPData::InitIOCPData()
 	memset(&mOverlapped, 0, sizeof(OVERLAPPED));
 }
 
-
 neo::network::IOCPData::~IOCPData()
 {
 
 }
 
-WSABUF* neo::network::IOCPData::GetWSABuf()
+ WSABUF* neo::network::IOCPData::GetWSABuf() 
 {
 	return &mWSABuf;
 }
@@ -54,7 +50,18 @@ void neo::network::IOCPData::SetSocket(SOCKET socket)
 	mSocket = socket;
 }
 
-neo::system::Buffer* neo::network::IOCPData::GetBuffer() const
+char* neo::network::IOCPData::GetBuffer() const
 {
-	return mBuffer.get();
+	return mWSABuf.buf;
+}
+
+void neo::network::IOCPData::SetBuffer( char* buffer, const size_t& size)
+{
+	mWSABuf.buf = buffer;
+	mWSABuf.len = size;
+}
+
+void neo::network::IOCPData::SetBuffer(const WSABUF& buf)
+{
+	mWSABuf = buf;
 }

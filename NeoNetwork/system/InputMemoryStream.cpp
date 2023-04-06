@@ -1,14 +1,10 @@
 #include "InputMemoryStream.h"
 
 
-neo::system::InputMemoryStream::InputMemoryStream( char* buffer,const uint32_t& capacity):
-	MemoryStream()
+neo::system::InputMemoryStream::InputMemoryStream( char* buffer,const uint32_t& capacity):MemoryStream(buffer,capacity)
+	
 {
-	if (capacity > mCapacity)
-	{
-		ReallocMemory(capacity);
-	}
-
+	
 	memcpy_s(mBuffer, mCapacity, buffer, capacity);
 }
 

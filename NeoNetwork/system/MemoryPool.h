@@ -10,14 +10,14 @@ namespace neo::system {
 		~MemoryPool();
 	public:
 		//할당
-		char8_t* const Aollocate();
+		char* const Aollocate();
 		//해제
-		void Free(char8_t* const buffer);
+		void Free(char* const buffer);
 		size_t GetBlockSize() const;
 		size_t GetBlockCount() const;
 	private:
-		neo::util::system::LockFreeQueue<char8_t*> mQueue;
-		char8_t* mBuffer = nullptr;
+		neo::util::system::LockFreeQueue<char*> mQueue;
+		char* mBuffer = nullptr;
 		size_t mBlockSize = 0;
 		size_t mBlockCount = 0;
 		size_t mTotalSize = 0;

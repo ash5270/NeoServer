@@ -10,16 +10,16 @@ namespace neo::network
 	{
 		IO_READ = 0,
 		IO_SEND = 1,
-		IO_ACCEPT=2,
+		IO_ACCEPT = 2,
 	};
 
 	class IOCPData
 	{
 	public:
 		IOCPData(IO_TYPE type);
-		IOCPData(IO_TYPE type,const SOCKET& socket);
+		IOCPData(IO_TYPE type, const SOCKET& socket);
 		//아직 구현 안함
-		IOCPData(IO_TYPE type,const SOCKET& socket,const size_t& bufLen);
+		IOCPData(IO_TYPE type, const SOCKET& socket, const size_t& bufLen);
 		~IOCPData();
 
 		WSABUF* GetWSABuf();
@@ -29,18 +29,17 @@ namespace neo::network
 		OVERLAPPED* GetOverlapped();
 		//socket 할당 : 세션 풀링을 위해
 		void SetSocket(SOCKET socket);
-		system::Buffer* GetBuffer() const;
-
+		char* GetBuffer() const;
+		void SetBuffer(char* buffer, const size_t& size);
+		void SetBuffer(const WSABUF& buf);
 	private:
 		void InitIOCPData();
-
 	private:
 		OVERLAPPED mOverlapped;
 		IO_TYPE mIOType;
-		//임시 버퍼
-		std::unique_ptr<system::Buffer> mBuffer;
 		WSABUF mWSABuf;
 		SOCKET mSocket;
+
 	};
 
 }

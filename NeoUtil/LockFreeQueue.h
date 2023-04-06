@@ -62,6 +62,17 @@ namespace neo::util::system
 			mTail.compare_exchange_strong(tail, node);
 		}
 
+		bool Empty()
+		{
+			Node* head = mHead.load(std::memory_order_relaxed);
+			Node* tail = mTail.load(std::memory_order_relaxed);
+			Node* next = head->Next.load(std::memory_order_acquire);
+
+			//비어있음
+			if (head == tail && next == nullptr)
+				return false;
+		}
+
 		bool Dequeue(T& output)
 		{
 			Node* head = mHead.load(std::memory_order_relaxed);

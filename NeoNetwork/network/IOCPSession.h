@@ -31,8 +31,7 @@ namespace neo::network {
 		void RemoveRef();
 		//데이터를 receive 하기 위한 전 단계
 		void RecvReady();
-	private:
-		
+		void SendPacket(Packet& packet);
 	public:
 		std::atomic_int32_t Reference;
 	private:
@@ -44,9 +43,11 @@ namespace neo::network {
 		//체크
 		std::atomic_bool mIsConneting;
 		std::atomic_bool mIsSending;
-
-		//
-		system::MemoryPool* mMemoryPool;
-		std::weak_ptr<util::system::LockFreeQueue<Packet*>> mPacketQueue;
+		//메모리 풀
+		std::unique_ptr<system::MemoryPool> mMemoryPool;
+		//보낼 패킷 저장용
+		util::system::LockFreeQueue<WSABUF> mSendPqcketQueue;
+		//받은 패킷 저장용
+		std::weak_ptr<util::system::LockFreeQueue<Packet*>> mServerPacketQueue;
 	};
 }
