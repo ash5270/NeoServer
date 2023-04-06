@@ -93,6 +93,9 @@
     <ClInclude Include="packet\PacketAnalyzeAndCreate.h">
       <Filter>packet</Filter>
     </ClInclude>
+    <ClInclude Include="system\MemoryPool.h">
+      <Filter>system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\IOCPServer.cpp">
@@ -127,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp">
       <Filter>packet</Filter>
+    </ClCompile>
+    <ClCompile Include="system\MemoryPool.cpp">
+      <Filter>system</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

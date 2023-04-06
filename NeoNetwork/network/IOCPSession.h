@@ -9,10 +9,10 @@
 #include "TCPSocket.h"
 #include "SocketAddress.h"
 #include "../packet/PacketID.h"
-
 //
 #include "LockFreeQueue.h"
-
+#include "../system/MemoryPool.h"
+//
 
 namespace neo::network {
 	class IOCPSession
@@ -45,6 +45,8 @@ namespace neo::network {
 		std::atomic_bool mIsConneting;
 		std::atomic_bool mIsSending;
 
+		//
+		system::MemoryPool* mMemoryPool;
 		std::weak_ptr<util::system::LockFreeQueue<Packet*>> mPacketQueue;
 	};
 }

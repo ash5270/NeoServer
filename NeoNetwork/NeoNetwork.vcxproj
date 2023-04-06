@@ -150,6 +150,7 @@
     <ClInclude Include="system\InputMemoryStream.h" />
     <ClInclude Include="system\LogData.h" />
     <ClInclude Include="system\LogSystem.h" />
+    <ClInclude Include="system\MemoryPool.h" />
     <ClInclude Include="system\NeoLog.h" />
     <ClInclude Include="system\OutputMemoryStream.h" />
     <ClInclude Include="system\MemoryStream.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp" />
     <ClCompile Include="system\InputMemoryStream.cpp" />
     <ClCompile Include="system\LogSystem.cpp" />
+    <ClCompile Include="system\MemoryPool.cpp" />
     <ClCompile Include="system\OutputMemoryStream.cpp" />
     <ClCompile Include="time\Time.cpp" />
   </ItemGroup>

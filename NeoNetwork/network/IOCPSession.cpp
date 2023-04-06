@@ -6,6 +6,9 @@
 
 neo::network::IOCPSession::IOCPSession()
 {
+	mMemoryPool
+
+
 	mSendData = std::make_shared<IOCPData>(IO_TYPE::IO_SEND);
 	mRecvData = std::make_shared<IOCPData>(IO_TYPE::IO_READ);
 }
