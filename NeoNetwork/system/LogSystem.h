@@ -7,7 +7,6 @@
 #include <thread>
 #include <queue>
 #include <mutex>
-#include <Windows.h>
 #include <iostream>
 
 #include "LogData.h"

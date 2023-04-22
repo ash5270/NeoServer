@@ -2,6 +2,7 @@
 #pragma once	
 #include<iostream>
 #include<memory>
+#include<json.h>
 
 #include"Buffer.h"
 #include"ByteSwaper.h"

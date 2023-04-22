@@ -1,11 +1,12 @@
 ﻿#pragma once
 
+#include "LogSystem.h"
+#include "LogData.h"
+
 #include <string>
 #include <stdexcept>
 
 
-#include "LogSystem.h"
-#include "LogData.h"
 
 typedef neo::system::LogType LOG_LEVEL;
 

@@ -4,21 +4,23 @@
 #pragma once
 
 #include <list>
+#include<functional>
 
 #include "SocketCommon.h"
 #include "IOCPSocket.h"
 #include "IOCPData.h"
 #include "IOCPSession.h"
 #include"../packet/PacketID.h"
-#include "LockFreeQueue.h"
+#include"../system/LogicThread.h"
+#include"../system/PacketProcessThread.h"
 
 namespace neo::network
 {
 	class IOCPServer : public IOCPSocket
 	{
-	public:	
+	public:
 		IOCPServer();
-		~IOCPServer();
+		virtual ~IOCPServer();
 
 		//server 초기화
 		bool InitializeServer(const int& port);
@@ -27,9 +29,19 @@ namespace neo::network
 		//server 중지
 		void StopServer();
 		//
-		void UpdateServer();
+		virtual void UpdateServer();
 		//CloseReady
 		void CloseServer();
+
+		std::vector<system::LogicThread*>& GetLogicThread()
+		{
+			return mLogicThreads;
+		}
+
+		PacketProcessThread* GetNonLogicThread()
+		{
+			return mNonLogicThread.get();
+		}
 
 	protected:
 		void OnAccept(const size_t& transferSize) override;
@@ -47,11 +59,16 @@ namespace neo::network
 		bool mIsAccept;
 
 		//packet queue
-		std::shared_ptr<util::system::LockFreeQueue<Packet*>> mPacketQueue;
-
+		const int mLogicThreadCount = 2;
+		std::vector<system::LogicThread*> mLogicThreads;
+		unique_ptr<system::PacketProcessThread> mNonLogicThread;
 		std::unique_ptr<IOCPData> mIOCPData;
+		std::unique_ptr<char> mIOCPBuffer;
 		//shared_ptr은 thread_safe하지 않아서 
 		//그냥 원시 포인터 사용해야할듯
 		std::list<IOCPSession*> mSessions;
+
+	public:
+
 	};
 }

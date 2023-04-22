@@ -5,7 +5,6 @@
 #include <sstream>
 #include <functional>
 
-
 #include "SocketCommon.h"
 #include "HttpData.h"
 

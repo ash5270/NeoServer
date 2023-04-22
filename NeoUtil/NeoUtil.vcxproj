@@ -22,6 +22,10 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="LockFreeQueue.h" />
     <ClInclude Include="SpinLock.h" />
+    <ClInclude Include="Test.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

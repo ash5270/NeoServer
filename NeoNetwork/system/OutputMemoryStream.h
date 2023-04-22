@@ -1,5 +1,6 @@
 #pragma once
 #include "MemoryStream.h"
+#include <vector>
 #include <string>
 
 namespace neo::system
@@ -18,7 +19,7 @@ namespace neo::system
 		void Write(const T& inData)
 		{
 			//원시자료형만 들어오게
-			static_assert(std::is_arithmetic<T>::value 
+			static_assert(std::is_arithmetic<T>::value
 				|| std::is_enum<T>::value,
 				"Generic Write only supports primitives data types");
 			Write(&inData, sizeof(inData));
@@ -96,13 +97,50 @@ namespace neo::system
 		}
 
 		//string 
-		void Write(const std::wstring& inData) {
+		void Write(std::wstring& inData) {
 			//string 길이부터 
 			//wchart의 길이 만큼 길이로 저장
-			int16_t length = inData.size() * sizeof(wchar_t);
-			Write(&length, sizeof(length));
+			int16_t length = static_cast<int16_t>(inData.length());
+			Write(length);
 			//string write
-			Write(inData.c_str(), length);
+			if (std::endian::native == std::endian::little)
+			{
+				std::reverse((char*)inData.c_str(), (char*)inData.c_str() + length * sizeof(wchar_t));
+				Write(inData.c_str(), length*sizeof(wchar_t));
+			}
+			else if (std::endian::native == std::endian::big)
+			{
+				Write(inData.c_str(), length * sizeof(wchar_t));
+			}
+		}
+
+		template<class T>
+		void Write(const std::vector<T>& vector)
+		{
+			int32_t size = static_cast<int32_t>(vector.size());
+			Write(size);
+			
+			for (int i = 0; i<vector.size(); i++)
+			{
+				Write((char*)&vector[i],sizeof(T));
+			}
+		}
+
+		void Write(const Json::Value& json)
+		{
+			Json::StreamWriterBuilder builder;
+			std::string jsonStr = Json::writeString(builder, json);
+			int32_t size = static_cast<int32_t>(jsonStr.size());
+			Write(size);
+			if (std::endian::native == std::endian::little)
+			{
+				std::reverse(jsonStr.begin(), jsonStr.end());
+				Write(jsonStr.c_str(), jsonStr.length());
+			}
+			else if (std::endian::native == std::endian::big)
+			{
+				Write(jsonStr.c_str(), jsonStr.length());
+			}
 		}
 	};
 }

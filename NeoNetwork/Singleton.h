@@ -17,7 +17,6 @@ namespace neo
 		Singleton() {};
 
 	private:
-
 		Singleton(const Singleton&) = delete;
 		Singleton& operator=(const Singleton&) = delete;
 	};

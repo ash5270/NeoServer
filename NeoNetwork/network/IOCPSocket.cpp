@@ -73,6 +73,7 @@ void neo::network::IOCPSocket::WorkingThread()
 			//socket close
 			session->OnClose();
 			closesocket(iocpData->GetSocket());
+			delete session;
 			//delete iocpData;
 			continue;
 		}
@@ -94,7 +95,6 @@ void neo::network::IOCPSocket::WorkingThread()
 			break;
 		}
 	}
-
 }
 
 void neo::network::IOCPSocket::CloseSocket()

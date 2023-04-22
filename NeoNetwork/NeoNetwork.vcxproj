@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)\NeoUtil;$(IncludePath)</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)\NeoUtil;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)\NeoUtil;$(SolutionDir)\NeoServer\json;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -106,9 +106,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_HAS_STD_BYTE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Redis</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,16 +146,20 @@
     <ClInclude Include="packet\Packet.h" />
     <ClInclude Include="packet\PacketAnalyzeAndCreate.h" />
     <ClInclude Include="packet\PacketID.h" />
+    <ClInclude Include="packet\PacketObject.h" />
+    <ClInclude Include="packet\PacketProcess.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="system\ByteSwaper.h" />
     <ClInclude Include="system\InputMemoryStream.h" />
     <ClInclude Include="system\LogData.h" />
+    <ClInclude Include="system\LogicThread.h" />
     <ClInclude Include="system\LogSystem.h" />
     <ClInclude Include="system\MemoryPool.h" />
     <ClInclude Include="system\NeoLog.h" />
     <ClInclude Include="system\OutputMemoryStream.h" />
     <ClInclude Include="system\MemoryStream.h" />
     <ClInclude Include="system\Buffer.h" />
+    <ClInclude Include="system\PacketProcessThread.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\HttpClient.cpp" />
@@ -164,10 +169,13 @@
     <ClCompile Include="Network\IOCPSocket.cpp" />
     <ClCompile Include="network\TCPSocket.cpp" />
     <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp" />
+    <ClCompile Include="packet\PacketProcess.cpp" />
     <ClCompile Include="system\InputMemoryStream.cpp" />
+    <ClCompile Include="system\LogicThread.cpp" />
     <ClCompile Include="system\LogSystem.cpp" />
     <ClCompile Include="system\MemoryPool.cpp" />
     <ClCompile Include="system\OutputMemoryStream.cpp" />
+    <ClCompile Include="system\PacketProcessThread.cpp" />
     <ClCompile Include="time\Time.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,5 +2,69 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="test_main.cpp" />
+    <ClCompile Include="gameobject\Vector2.cpp">
+      <Filter>GAMEOBJECT</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject\Vector3.cpp">
+      <Filter>GAMEOBJECT</Filter>
+    </ClCompile>
+    <ClCompile Include="packetprocess\LoginProcess.cpp">
+      <Filter>PACKETPROCESS</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\ChannelManager.cpp">
+      <Filter>MANAGER</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\ChannelInfo.cpp">
+      <Filter>MANAGER</Filter>
+    </ClCompile>
+    <ClCompile Include="packetprocess\ChannelProcess.cpp">
+      <Filter>PACKETPROCESS</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GAMEOBJECT">
+      <UniqueIdentifier>{72ec994c-8ebe-454e-992c-79e1e84684ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PACKETPROCESS">
+      <UniqueIdentifier>{710724de-46a1-45f8-8a47-ae6efbf4e2e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MANAGER">
+      <UniqueIdentifier>{996a76dc-1e8f-4002-a780-ece0ace09625}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gameobject\GameObject.h">
+      <Filter>GAMEOBJECT</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\Object.h">
+      <Filter>GAMEOBJECT</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\Transform.h">
+      <Filter>GAMEOBJECT</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\Vector2.h">
+      <Filter>GAMEOBJECT</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\Vector3.h">
+      <Filter>GAMEOBJECT</Filter>
+    </ClInclude>
+    <ClInclude Include="packetprocess\LoginProcess.h">
+      <Filter>PACKETPROCESS</Filter>
+    </ClInclude>
+    <ClInclude Include="manager\ChannelManager.h">
+      <Filter>MANAGER</Filter>
+    </ClInclude>
+    <ClInclude Include="manager\ChannelInfo.h">
+      <Filter>MANAGER</Filter>
+    </ClInclude>
+    <ClInclude Include="packetprocess\ChannelProcess.h">
+      <Filter>PACKETPROCESS</Filter>
+    </ClInclude>
+    <ClInclude Include="packetprocess\BasePacketProcess.h">
+      <Filter>PACKETPROCESS</Filter>
+    </ClInclude>
+    <ClInclude Include="packetprocess\PacketCommon.h">
+      <Filter>PACKETPROCESS</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

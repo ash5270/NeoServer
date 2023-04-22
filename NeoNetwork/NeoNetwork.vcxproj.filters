@@ -25,6 +25,9 @@
     <Filter Include="packet">
       <UniqueIdentifier>{70ecae3b-0a18-4192-a3e1-ad8c0cfb04ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\THREAD">
+      <UniqueIdentifier>{c1e09fbd-a034-4ec0-86ca-5400123a45db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\SocketCommon.h">
@@ -96,6 +99,18 @@
     <ClInclude Include="system\MemoryPool.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="system\LogicThread.h">
+      <Filter>system\THREAD</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\PacketProcess.h">
+      <Filter>packet</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\PacketObject.h">
+      <Filter>packet</Filter>
+    </ClInclude>
+    <ClInclude Include="system\PacketProcessThread.h">
+      <Filter>system\THREAD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\IOCPServer.cpp">
@@ -133,6 +148,15 @@
     </ClCompile>
     <ClCompile Include="system\MemoryPool.cpp">
       <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\PacketProcess.cpp">
+      <Filter>packet</Filter>
+    </ClCompile>
+    <ClCompile Include="system\LogicThread.cpp">
+      <Filter>system\THREAD</Filter>
+    </ClCompile>
+    <ClCompile Include="system\PacketProcessThread.cpp">
+      <Filter>system\THREAD</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

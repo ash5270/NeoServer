@@ -70,6 +70,8 @@ namespace neo::util::system
 
 			//비어있음
 			if (head == tail && next == nullptr)
+				return true;
+			else
 				return false;
 		}
 
@@ -109,7 +111,6 @@ namespace neo::util::system
 		struct Node {
 			Node() : Next(nullptr){}
 			Node(const T& value):Value(value), Next(nullptr){}
-			
 			T Value;
 			std::atomic<Node*> Next;
 		};

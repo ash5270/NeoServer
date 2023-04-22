@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -109,12 +109,13 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Redis</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>NeoNetwork.lib;NeoUtil.lib;jsoncpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>NeoNetwork.lib;NeoUtil.lib;jsoncpp.lib;redis++.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -134,7 +135,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gameobject\Vector2.cpp" />
+    <ClCompile Include="gameobject\Vector3.cpp" />
+    <ClCompile Include="manager\ChannelInfo.cpp" />
+    <ClCompile Include="manager\ChannelManager.cpp" />
+    <ClCompile Include="packetprocess\ChannelProcess.cpp" />
+    <ClCompile Include="packetprocess\LoginProcess.cpp" />
     <ClCompile Include="test_main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gameobject\GameObject.h" />
+    <ClInclude Include="gameobject\Object.h" />
+    <ClInclude Include="gameobject\Transform.h" />
+    <ClInclude Include="gameobject\Vector2.h" />
+    <ClInclude Include="gameobject\Vector3.h" />
+    <ClInclude Include="manager\ChannelInfo.h" />
+    <ClInclude Include="manager\ChannelManager.h" />
+    <ClInclude Include="packetprocess\BasePacketProcess.h" />
+    <ClInclude Include="packetprocess\ChannelProcess.h" />
+    <ClInclude Include="packetprocess\LoginProcess.h" />
+    <ClInclude Include="packetprocess\PacketCommon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

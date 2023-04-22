@@ -12,7 +12,11 @@
 //
 #include "LockFreeQueue.h"
 #include "../system/MemoryPool.h"
+
 //
+namespace neo::packet {
+	class PacketObejct;
+}
 
 namespace neo::network {
 	class IOCPSession
@@ -20,9 +24,8 @@ namespace neo::network {
 	public:
 		IOCPSession();
 		~IOCPSession();
-
 	public:
-		bool OnAccept( TCPSocket* socket, SocketAddress* addrInfo,const std::shared_ptr<util::system::LockFreeQueue<Packet*>>& packetQueue);
+		bool OnAccept( TCPSocket* socket, SocketAddress* addrInfo,const std::shared_ptr<util::system::LockFreeQueue<packet::PacketObejct*>>& packetQueue);
 		void OnSend(size_t transferSize);
 		void OnRecv(size_t transferSize);
 
@@ -31,7 +34,10 @@ namespace neo::network {
 		void RemoveRef();
 		//데이터를 receive 하기 위한 전 단계
 		void RecvReady();
+		//queue에 패킷 담기
 		void SendPacket(Packet& packet);
+		//queue에 담겨 있는 패킷 보내기
+		void SendIO();
 	public:
 		std::atomic_int32_t Reference;
 	private:
@@ -48,6 +54,6 @@ namespace neo::network {
 		//보낼 패킷 저장용
 		util::system::LockFreeQueue<WSABUF> mSendPqcketQueue;
 		//받은 패킷 저장용
-		std::weak_ptr<util::system::LockFreeQueue<Packet*>> mServerPacketQueue;
+		std::weak_ptr<util::system::LockFreeQueue<packet::PacketObejct*>> mServerPacketQueue;
 	};
 }

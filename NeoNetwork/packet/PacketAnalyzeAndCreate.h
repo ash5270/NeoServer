@@ -18,6 +18,3 @@ namespace neo::packet {
 		Packet* Analyzer(system::InputMemoryStream& stream);
 	};
 }
-
-
-

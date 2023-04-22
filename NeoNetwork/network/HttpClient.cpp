@@ -28,6 +28,7 @@ bool neo::network::HttpClient::InitHttp()
 		return false;
 
 	mSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	return true;
 }
 
 bool neo::network::HttpClient::CloseHttp()

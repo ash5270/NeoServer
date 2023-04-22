@@ -6,8 +6,6 @@
 
 namespace neo::network
 {
-	
-
 	struct HttpData
 	{
 		HttpData()

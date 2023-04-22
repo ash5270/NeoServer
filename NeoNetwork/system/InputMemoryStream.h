@@ -2,6 +2,8 @@
 #pragma once
 
 #include "MemoryStream.h"
+#include <vector>
+#include <algorithm>
 #include <string>
 namespace neo::system
 {
@@ -73,6 +75,7 @@ namespace neo::system
 				Read(&outData, sizeof(outData));
 			}
 		}
+
 		//64
 		void Read(double& outData) {
 			if (std::endian::native == std::endian::little)
@@ -91,10 +94,56 @@ namespace neo::system
 		{
 			//string ±Ê¿Ã πﬁæ∆ø»
 			int16_t length = 0;
-			Read(&length, sizeof(length));
+			Read(length);
 			//string ±Ê¿Ã ¥√∑¡µ“
-			outData.reserve(length + 1);
-			Read(&outData[0], length);
+			outData.resize(length);
+
+			if (std::endian::native == std::endian::little)
+			{
+				Read(&outData[0], length*sizeof(wchar_t));
+				outData.push_back(L'\0');
+			}
+			else if (std::endian::native == std::endian::big)
+			{
+				//std::reverse(outData.begin(), outData.end());
+				Read(&outData[0], length);
+			}
 		}
+
+		template<class T>
+		void Read(std::vector<T>& vector)
+		{
+			int32_t size = 0;
+			Read(size);
+
+			vector.resize(size);
+			if (std::endian::native == std::endian::little)
+			{
+				Read(&vector[0], size * sizeof(T));
+			}
+			else if (std::endian::native == std::endian::big)
+			{
+				Read(&vector[0], size * sizeof(T));
+			}
+		}
+
+		void Read(Json::Value& json)
+		{
+			int32_t size = 0;
+			Read(size);
+
+			std::string str;
+			str.resize(size);
+			if (std::endian::native == std::endian::little)
+			{
+				Read((void*)str.c_str(), size);
+				std::reverse(str.begin(), str.end());
+			}
+			else if (std::endian::native == std::endian::big)
+			{
+				Read((void*)str.c_str(), size);
+			}
+		}
+		
 	};
 }

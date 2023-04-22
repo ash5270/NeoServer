@@ -11,7 +11,9 @@
 neo::network::IOCPServer::IOCPServer() :IOCPSocket()
 {
 	mIOCPData = std::make_unique<IOCPData>(IO_TYPE::IO_ACCEPT);
-	mPacketQueue = std::make_shared<util::system::LockFreeQueue<Packet*>>();
+	mIOCPBuffer = std::make_unique<char>(1024);
+	mNonLogicThread = std::make_unique<system::PacketProcessThread>();
+	mIOCPData->SetBuffer(mIOCPBuffer.get(), 1024);
 	mListenSocket = 0;
 }
 
@@ -26,6 +28,11 @@ void neo::network::IOCPServer::StartServer()
 	{
 		wprintf_s(L"LogSystem start Error\n");
 	}
+	//packet process thread
+	for (int i = 0; i < mLogicThreadCount; i++)
+		mLogicThreads[i]->Start();
+	mNonLogicThread->Start();
+	//
 	bool result = readyAccept();
 	if (!result)
 		return;
@@ -34,6 +41,13 @@ void neo::network::IOCPServer::StartServer()
 
 void neo::network::IOCPServer::StopServer()
 {
+	for (int i = 0; i < mLogicThreadCount; i++)
+		mLogicThreads[i]->Stop();
+	mNonLogicThread->Stop();
+
+	for (int i = 0; i < mLogicThreadCount; i++)
+		delete mLogicThreads[i];
+
 	closesocket(mListenSocket);
 	WSACleanup();
 }
@@ -71,7 +85,7 @@ void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
 
 	auto session = new IOCPSession();
 	SocketAddress* clientAddr= new SocketAddress(*remoteAddr);
-	session->OnAccept(mClient , clientAddr,mPacketQueue);
+	session->OnAccept(mClient , clientAddr,mNonLogicThread->GetPacketQueue());
 
 	//register to session io completion port 
 	mIOCPHandle = CreateIoCompletionPort(reinterpret_cast<HANDLE>(mIOCPData->GetSocket()),
@@ -80,7 +94,7 @@ void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
 		0);
 
 	if (mIOCPHandle == NULL)
-	{
+	{ 
 		LOG_PRINT(LOG_LEVEL::LOG_ERROR,L"session io completion port error\n");
 	}
 
@@ -102,46 +116,19 @@ bool neo::network::IOCPServer::readyAccept()
 
 	mIOCPData->SetSocket(mClient->GetSOCKET());
 	return true;
-
-	//clent socekt create
-	//const SOCKET clientSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	//if (clientSock == SOCKET_ERROR)
-	//{
-	//	//accept_socket create error 
-	//	wprintf_s(L"accept socket create error\n");
-	//	return false;	
-	//}
-
-	////네이글 알고리즘 off 
-	//const int option = 1;
-	//int result = setsockopt(clientSock, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&option), sizeof(option));
-	//if (result != 0)
-	//	return false;
-
-	//mIOCPData->SetSocket(clientSock);
-	//DWORD dwBytes;
-	////비동기 accept 함수
-	//result = AcceptEx(mListenSocket, clientSock, mIOCPData->GetBuffer(),
-	//	0,
-	//	sizeof(sockaddr_in) + 16,
-	//	sizeof(sockaddr_in) + 16,
-	//	&dwBytes,
-	//	mIOCPData->GetOverlapped());
-
-	//if (!result && (WSAGetLastError() != WSA_IO_PENDING))
-	//{
-	//	//accept error
-	//	wprintf_s(L"acceptex function error %d\n", WSAGetLastError());
-	//	return false;
-	//}
-
-	//return true;
 }
 
 bool neo::network::IOCPServer::InitializeServer(const int& port)
 {
 	//Log
 	system::LogSystem::GetInstance().InitSystem();
+
+	//LogicThread Start
+	for (int i = 0; i < mLogicThreadCount; i++)
+	{
+		mLogicThreads.push_back(new system::LogicThread());
+	}
+
 
 	if (!WSAInit())
 		LOG_PRINT(LOG_LEVEL::LOG_ERROR,L"INIT error\n");
@@ -188,52 +175,5 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 		return false;
 	}
 	LOG_PRINT(LOG_LEVEL::LOG_INFO, L"Server Init...\n");
-	return true;
-
-
-	//int result = 0;
-	//mListenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	////server host ip any 
-	//mServerAddr.sin_family = AF_INET;
-	//mServerAddr.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
-	//mServerAddr.sin_port = htons(port);
-	
-	//bool on = true;
-	//if (setsockopt(mListenSocket, SOL_SOCKET, SO_CONDITIONAL_ACCEPT, (const char*)&on, sizeof(on)))
-	//	return false;
-
-	//mIOCPHandle = CreateIoCompletionPort((HANDLE)mListenSocket,
-	//	mIOCPHandle,
-	//	(u_long)0,
-	//	0);
-
-	//if (mIOCPHandle == NULL)
-	//{
-	//	wprintf_s(L"acceptex io completion port  error\n");
-	//}
-
-	////bind socket
-	//result = bind(mListenSocket, reinterpret_cast<SOCKADDR*>(&mServerAddr), sizeof(SOCKADDR_IN));
-	//if (result == SOCKET_ERROR)
-	//{
-	//	//bind error
-	//	wprintf_s(L"bind error %d\n", WSAGetLastError());
-	//	CloseServer();
-	//	return false;
-	//}
-
-	//DWORD len = 0;
-
-	////listen backlog
-	//result = listen(mListenSocket, 100);
-	//if (result == SOCKET_ERROR)
-	//{
-	//	//listen error
-	//	wprintf_s(L"listen error\n");
-	//	CloseServer();
-	//	return false;
-	//}
-
-	//wprintf_s(L"Server Init........\n");
 	return true;
 }
