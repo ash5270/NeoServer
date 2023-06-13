@@ -20,6 +20,58 @@
     <ClCompile Include="packetprocess\ChannelProcess.cpp">
       <Filter>PACKETPROCESS</Filter>
     </ClCompile>
+    <ClCompile Include="gameserver\GameServer.cpp">
+      <Filter>GAMESERVER</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\Session.cpp">
+      <Filter>GAMESERVER</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\LogicThread.cpp">
+      <Filter>GAMESERVER</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\PacketProcessThread.cpp">
+      <Filter>GAMESERVER</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp">
+      <Filter>PACKET</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\PacketProcess.cpp">
+      <Filter>PACKET</Filter>
+    </ClCompile>
+    <ClCompile Include="packetprocess\CharacterProcess.cpp">
+      <Filter>PACKETPROCESS</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="gameserver\SessionPool.cpp">
+      <Filter>GAMESERVER</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject\MonsterManager.cpp">
+      <Filter>GAMEOBJECT\monster</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject\MonsterObject.cpp">
+      <Filter>GAMEOBJECT\monster</Filter>
+    </ClCompile>
+    <ClCompile Include="packetprocess\MonsterProcess.cpp">
+      <Filter>PACKETPROCESS</Filter>
+    </ClCompile>
+    <ClCompile Include="gameserver\Time.cpp">
+      <Filter>GAMESERVER</Filter>
+    </ClCompile>
+    <ClCompile Include="packetprocess\EventProcess.cpp">
+      <Filter>PACKETPROCESS</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject\MapManager.cpp">
+      <Filter>GAMEOBJECT\map</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject\MapData.cpp">
+      <Filter>GAMEOBJECT\map</Filter>
+    </ClCompile>
+    <ClCompile Include="system\HeartBeatSystem.cpp">
+      <Filter>SYSTEM</Filter>
+    </ClCompile>
+    <ClCompile Include="database\DataBaseManager.cpp">
+      <Filter>DATABASE</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GAMEOBJECT">
@@ -30,6 +82,27 @@
     </Filter>
     <Filter Include="MANAGER">
       <UniqueIdentifier>{996a76dc-1e8f-4002-a780-ece0ace09625}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GAMESERVER">
+      <UniqueIdentifier>{bac096b5-ad84-44ed-8eed-00199a135743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PACKET">
+      <UniqueIdentifier>{0a4d09c7-ac28-4f69-943e-b1366d7669b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GAMEOBJECT\character">
+      <UniqueIdentifier>{362bcbf7-c839-4041-87c8-1231ebdd06b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GAMEOBJECT\monster">
+      <UniqueIdentifier>{e20203d0-e207-4aaf-b035-eca5d4096840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GAMEOBJECT\map">
+      <UniqueIdentifier>{51a6ddd3-e9a7-41b0-8f75-fd63a5d6a25c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SYSTEM">
+      <UniqueIdentifier>{bbeefbed-0cb1-41b6-9a2d-81ed7cabbf80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DATABASE">
+      <UniqueIdentifier>{c14abd7c-fc07-434c-bc64-700dc868b48e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +138,77 @@
     </ClInclude>
     <ClInclude Include="packetprocess\PacketCommon.h">
       <Filter>PACKETPROCESS</Filter>
+    </ClInclude>
+    <ClInclude Include="gameserver\GameServer.h">
+      <Filter>GAMESERVER</Filter>
+    </ClInclude>
+    <ClInclude Include="gameserver\Session.h">
+      <Filter>GAMESERVER</Filter>
+    </ClInclude>
+    <ClInclude Include="gameserver\LogicThread.h">
+      <Filter>GAMESERVER</Filter>
+    </ClInclude>
+    <ClInclude Include="gameserver\PacketProcessThread.h">
+      <Filter>GAMESERVER</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\Packet.h">
+      <Filter>PACKET</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\PacketAnalyzeAndCreate.h">
+      <Filter>PACKET</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\PacketID.h">
+      <Filter>PACKET</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\PacketObject.h">
+      <Filter>PACKET</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\PacketProcess.h">
+      <Filter>PACKET</Filter>
+    </ClInclude>
+    <ClInclude Include="BasePacketThread.h" />
+    <ClInclude Include="packetprocess\CharacterProcess.h">
+      <Filter>PACKETPROCESS</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="gameobject\CharPositionData.h">
+      <Filter>GAMEOBJECT\character</Filter>
+    </ClInclude>
+    <ClInclude Include="gameserver\SessionPool.h">
+      <Filter>GAMESERVER</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\MonsterManager.h">
+      <Filter>GAMEOBJECT\monster</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\MonsterObject.h">
+      <Filter>GAMEOBJECT\monster</Filter>
+    </ClInclude>
+    <ClInclude Include="packetprocess\MonsterProcess.h">
+      <Filter>PACKETPROCESS</Filter>
+    </ClInclude>
+    <ClInclude Include="gameserver\Time.h">
+      <Filter>GAMESERVER</Filter>
+    </ClInclude>
+    <ClInclude Include="packetprocess\EventProcess.h">
+      <Filter>PACKETPROCESS</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\MapManager.h">
+      <Filter>GAMEOBJECT\map</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\MapData.h">
+      <Filter>GAMEOBJECT\map</Filter>
+    </ClInclude>
+    <ClInclude Include="system\HeartBeatSystem.h">
+      <Filter>SYSTEM</Filter>
+    </ClInclude>
+    <ClInclude Include="database\DatabaseCommon.h">
+      <Filter>DATABASE</Filter>
+    </ClInclude>
+    <ClInclude Include="database\DataBaseManager.h">
+      <Filter>DATABASE</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject\PlayerObject.h">
+      <Filter>GAMEOBJECT\character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

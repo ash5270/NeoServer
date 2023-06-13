@@ -17,6 +17,9 @@ namespace neo::object
 		Vector2 operator-(const Vector2& vector2);
 
 		static float Distance(const Vector2& a, const Vector2& b);
+		static Vector2 Lerp(const Vector2& start, const Vector2 target, const float& d1);
+
+
 
 		float x;
 		float y;

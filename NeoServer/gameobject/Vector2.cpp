@@ -53,3 +53,11 @@ float neo::object::Vector2::Distance(const Vector2& a, const Vector2& b)
 	return sqrt(dis);
 	//return 0;
 }
+
+neo::object::Vector2 neo::object::Vector2::Lerp(const Vector2& start, const Vector2 target, const float& d1)
+{
+	Vector2 result;
+	result.x = (1 - d1) * start.x + d1 * target.x;
+	result.y = (1 - d1) * start.y + d1 * target.y;
+	return result;
+}

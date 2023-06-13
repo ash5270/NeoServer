@@ -16,6 +16,15 @@ namespace neo::network
 			GetSockAddrIn()->sin_addr.S_un.S_addr = htonl(address);
 			GetSockAddrIn()->sin_port = htons(port);
 		}
+
+		SocketAddress(const std::string& address, uint16_t port)
+		{  
+			memset(&mSockAddr, 0, sizeof(sockaddr));
+			GetSockAddrIn()->sin_family = AF_INET;
+			inet_pton(AF_INET, address.c_str(),
+				&GetSockAddrIn()->sin_addr.S_un.S_addr);
+			GetSockAddrIn()->sin_port = htons(port);
+		}
 		
 		SocketAddress(const SocketAddress& socketAddress)
 		{

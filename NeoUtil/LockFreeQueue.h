@@ -5,7 +5,6 @@
 #include<memory>
 using namespace std;
 
-
 namespace neo::util::system
 {
 	template<class T> 
@@ -24,6 +23,17 @@ namespace neo::util::system
 			T output;
 			
 			delete mHead.load();
+		}
+
+		T Top()
+		{
+			if (!Empty())
+			{
+				Node* head = mHead.load(std::memory_order_relaxed);
+				return head->Value;
+			}
+			else
+				return nullptr;
 		}
 
 		void Enqueue(T item)
@@ -98,7 +108,7 @@ namespace neo::util::system
 			}
 
 			//head 업데이트
-			mHead = next;
+			mHead= next;
 			output = std::move(next->Value);
 
 			delete head;

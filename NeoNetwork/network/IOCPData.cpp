@@ -25,7 +25,7 @@ neo::network::IOCPData::~IOCPData()
 
 }
 
- WSABUF* neo::network::IOCPData::GetWSABuf() 
+WSABUF* neo::network::IOCPData::GetWSABuf() 
 {
 	return &mWSABuf;
 }
@@ -52,16 +52,19 @@ void neo::network::IOCPData::SetSocket(SOCKET socket)
 
 char* neo::network::IOCPData::GetBuffer() const
 {
-	return mWSABuf.buf;
+	return mSpan->GetBuffer();
 }
 
-void neo::network::IOCPData::SetBuffer( char* buffer, const size_t& size)
+void neo::network::IOCPData::SetBuffer(char* buffer, const size_t& size)
 {
+	//
+	mSpan = std::make_unique<system::Span>(buffer, size);
+	//
 	mWSABuf.buf = buffer;
 	mWSABuf.len = size;
 }
 
-void neo::network::IOCPData::SetBuffer(const WSABUF& buf)
+neo::system::Span* neo::network::IOCPData::GetSpan() const
 {
-	mWSABuf = buf;
+	return mSpan.get();
 }

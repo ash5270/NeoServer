@@ -136,6 +136,7 @@
     <ClInclude Include="Network\HttpClient.h" />
     <ClInclude Include="Network\HttpData.h" />
     <ClInclude Include="Network\HttpStateCode.h" />
+    <ClInclude Include="network\IOCPClient.h" />
     <ClInclude Include="Network\IOCPData.h" />
     <ClInclude Include="Network\IOCPServer.h" />
     <ClInclude Include="Network\IOCPSession.h" />
@@ -143,40 +144,30 @@
     <ClInclude Include="network\SocketAddress.h" />
     <ClInclude Include="Network\SocketCommon.h" />
     <ClInclude Include="network\TCPSocket.h" />
-    <ClInclude Include="packet\Packet.h" />
-    <ClInclude Include="packet\PacketAnalyzeAndCreate.h" />
-    <ClInclude Include="packet\PacketID.h" />
-    <ClInclude Include="packet\PacketObject.h" />
-    <ClInclude Include="packet\PacketProcess.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="system\ByteSwaper.h" />
     <ClInclude Include="system\InputMemoryStream.h" />
     <ClInclude Include="system\LogData.h" />
-    <ClInclude Include="system\LogicThread.h" />
     <ClInclude Include="system\LogSystem.h" />
     <ClInclude Include="system\MemoryPool.h" />
     <ClInclude Include="system\NeoLog.h" />
     <ClInclude Include="system\OutputMemoryStream.h" />
     <ClInclude Include="system\MemoryStream.h" />
     <ClInclude Include="system\Buffer.h" />
-    <ClInclude Include="system\PacketProcessThread.h" />
+    <ClInclude Include="system\Span.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Network\HttpClient.cpp" />
+    <ClCompile Include="network\IOCPClient.cpp" />
     <ClCompile Include="Network\IOCPData.cpp" />
     <ClCompile Include="Network\IOCPServer.cpp" />
     <ClCompile Include="Network\IOCPSession.cpp" />
     <ClCompile Include="Network\IOCPSocket.cpp" />
     <ClCompile Include="network\TCPSocket.cpp" />
-    <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp" />
-    <ClCompile Include="packet\PacketProcess.cpp" />
     <ClCompile Include="system\InputMemoryStream.cpp" />
-    <ClCompile Include="system\LogicThread.cpp" />
     <ClCompile Include="system\LogSystem.cpp" />
     <ClCompile Include="system\MemoryPool.cpp" />
     <ClCompile Include="system\OutputMemoryStream.cpp" />
-    <ClCompile Include="system\PacketProcessThread.cpp" />
-    <ClCompile Include="time\Time.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

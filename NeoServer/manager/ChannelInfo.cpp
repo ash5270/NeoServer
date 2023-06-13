@@ -10,19 +10,19 @@ neo::object::ChannelInfo::~ChannelInfo()
 
 }
 
-void neo::object::ChannelInfo::RegisterChannel(neo::network::IOCPSession* const session)
+void neo::object::ChannelInfo::RegisterChannel(server::Session* const session)
 {
 	mSessions.push_back(session);
 	session->AddRef();
 }
 
-void neo::object::ChannelInfo::UnregisterChannel(neo::network::IOCPSession* const session)
+void neo::object::ChannelInfo::UnregisterChannel(server::Session* const session)
 {
 	mSessions.remove(session);
 	session->RemoveRef();
 }
 
-const std::list<neo::network::IOCPSession const*>& neo::object::ChannelInfo::GetSesssion() const
+ std::list<neo::server::Session *>& neo::object::ChannelInfo::GetSesssion() 
 {
 	return mSessions;
 }

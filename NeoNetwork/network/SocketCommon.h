@@ -10,5 +10,5 @@
 
 #include"../system/NeoLog.h"
 
-const size_t Memory_Pool_Block_Size = 1024;
-const size_t Memory_Pool_Block_Count = 300;
+const size_t Memory_Pool_Block_Size = 4096;
+const size_t Memory_Pool_Block_Count = 700;

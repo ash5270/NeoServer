@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <sw/redis++/redis++.h>
 #include "network/HttpClient.h"
 #include "gameserver/GameServer.h"
 
@@ -9,39 +8,76 @@
 
 #include"packetprocess/PacketCommon.h"
 #include"manager/ChannelManager.h"
+#include"gameserver/LogicThread.h"
+
+#include"gameobject/MapManager.h"
+#include"gameobject/MonsterManager.h"
+
+#include"database/DataBaseManager.h"
+
 #include <locale>
 #include <json.h>
 
+#include<chrono>
+#include<iostream>
 
 using namespace neo::packet::process;
 using namespace neo::object;
 using namespace neo::server;
 using namespace std;
 
-
 int main()
 {
 	using namespace  neo::network;
 	GameServer server;
 	server.InitializeServer(45699);
+	server.InitPacketThread();
 	server.StartServer();
 
 	ChannelManager::GetInstance().Init();
-	ChannelManager::GetInstance().AddChannel(L"Krin");
-	ChannelManager::GetInstance().AddChannel(L"Rupso");
-
+	
 	LoginProcess* login = new LoginProcess();
 	ChannelProcess* channel = new ChannelProcess();
 
-	server.GetNonLogicThread()->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_LOGIN,
+	server.GetChannelThread()[0]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_LOGIN,
 		std::bind(&LoginProcess::Process,login,std::placeholders::_1) );
 
-	server.GetNonLogicThread()->GetPacketProcess()->RegisterProcess(PacketID::PI_S_NOTIFY_CHANNEL_INFO,
+	server.GetChannelThread()[0]->GetPacketProcess()->RegisterProcess(PacketID::PI_S_NOTIFY_CHANNEL_INFO,
 		std::bind(&ChannelProcess::Process, channel, std::placeholders::_1));
 
-	server.GetNonLogicThread()->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_CHANNEL_REGISTER,
+	server.GetChannelThread()[0]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_CHANNEL_REGISTER,
 		std::bind(&ChannelProcess::Process, channel, std::placeholders::_1));
 
+	//channel 1
+	auto objectManager = dynamic_cast<LogicThread*>(server.GetChannelThread()[1].get())->GetObjectManager();
+	CharacterProcess* character = new CharacterProcess(0, objectManager);
+	EventProcess* event = new EventProcess(0,objectManager);
+
+	//mapManager
+	std::shared_ptr<GameObject> mapMamanager = std::make_shared<MapManager>();
+	auto objManagerPtr = objectManager.lock();
+	objManagerPtr->RegisterObject(L"mapManager", mapMamanager);
+	
+	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_UPDATE_CHAR_POSITION,
+		std::bind(&CharacterProcess::Process, character, std::placeholders::_1));
+	
+	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_CHARACTER_REGISTER,
+		std::bind(&CharacterProcess::Process, character, std::placeholders::_1));
+
+	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_NOTIFY_MAP_REGISTER,
+		std::bind(&CharacterProcess::Process, character, std::placeholders::_1));
+
+	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_CHARACTER_MAP_UNREGISTER,
+		std::bind(&CharacterProcess::Process, character, std::placeholders::_1));
+
+	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_ATTACK_EVENT,
+		std::bind(&EventProcess::Process, event, std::placeholders::_1));
+
+	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_ATTACK_RANGE_EVENT,
+		std::bind(&EventProcess::Process, event, std::placeholders::_1));
+
+	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_ATTACK_RANGE_HIT_EVENT,
+		std::bind(&EventProcess::Process, event, std::placeholders::_1));
 	while (true)
 	{
 		server.UpdateServer();

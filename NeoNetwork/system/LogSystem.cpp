@@ -68,7 +68,7 @@ void neo::system::LogSystem::Update()
 
 		::EnterCriticalSection(&mCritical);
 		const LogData  log = mLogDatas.front();
-		mLogDatas.pop();
+		mLogDatas.pop(); 
 		TypeSelectAndPrintLog(log);
 		::LeaveCriticalSection(&mCritical);
 	}
@@ -79,19 +79,19 @@ void neo::system::LogSystem::TypeSelectAndPrintLog(const LogData& logData)
 	switch (logData.Type)
 	{
 	case LogType::LOG_INFO:
-		wprintf_s(L"LOG_INFO ::: %s", logData.LogMessage.c_str());
+		wprintf_s(L"NEO || LOG_INFO ==> %s", logData.LogMessage.c_str());
 		break;
 	case LogType::LOG_DEBUG:
-		wprintf_s(L"LOG_DEBUG ::: %s", logData.LogMessage.c_str());
+		wprintf_s(L"NEO || LOG_DEBUG ==> %s", logData.LogMessage.c_str());
 		break;
 	case LogType::LOG_ERROR:
-		wprintf_s(L"LOG_ERROR ::: %s", logData.LogMessage.c_str());
+		wprintf_s(L"NEO || LOG_ERROR ==> %s", logData.LogMessage.c_str());
 		break;
 	case LogType::LOG_WARNING:
-		wprintf_s(L"LOG_WARNING ::: %s", logData.LogMessage.c_str());
+		wprintf_s(L"NEO || LOG_WARNING ==> %s", logData.LogMessage.c_str());
 		break;
 	default:
-		wprintf_s(L"Type Error ::: %s", logData.LogMessage.c_str());
+		wprintf_s(L"NEO || Type Error ==> %s", logData.LogMessage.c_str());
 		break;
 	}
 }

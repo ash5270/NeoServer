@@ -4,7 +4,6 @@
 #include <sysinfoapi.h>
 #include <string>
 
-
 #include "IOCPSession.h"
 #include"../system/NeoLog.h"
 
@@ -12,14 +11,13 @@ neo::network::IOCPServer::IOCPServer() :IOCPSocket()
 {
 	mIOCPData = std::make_unique<IOCPData>(IO_TYPE::IO_ACCEPT);
 	mIOCPBuffer = std::make_unique<char>(1024);
-	mNonLogicThread = std::make_unique<system::PacketProcessThread>();
 	mIOCPData->SetBuffer(mIOCPBuffer.get(), 1024);
 	mListenSocket = 0;
 }
 
 neo::network::IOCPServer::~IOCPServer()
 {
-	mIOCPData.release();
+	
 }
 
 void neo::network::IOCPServer::StartServer()
@@ -28,10 +26,6 @@ void neo::network::IOCPServer::StartServer()
 	{
 		wprintf_s(L"LogSystem start Error\n");
 	}
-	//packet process thread
-	for (int i = 0; i < mLogicThreadCount; i++)
-		mLogicThreads[i]->Start();
-	mNonLogicThread->Start();
 	//
 	bool result = readyAccept();
 	if (!result)
@@ -41,15 +35,13 @@ void neo::network::IOCPServer::StartServer()
 
 void neo::network::IOCPServer::StopServer()
 {
-	for (int i = 0; i < mLogicThreadCount; i++)
-		mLogicThreads[i]->Stop();
-	mNonLogicThread->Stop();
-
-	for (int i = 0; i < mLogicThreadCount; i++)
-		delete mLogicThreads[i];
-
 	closesocket(mListenSocket);
 	WSACleanup();
+}
+
+neo::network::IOCPSession* neo::network::IOCPServer::OnAccept(TCPSocket* socket, SocketAddress* addrInfo)
+{
+	return nullptr;
 }
 
 void neo::network::IOCPServer::UpdateServer()
@@ -63,7 +55,7 @@ void neo::network::IOCPServer::CloseServer()
 	WSACleanup();
 }
 
-void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
+void neo::network::IOCPServer::Accept(const size_t& transferSize)
 {
 	//세션 생성
 	SOCKADDR* localAddr;
@@ -83,9 +75,9 @@ void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
 		&remoteAddr,
 		&remoteAddrSize);
 
-	auto session = new IOCPSession();
+	
 	SocketAddress* clientAddr= new SocketAddress(*remoteAddr);
-	session->OnAccept(mClient , clientAddr,mNonLogicThread->GetPacketQueue());
+	auto session= OnAccept(mClient, clientAddr);
 
 	//register to session io completion port 
 	mIOCPHandle = CreateIoCompletionPort(reinterpret_cast<HANDLE>(mIOCPData->GetSocket()),
@@ -99,8 +91,6 @@ void neo::network::IOCPServer::OnAccept(const size_t& transferSize)
 	}
 
 	session->AddRef();
-	mSessions.push_back(session);
-
 	session->RecvReady();
 	readyAccept();
 }
@@ -113,7 +103,6 @@ bool neo::network::IOCPServer::readyAccept()
 	{
 		return false;
 	}
-
 	mIOCPData->SetSocket(mClient->GetSOCKET());
 	return true;
 }
@@ -122,14 +111,6 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 {
 	//Log
 	system::LogSystem::GetInstance().InitSystem();
-
-	//LogicThread Start
-	for (int i = 0; i < mLogicThreadCount; i++)
-	{
-		mLogicThreads.push_back(new system::LogicThread());
-	}
-
-
 	if (!WSAInit())
 		LOG_PRINT(LOG_LEVEL::LOG_ERROR,L"INIT error\n");
 
@@ -138,7 +119,6 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 	GetSystemInfo(&systemInfo);
 	mIOCPHandle = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
 	int threadCount = systemInfo.dwNumberOfProcessors * 2;
-
 	if (!CreateIOThread(threadCount))
 	{
 		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"Io thread error\n");

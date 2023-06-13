@@ -106,16 +106,16 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_HAS_STD_BYTE=0;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Redis</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Redis;C:\Program Files\MySQL\MySQL Server 8.0\include;C:\Program Files\MySQL\MySQL Connector C++ 1.1.13\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>NeoNetwork.lib;NeoUtil.lib;jsoncpp.lib;redis++.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\MySQL\MySQL Connector C++ 1.1.13\lib\opt;C:\Program Files\MySQL\MySQL Server 8.0\lib;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn.lib;libmysql.lib;NeoNetwork.lib;NeoUtil.lib;jsoncpp.lib;redis++.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -135,26 +135,69 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="database\DataBaseManager.cpp" />
+    <ClCompile Include="gameobject\MapData.cpp" />
+    <ClCompile Include="gameobject\MapManager.cpp" />
+    <ClCompile Include="gameobject\MonsterManager.cpp" />
+    <ClCompile Include="gameobject\MonsterObject.cpp" />
     <ClCompile Include="gameobject\Vector2.cpp" />
     <ClCompile Include="gameobject\Vector3.cpp" />
+    <ClCompile Include="gameserver\GameServer.cpp" />
+    <ClCompile Include="gameserver\LogicThread.cpp" />
+    <ClCompile Include="gameserver\PacketProcessThread.cpp" />
+    <ClCompile Include="gameserver\Session.cpp" />
+    <ClCompile Include="gameserver\SessionPool.cpp" />
+    <ClCompile Include="gameserver\Time.cpp" />
     <ClCompile Include="manager\ChannelInfo.cpp" />
     <ClCompile Include="manager\ChannelManager.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="packetprocess\ChannelProcess.cpp" />
+    <ClCompile Include="packetprocess\CharacterProcess.cpp" />
+    <ClCompile Include="packetprocess\EventProcess.cpp" />
     <ClCompile Include="packetprocess\LoginProcess.cpp" />
+    <ClCompile Include="packetprocess\MonsterProcess.cpp" />
+    <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp" />
+    <ClCompile Include="packet\PacketProcess.cpp" />
+    <ClCompile Include="system\HeartBeatSystem.cpp" />
     <ClCompile Include="test_main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasePacketThread.h" />
+    <ClInclude Include="database\DatabaseCommon.h" />
+    <ClInclude Include="database\DataBaseManager.h" />
+    <ClInclude Include="gameobject\CharPositionData.h" />
     <ClInclude Include="gameobject\GameObject.h" />
+    <ClInclude Include="gameobject\MapData.h" />
+    <ClInclude Include="gameobject\MapManager.h" />
+    <ClInclude Include="gameobject\MonsterManager.h" />
+    <ClInclude Include="gameobject\MonsterObject.h" />
     <ClInclude Include="gameobject\Object.h" />
+    <ClInclude Include="gameobject\PlayerObject.h" />
     <ClInclude Include="gameobject\Transform.h" />
     <ClInclude Include="gameobject\Vector2.h" />
     <ClInclude Include="gameobject\Vector3.h" />
+    <ClInclude Include="gameserver\GameServer.h" />
+    <ClInclude Include="gameserver\LogicThread.h" />
+    <ClInclude Include="gameserver\PacketProcessThread.h" />
+    <ClInclude Include="gameserver\Session.h" />
+    <ClInclude Include="gameserver\SessionPool.h" />
+    <ClInclude Include="gameserver\Time.h" />
     <ClInclude Include="manager\ChannelInfo.h" />
     <ClInclude Include="manager\ChannelManager.h" />
+    <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="packetprocess\BasePacketProcess.h" />
     <ClInclude Include="packetprocess\ChannelProcess.h" />
+    <ClInclude Include="packetprocess\CharacterProcess.h" />
+    <ClInclude Include="packetprocess\EventProcess.h" />
     <ClInclude Include="packetprocess\LoginProcess.h" />
+    <ClInclude Include="packetprocess\MonsterProcess.h" />
     <ClInclude Include="packetprocess\PacketCommon.h" />
+    <ClInclude Include="packet\Packet.h" />
+    <ClInclude Include="packet\PacketAnalyzeAndCreate.h" />
+    <ClInclude Include="packet\PacketID.h" />
+    <ClInclude Include="packet\PacketObject.h" />
+    <ClInclude Include="packet\PacketProcess.h" />
+    <ClInclude Include="system\HeartBeatSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

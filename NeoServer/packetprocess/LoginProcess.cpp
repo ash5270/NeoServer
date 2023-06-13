@@ -1,16 +1,16 @@
 #include "LoginProcess.h"
 #include"../manager/ChannelManager.h"
+#include"../packet/Packet.h"
 
 
+#include<sw/redis++/redis.h>
 #include<json.h>
-#include<packet/Packet.h>
 #include<system/NeoLog.h>
 #include<vector>
 
 neo::packet::process::LoginProcess::LoginProcess()
 {
 	//mRedis = new sw::redis::Redis(option);
-
 }
 
 neo::packet::process::LoginProcess::~LoginProcess()
@@ -23,7 +23,6 @@ bool neo::packet::process::LoginProcess::Login(const P_C_REQ_LOGIN* loginData)
 	auto idStr = std::string().assign(loginData->id.begin(),
 		loginData->id.end());
 	//키값을 c_str 으로 해야함
-
 
 	sw::redis::Redis mRedis("tcp://192.168.123.104:6379");
 
@@ -38,6 +37,8 @@ bool neo::packet::process::LoginProcess::Login(const P_C_REQ_LOGIN* loginData)
 		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"%s Login Fail info\n", loginData->id.c_str());
 		return false;
 	}
+
+	return false;
 }
 
 bool neo::packet::process::LoginProcess::UuidCheck(const char* lUuid, const char* rUuid)
@@ -52,7 +53,7 @@ bool neo::packet::process::LoginProcess::UuidCheck(const char* lUuid, const char
 	return true;
 }
 
-void neo::packet::process::LoginProcess::SendResultMsg(const packet::PacketObejct* packet, const std::wstring& msg, const int32_t& statusCode)
+void neo::packet::process::LoginProcess::SendResultMsg(const packet::PacketObject* packet, const std::wstring& msg, const int32_t& statusCode)
 {
 	P_S_RES_LOGIN respone;
 	respone.msg = msg;
@@ -61,7 +62,7 @@ void neo::packet::process::LoginProcess::SendResultMsg(const packet::PacketObejc
 	packet->session->SendPacket(respone);
 }
 
-void neo::packet::process::LoginProcess::Process(packet::PacketObejct* packet)
+void neo::packet::process::LoginProcess::Process(packet::PacketObject* packet)
 {
 	if (packet->packet->GetID() == PacketID::PI_C_REQ_LOGIN)
 	{

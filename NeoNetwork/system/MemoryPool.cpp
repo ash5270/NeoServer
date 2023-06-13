@@ -1,6 +1,6 @@
 #include "MemoryPool.h"
 
-neo::system::MemoryPool::MemoryPool(const size_t& blockSize, const size_t& blokcCount) : mBlockSize(blockSize), mBlockCount(blokcCount)
+neo::system::MemoryPool::MemoryPool(const size_t& blockSize, const size_t& blokcCount) : mBlockSize(blockSize), mBlockCount(blokcCount), mQueue(blockSize)
 {
 	mTotalSize = blokcCount * blockSize;
 	mBuffer = new char[mTotalSize];
@@ -8,7 +8,7 @@ neo::system::MemoryPool::MemoryPool(const size_t& blockSize, const size_t& blokc
 	auto curPos = mBuffer;
 	for (size_t i = 0; i < mBlockCount; i++)
 	{
-		mQueue.Enqueue(curPos);
+		mQueue.enqueue(curPos);
 		curPos += mBlockSize;
 	}
 }
@@ -22,17 +22,20 @@ neo::system::MemoryPool::~MemoryPool()
 char* const neo::system::MemoryPool::Aollocate()
 {
 	char* buffer;
-	if (mQueue.Dequeue(buffer))
+	if (mQueue.dequeue(buffer))
 	{
 		return buffer;
 	}
 	else
+	{
+		//wprintf_s(L"queue size %d \n", mQueue.Size());
 		return nullptr;
+	}
 }
 
 void neo::system::MemoryPool::Free(char* const buffer)
 {
-	mQueue.Enqueue(buffer);
+	mQueue.enqueue(buffer);
 }
 
 size_t neo::system::MemoryPool::GetBlockSize() const

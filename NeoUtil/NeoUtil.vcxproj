@@ -21,8 +21,11 @@
   <ItemGroup>
     <ClInclude Include="Common.h" />
     <ClInclude Include="LockFreeQueue.h" />
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="SpinLock.h" />
     <ClInclude Include="Test.h" />
+    <ClInclude Include="ThreadSafeQueue.h" />
+    <ClInclude Include="MPMCQueue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test.cpp" />

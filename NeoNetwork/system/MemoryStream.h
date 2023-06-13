@@ -4,6 +4,7 @@
 #include<memory>
 #include<json.h>
 
+
 #include"Buffer.h"
 #include"ByteSwaper.h"
 namespace neo::system
@@ -13,10 +14,12 @@ namespace neo::system
 	public:
 		MemoryStream(char* buffer, const int32_t capacity) : mBuffer(buffer), mCapacity(capacity), mHead(0) 
 		{
+
 		}
 
 		MemoryStream(const Buffer& buffer) :mBuffer(buffer.GetDataPtr()), mCapacity(buffer.GetCapacity()), mHead(0)
 		{
+
 		}
 
 		virtual ~MemoryStream() {
@@ -32,6 +35,8 @@ namespace neo::system
 		char* GetStreamPtr() const { return mBuffer; }
 		int32_t GetLength() const { return mHead; }
 		size_t GetCapacity() const { return mCapacity; }
+		void SetOffset(const int32_t& offset) { mHead = offset; }
+	
 	};
 }
 

@@ -8,14 +8,14 @@ namespace neo::system
 	class Buffer
 	{
 	public:
-		Buffer(const size_t& size) : mCapacity(size)
+		Buffer(const size_t& size) : mCapacity(size),mHead(0)
 		{
 			mBuf = std::make_unique<char[]>(size);
 		}
 
 		~Buffer()
 		{
-			mBuf.release();
+			
 		}
 
 		Buffer(const Buffer& buffer) : mCapacity(buffer.GetCapacity())
@@ -26,6 +26,7 @@ namespace neo::system
 				mCapacity,
 				buffer.GetDataPtr(),
 				buffer.GetCapacity());
+			mHead = buffer.mHead;
 		}
 
 	public:
@@ -39,8 +40,27 @@ namespace neo::system
 			return mCapacity;
 		}
 
+		inline size_t GetSize() const
+		{
+			return mCapacity - mHead;
+		}
+
+		inline size_t GetOffset() const
+		{
+			return mHead;
+		}
+
+		inline void SetOffset(const size_t& offset)
+		{
+			mHead = offset;
+		}
+
 	private:
+		//Å©±â
 		size_t mCapacity;
+		//buf
 		std::unique_ptr<char[]> mBuf;
+		//offset
+		size_t mHead = 0;
 	};
 }

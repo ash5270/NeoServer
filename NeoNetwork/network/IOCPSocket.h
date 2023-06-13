@@ -26,7 +26,7 @@ namespace neo::network
 
 	protected:
 		//server에서 사용하기 위한 가상함수 선언
-		virtual void OnAccept(const size_t& transferSize);
+		virtual void Accept(const size_t& transferSize);
 
 	protected:
 		//IOCP Handle

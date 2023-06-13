@@ -18,7 +18,12 @@ namespace neo::system
 		void Read(void* outData, uint32_t inByteSize);
 
 	public:
-		//8
+		void Read(bool& outData)
+		{
+			Read(&outData, sizeof(outData));
+		}
+
+		//8 
 		void Read(char& outData) {
 			Read(&outData, sizeof(outData));
 		}
@@ -62,6 +67,7 @@ namespace neo::system
 			}
 		}
 
+
 		//32
 		void Read(float& outData) {
 			if (std::endian::native == std::endian::little)
@@ -101,7 +107,6 @@ namespace neo::system
 			if (std::endian::native == std::endian::little)
 			{
 				Read(&outData[0], length*sizeof(wchar_t));
-				outData.push_back(L'\0');
 			}
 			else if (std::endian::native == std::endian::big)
 			{

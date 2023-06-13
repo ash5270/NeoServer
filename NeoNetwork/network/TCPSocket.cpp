@@ -43,6 +43,7 @@ neo::network::TCPSocket* neo::network::TCPSocket::AcceptEX(PVOID outputBuffer, L
     DWORD dwBytes;
     TCPSocket* socket = new TCPSocket();
     socket->CreateSocket();
+    socket->SetNoDelay(true);
     int result = 0; 
     result= ::AcceptEx(this->mSocket,socket->GetSOCKET(),
         outputBuffer,
@@ -107,5 +108,4 @@ int neo::network::TCPSocket::WSASend(LPWSABUF lpBuffes, DWORD dwBufferCount, LPO
     DWORD flags = 0;
     DWORD len = 0;
     return ::WSASend(mSocket, lpBuffes, dwBufferCount, NULL, flags, lpOverlapped, lpCompletionRoutine);
-    return 0;
 }

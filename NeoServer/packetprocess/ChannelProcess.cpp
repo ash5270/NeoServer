@@ -1,14 +1,16 @@
 #include "ChannelProcess.h"
-#include <packet/Packet.h>
+#include "../packet/Packet.h"
 neo::packet::process::ChannelProcess::ChannelProcess()
 {
+
 }
 
 neo::packet::process::ChannelProcess::~ChannelProcess()
 {
+
 }
 
-void neo::packet::process::ChannelProcess::Process(packet::PacketObejct* packet)
+void neo::packet::process::ChannelProcess::Process(packet::PacketObject* packet)
 {
 	if (packet->packet->GetID() == PacketID::PI_C_REQ_CHANNEL_REGISTER)
 	{
@@ -31,12 +33,12 @@ void neo::packet::process::ChannelProcess::Process(packet::PacketObejct* packet)
 	delete packet->packet;
 }
 
-void neo::packet::process::ChannelProcess::ChannelInfoRespone(const  neo::packet::PacketObejct* packet)
+void neo::packet::process::ChannelProcess::ChannelInfoRespone(const  neo::packet::PacketObject* packet)
 {
 
 }
 
-void neo::packet::process::ChannelProcess::ChannelRegister(const  neo::packet::PacketObejct* packet)
+void neo::packet::process::ChannelProcess::ChannelRegister(const  neo::packet::PacketObject* packet)
 {
 
 }

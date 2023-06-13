@@ -4,7 +4,8 @@ namespace neo::object
 {
 	struct Object
 	{
-		std::wstring mName;
-		std::int32_t mId;
+	public:
+		std::wstring Name;
+		std::int32_t Id;
 	};
 }

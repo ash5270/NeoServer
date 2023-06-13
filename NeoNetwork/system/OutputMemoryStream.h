@@ -10,10 +10,11 @@ namespace neo::system
 	public:
 		OutputMemoryStream(const Buffer& buffer);
 		OutputMemoryStream(char* buffer, const size_t& capacity);
+		OutputMemoryStream(const OutputMemoryStream& output);
 		~OutputMemoryStream();
 
 		//기본적인 포인터로 데이터 쓰기
-		void Write(const void* inData, size_t inByteSize);
+		bool Write(const void* inData, size_t inByteSize);
 		//템플릿으로 데이터 쓰기
 		template<typename T>
 		void Write(const T& inData)

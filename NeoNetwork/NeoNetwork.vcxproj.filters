@@ -16,17 +16,8 @@
     <Filter Include="system\LOG">
       <UniqueIdentifier>{b675a1f8-a852-4fd5-83d5-85e73ec8acb2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\TIME">
-      <UniqueIdentifier>{785ca38f-75c6-4c27-bfd8-0681a54d1914}</UniqueIdentifier>
-    </Filter>
     <Filter Include="system\STEAM">
       <UniqueIdentifier>{d1112850-a1f1-4427-970a-5d85428af0e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="packet">
-      <UniqueIdentifier>{70ecae3b-0a18-4192-a3e1-ad8c0cfb04ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\THREAD">
-      <UniqueIdentifier>{c1e09fbd-a034-4ec0-86ca-5400123a45db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,29 +78,14 @@
     <ClInclude Include="system\Buffer.h">
       <Filter>system\STEAM</Filter>
     </ClInclude>
-    <ClInclude Include="packet\Packet.h">
-      <Filter>packet</Filter>
-    </ClInclude>
-    <ClInclude Include="packet\PacketID.h">
-      <Filter>packet</Filter>
-    </ClInclude>
-    <ClInclude Include="packet\PacketAnalyzeAndCreate.h">
-      <Filter>packet</Filter>
-    </ClInclude>
     <ClInclude Include="system\MemoryPool.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="system\LogicThread.h">
-      <Filter>system\THREAD</Filter>
+    <ClInclude Include="network\IOCPClient.h">
+      <Filter>network\IOCP</Filter>
     </ClInclude>
-    <ClInclude Include="packet\PacketProcess.h">
-      <Filter>packet</Filter>
-    </ClInclude>
-    <ClInclude Include="packet\PacketObject.h">
-      <Filter>packet</Filter>
-    </ClInclude>
-    <ClInclude Include="system\PacketProcessThread.h">
-      <Filter>system\THREAD</Filter>
+    <ClInclude Include="system\Span.h">
+      <Filter>system\STEAM</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -124,9 +100,6 @@
     </ClCompile>
     <ClCompile Include="system\LogSystem.cpp">
       <Filter>system\LOG</Filter>
-    </ClCompile>
-    <ClCompile Include="time\Time.cpp">
-      <Filter>system\TIME</Filter>
     </ClCompile>
     <ClCompile Include="Network\IOCPSession.cpp">
       <Filter>network\IOCP</Filter>
@@ -143,20 +116,11 @@
     <ClCompile Include="system\OutputMemoryStream.cpp">
       <Filter>system\STEAM</Filter>
     </ClCompile>
-    <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp">
-      <Filter>packet</Filter>
-    </ClCompile>
     <ClCompile Include="system\MemoryPool.cpp">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="packet\PacketProcess.cpp">
-      <Filter>packet</Filter>
-    </ClCompile>
-    <ClCompile Include="system\LogicThread.cpp">
-      <Filter>system\THREAD</Filter>
-    </ClCompile>
-    <ClCompile Include="system\PacketProcessThread.cpp">
-      <Filter>system\THREAD</Filter>
+    <ClCompile Include="network\IOCPClient.cpp">
+      <Filter>network\IOCP</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

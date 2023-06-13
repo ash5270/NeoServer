@@ -1,5 +1,6 @@
 #pragma once
-#include "LockFreeQueue.h";
+#include"LockFreeQueue.h";
+#include<MPMCQueue.h>
 
 namespace neo::system {
 	class MemoryPool
@@ -16,7 +17,7 @@ namespace neo::system {
 		size_t GetBlockSize() const;
 		size_t GetBlockCount() const;
 	private:
-		neo::util::system::LockFreeQueue<char*> mQueue;
+		neo::util::system::MPMCQueue<char*> mQueue;
 		char* mBuffer = nullptr;
 		size_t mBlockSize = 0;
 		size_t mBlockCount = 0;

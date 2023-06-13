@@ -69,12 +69,10 @@ void neo::network::IOCPSocket::WorkingThread()
 
 		if (!result || (transferSize == 0&&iocpData->GetIOType() != IO_TYPE::IO_ACCEPT))
 		{
-			//socket error
-			//socket close
+			LOG_PRINT(LOG_LEVEL::LOG_INFO, L"transfersize =%d  error = %d\n", transferSize,WSAGetLastError());
+			
 			session->OnClose();
 			closesocket(iocpData->GetSocket());
-			delete session;
-			//delete iocpData;
 			continue;
 		}
 
@@ -88,7 +86,7 @@ void neo::network::IOCPSocket::WorkingThread()
 			session->OnRecv(transferSize);
 			break;
 		case IO_TYPE::IO_ACCEPT:
-			OnAccept(iocpData->GetSocket());
+			Accept(iocpData->GetSocket());
 			break;
 		default:
 			wprintf_s(L"IO_TYPE ERROR \n");
@@ -115,7 +113,7 @@ bool neo::network::IOCPSocket::WSAInit()
 	return true;
 }
 
-void neo::network::IOCPSocket::OnAccept(const size_t& transferSize)
+void neo::network::IOCPSocket::Accept(const size_t& transferSize)
 {
 	
 }

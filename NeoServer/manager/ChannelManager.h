@@ -4,11 +4,11 @@
 #include<vector>
 #include<memory>
 #include<json.h>
-//
-#include<network/IOCPSession.h>
+
 #include<Singleton.h>
 //
 #include"ChannelInfo.h"
+#include"../gameserver/Session.h"
 
 namespace neo::object
 {
@@ -21,11 +21,12 @@ namespace neo::object
 		Json::Value GetJsonAllChannelInfo();
 		std::vector<std::unique_ptr<ChannelInfo>>& GetChannels();
 
-		void AddUser(const int& channelID, neo::network::IOCPSession* session);
-		void RemoveUser(const int& channelID, neo::network::IOCPSession* session);
+		void AddUser(const int& channelID, neo::server::Session* session);
+		void RemoveUser(const int& channelID, neo::server::Session* session);
 	private:
 		const static int CHANNEL_SIZE = 2;
 		std::vector<std::unique_ptr<ChannelInfo>> mChannels;
 		int mChannelCount;
+		CRITICAL_SECTION mCs;
 	};
 }

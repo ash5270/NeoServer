@@ -1,22 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="system">
+    <Filter Include="SYSTEM">
       <UniqueIdentifier>{1ce7a2cb-05e5-4209-8a25-7be40d05d0b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\lockfree">
+    <Filter Include="SYSTEM\lockfree">
       <UniqueIdentifier>{a0cc480b-d52a-4e66-bad4-852c52bc17c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SYSTEM\threadsafe">
+      <UniqueIdentifier>{b9142b73-0b96-4b29-8b76-f51f8a3767ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SYSTEM\concurrency">
+      <UniqueIdentifier>{f79ebcb6-8df6-4644-908f-eca563b35761}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
     <ClInclude Include="LockFreeQueue.h">
-      <Filter>system\lockfree</Filter>
+      <Filter>SYSTEM\lockfree</Filter>
     </ClInclude>
     <ClInclude Include="SpinLock.h">
-      <Filter>system</Filter>
+      <Filter>SYSTEM</Filter>
     </ClInclude>
     <ClInclude Include="Test.h" />
+    <ClInclude Include="ThreadSafeQueue.h">
+      <Filter>SYSTEM\threadsafe</Filter>
+    </ClInclude>
+    <ClInclude Include="MPMCQueue.h">
+      <Filter>SYSTEM\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>SYSTEM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test.cpp" />
