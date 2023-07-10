@@ -71,7 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExternalIncludePath>$(SolutionDir)\NeoNetwork;$(SolutionDir)\NeoServer\json;$(SolutionDir)\NeoUtil;$(IncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)\NeoNetwork;$(SolutionDir)\nlohmann;$(SolutionDir)\NeoUtil;$(IncludePath)</ExternalIncludePath>
+    <ReferencePath>$(ExternalIncludePath)</ReferencePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ExternalIncludePath>$(SolutionDir)\NeoNetwork;$(SolutionDir)\nlohmann;$(SolutionDir)\NeoUtil;$(IncludePath)</ExternalIncludePath>
     <ReferencePath>$(ExternalIncludePath)</ReferencePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -125,12 +129,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>NeoNetwork.lib;NeoUtil.lib;jsoncpp.lib;redis++.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

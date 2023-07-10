@@ -16,7 +16,7 @@ MYSQL* neo::db::DataBaseManager::GetNewConnection()
 	auto connection = mysql_init(0);
 	connection = mysql_real_connect( connection, MYSQL_IP.c_str(), MYSQL_ID.c_str(), MYSQL_PASSWORD.c_str(), MYSQL_DB.c_str(), MYSQL_PORT, NULL, 0);
 	return connection;
-}
+ }
 
 MYSQL* neo::db::DataBaseManager::GetConnection()
 {

@@ -1,6 +1,9 @@
 #pragma once
 #include<list>
+#include<json.hpp>
 #include"GameObject.h"
+#include"../ObjectManager.h"
+#include"../database/DataBaseManager.h"
 #include"MonsterObject.h"
 namespace neo::object
 {
@@ -19,8 +22,8 @@ namespace neo::object
 		void End() override;
 
 		std::weak_ptr<MonsterObject> GetMonsterObject(const std::wstring& name);
-		Json::Value GetJsonGameObject();
-		Json::Value GetJsonResponeGameObject();
+		nlohmann::json GetJsonGameObject();
+		nlohmann::json GetJsonResponeGameObject();
 		std::weak_ptr<MapData> GetMapData();
 		int32_t monsterCode;
 	private:
@@ -29,7 +32,7 @@ namespace neo::object
 		std::weak_ptr<server::ObjectManager> mObjectManager;
 
 		std::weak_ptr<MapData> mMap;
-
+		MYSQL* db;
 		double time =0 ;
 		double resettime = 0;
 

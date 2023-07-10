@@ -8,12 +8,13 @@
 
 neo::packet::process::CharacterProcess::CharacterProcess(const int32_t& channel, std::weak_ptr<server::ObjectManager> objectManager) :mObjectManager(objectManager), mChannel(channel)
 {
+	 db = db::DataBaseManager::GetInstance().GetNewConnection();
 
 }
 
 neo::packet::process::CharacterProcess::~CharacterProcess()
 {
-
+	mysql_close(db);
 }
 
 void neo::packet::process::CharacterProcess::Process(packet::PacketObject* packet)
@@ -82,7 +83,6 @@ void neo::packet::process::CharacterProcess::RegisterUser(const packet::PacketOb
 	manager->RegisterObject(registerPacket->name, player, packet->session);
 	MapRegisterUser(packet);
 
-	auto db = db::DataBaseManager::GetInstance().GetNewConnection();
 	if (db)
 	{
 		MYSQL_RES* res;
@@ -150,6 +150,7 @@ void neo::packet::process::CharacterProcess::MapRegisterUser(const packet::Packe
 
 	auto player = manager->GetGameObject(registerPacket->name);
 	mMapmanager.lock()->RegisterUser(registerPacket->mapID,player);
+	LOG_PRINT(LOG_LEVEL::LOG_INFO, L"register map id : %d, user name : %s\n", registerPacket->mapID, registerPacket->name.c_str());
 }
 
 void neo::packet::process::CharacterProcess::MapUnregisterUser(const packet::PacketObject* packet)

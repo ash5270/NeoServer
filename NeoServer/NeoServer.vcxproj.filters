@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="test_main.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="gameobject\Vector2.cpp">
       <Filter>GAMEOBJECT</Filter>
     </ClCompile>
@@ -71,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="database\DataBaseManager.cpp">
       <Filter>DATABASE</Filter>
+    </ClCompile>
+    <ClCompile Include="packetprocess\UtilProcess.cpp">
+      <Filter>PACKETPROCESS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="gameobject\PlayerObject.h">
       <Filter>GAMEOBJECT\character</Filter>
+    </ClInclude>
+    <ClInclude Include="packetprocess\UtilProcess.h">
+      <Filter>PACKETPROCESS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

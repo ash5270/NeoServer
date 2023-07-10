@@ -26,7 +26,7 @@ bool neo::network::IOCPClient::InitializeClient( IOCPSession* session)
 		0,
 		0);
 
-	const int threadCount = 4;
+	const int threadCount = 8;
 	if (!CreateIOThread(threadCount))
 	{
 		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"Io thread error\n");
@@ -34,7 +34,8 @@ bool neo::network::IOCPClient::InitializeClient( IOCPSession* session)
 	}
 
 	mSocket->CreateSocket();
-	mSocket->SetNoDelay(true);
+	if (!mSocket->SetNoDelay(true))
+		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"Socket nodelay set error\n");
 
 	mSession = session;
 

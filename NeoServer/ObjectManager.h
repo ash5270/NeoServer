@@ -33,9 +33,13 @@ namespace neo::server
 			return mGameObjects;
 		}*/
 
-		Json::Value JsonGetAllObjectName();
-		Json::Value JsonGetAllObjectName(const wstring& name);
+		nlohmann::json JsonGetAllObjectName();
+		nlohmann::json JsonGetAllObjectName(const wstring& name);
 		
+		size_t GetSize() const
+		{
+			return mGameObjects.size();
+		}
 	private:
 		std::unordered_map<std::wstring, std::shared_ptr<object::GameObject>> mGameObjects;
 		std::list<std::wstring> mCloseSession;

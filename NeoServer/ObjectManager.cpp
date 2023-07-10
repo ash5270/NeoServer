@@ -126,30 +126,30 @@ weak_ptr<neo::object::GameObject> neo::server::ObjectManager::GetGameObject(cons
 		return weak_ptr<object::GameObject>();
 }
 
-Json::Value neo::server::ObjectManager::JsonGetAllObjectName()
+nlohmann::json neo::server::ObjectManager::JsonGetAllObjectName()
 {
-	Json::Value root;
-	Json::Value array;
+	nlohmann::json root;
+	nlohmann::json array;
 	for (auto const& object : mGameObjects)
 	{
 		string str = std::string().assign(object.second->Name.begin(), object.second->Name.end());
-		array.append(std::move(str));
+		array.push_back(std::move(str));
 	}
 	root["array"] = array;
 	return root;
 }
 
-Json::Value neo::server::ObjectManager::JsonGetAllObjectName(const wstring& name)
+nlohmann::json neo::server::ObjectManager::JsonGetAllObjectName(const wstring& name)
 {
-	Json::Value root;
-	Json::Value array;
+	nlohmann::json root;
+	nlohmann::json array;
 	for (auto const& object : mGameObjects)
 	{
 		if (name == object.second->Name)
 			continue;
-		Json::Value obj;
+		nlohmann::json obj;
 		obj["name"] = std::string().assign(object.second->Name.begin(), object.second->Name.end());
-		array.append(std::move(obj));
+		array.push_back(std::move(obj));
 	}
 	root["array"] = array;
 	return root;

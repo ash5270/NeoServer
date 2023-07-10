@@ -37,10 +37,9 @@ namespace neo::server {
 		}
 
 	private:
-		int mChannelId;
+		int mChannelId =0;
 		//recv하고 남은 offset
-		size_t mRecvOffset;
-
+		size_t mRecvOffset =0 ;
 	private:
 		GameServer* mGameServer;
 

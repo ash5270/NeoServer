@@ -14,12 +14,16 @@
 #include"gameobject/MonsterManager.h"
 
 #include"database/DataBaseManager.h"
+//#include"Remotery.h"
+
 
 #include <locale>
-#include <json.h>
+#include <json.hpp>
 
 #include<chrono>
 #include<iostream>
+
+
 
 using namespace neo::packet::process;
 using namespace neo::object;
@@ -28,6 +32,10 @@ using namespace std;
 
 int main()
 {
+//Remotery* rmt;
+//	rmt_CreateGlobalInstance(&rmt);
+
+
 	using namespace  neo::network;
 	GameServer server;
 	server.InitializeServer(45699);
@@ -38,6 +46,7 @@ int main()
 	
 	LoginProcess* login = new LoginProcess();
 	ChannelProcess* channel = new ChannelProcess();
+	UtilProcess* util = new UtilProcess();
 
 	server.GetChannelThread()[0]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_LOGIN,
 		std::bind(&LoginProcess::Process,login,std::placeholders::_1) );
@@ -64,6 +73,9 @@ int main()
 	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_CHARACTER_REGISTER,
 		std::bind(&CharacterProcess::Process, character, std::placeholders::_1));
 
+	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_NOTIFY_PING,
+		std::bind(&UtilProcess::Process, util, std::placeholders::_1));
+
 	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_NOTIFY_MAP_REGISTER,
 		std::bind(&CharacterProcess::Process, character, std::placeholders::_1));
 
@@ -78,6 +90,7 @@ int main()
 
 	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_ATTACK_RANGE_HIT_EVENT,
 		std::bind(&EventProcess::Process, event, std::placeholders::_1));
+	
 	while (true)
 	{
 		server.UpdateServer();
@@ -85,6 +98,6 @@ int main()
 
 	ChannelManager::GetInstance().Stop();
 	server.StopServer();
-
+	//rmt_DestroyGlobalInstance(rmt);
 	return 0;
 }

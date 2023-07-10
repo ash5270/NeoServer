@@ -1,21 +1,19 @@
 #include "MonsterManager.h"
-#include"../ObjectManager.h"
-#include"../database/DataBaseManager.h"
+
 #include"MapData.h"
 
 neo::object::MonsterManager::MonsterManager(const std::weak_ptr< object::MapData>& mapData):mMap(mapData),monsterCode(0),resettime(0)
 {
-
+	db = db::DataBaseManager::GetInstance().GetNewConnection();
 }
 
 neo::object::MonsterManager::~MonsterManager()
 {
-
+	mysql_close(db);
 }
 
 void neo::object::MonsterManager::CreateMonster(const int& id)
 {
-	auto db = db::DataBaseManager::GetInstance().GetNewConnection();
 	if (db)
 	{
 		std::string query = "SELECT monster_count,monster_info.monster_code,monster_name,monster_damage,monster_hp,monster_exp FROM map_info INNER JOIN monster_info ON map_info.monster_code = monster_info.id where map_info.id =";
@@ -64,7 +62,7 @@ void neo::object::MonsterManager::CreateMonster(const int& id)
 			}
 		}
 
-		mysql_close(db);
+		
 	}
 	else
 	{
@@ -114,6 +112,7 @@ void neo::object::MonsterManager::Update(const double& deltaTime)
 		monsterInfos.msg = L"success";
 		monsterInfos.json = GetJsonResponeGameObject();
 	}
+	
 
 	for (const auto& player : mMap.lock()->GetInMapPlayers())
 	{
@@ -146,37 +145,37 @@ std::weak_ptr<neo::object::MonsterObject> neo::object::MonsterManager::GetMonste
 		return	std::weak_ptr<neo::object::MonsterObject>();
 }
 
-Json::Value neo::object::MonsterManager::GetJsonGameObject()
+nlohmann::json neo::object::MonsterManager::GetJsonGameObject()
 {
-	Json::Value root;
-	Json::Value array;
+	nlohmann::json root;
+	nlohmann::json array;
 	for (auto const& object : mMonsters)
 	{
 		auto monster = object.second.lock();
-		Json::Value Monster;
+		nlohmann::json Monster;
 		Monster["name"] = std::string().assign(
 			monster->Name.begin(),
 			monster->Name.end());
 		Monster["posX"] = monster->transform.position.x;
 		Monster["posY"] = monster->transform.position.y;
 		Monster["hp"] = monster->GetHp();
-		array.append(std::move(Monster));
+		array.push_back(std::move(Monster));
 
 	}
 	root["array"] = array;
 	return root;
 }
 
-Json::Value neo::object::MonsterManager::GetJsonResponeGameObject()
+nlohmann::json neo::object::MonsterManager::GetJsonResponeGameObject()
 {
-	Json::Value root;
-	Json::Value array;
+	nlohmann::json root;
+	nlohmann::json array;
 	for (auto const& object : mMonsters)
 	{
 		if (!object.second.lock()->GetActive())
 		{
 			auto monster = object.second.lock();
-			Json::Value Monster;
+			nlohmann::json Monster;
 			Monster["name"] = std::string().assign(
 				monster->Name.begin(),
 				monster->Name.end());
@@ -184,7 +183,7 @@ Json::Value neo::object::MonsterManager::GetJsonResponeGameObject()
 			Monster["posY"] = monster->transform.position.y;
 			Monster["hp"] = monster->GetHp();
 			object.second.lock()->SetActive(true);
-			array.append(std::move(Monster));
+			array.push_back(std::move(Monster));
 		}
 	}
 	root["array"] = array;

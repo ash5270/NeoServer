@@ -93,17 +93,17 @@ void neo::object::MapData::UnReigsterObject(const std::wstring& name)
 	mPlayers.erase(name);
 }
 
-Json::Value neo::object::MapData::GetJsonGameObject(const std::wstring& name)
+nlohmann::json neo::object::MapData::GetJsonGameObject(const std::wstring& name)
 {
-	Json::Value root;
-	Json::Value array;
+	nlohmann::json root;
+	nlohmann::json array;
 	for (auto const& object : mPlayers)
 	{
 		if (name == object.first)
 			continue;
-		Json::Value obj;
+		nlohmann::json obj;
 		obj["name"] = std::string().assign(object.second.lock()->Name.begin(), object.second.lock()->Name.end());
-		array.append(std::move(obj));
+		array.push_back(std::move(obj));
 	}
 	root["array"] = array;
 	return root;

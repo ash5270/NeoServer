@@ -38,6 +38,6 @@ namespace neo::object
 		std::weak_ptr< neo::server::ObjectManager> Manager;
 
 	protected:
-		bool mActive;
+		bool mActive = true;
 	};
 }

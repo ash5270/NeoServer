@@ -3,7 +3,7 @@
 #pragma once
 #include<vector>
 #include<memory>
-#include<json.h>
+#include<json.hpp>
 
 #include<Singleton.h>
 //
@@ -18,7 +18,7 @@ namespace neo::object
 		void Init();
 		void Stop();
 		void AddChannel(const std::wstring& name);
-		Json::Value GetJsonAllChannelInfo();
+		nlohmann::json GetJsonAllChannelInfo();
 		std::vector<std::unique_ptr<ChannelInfo>>& GetChannels();
 
 		void AddUser(const int& channelID, neo::server::Session* session);

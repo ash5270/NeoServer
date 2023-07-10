@@ -2,7 +2,8 @@
 #include"BasePacketProcess.h"
 #include"../packet/PacketObject.h"
 #include"../ObjectManager.h"
-
+#include"../ObjectManager.h"
+#include"../database/DataBaseManager.h"
 namespace neo::packet::process
 {
 	class EventProcess : public BasePacketProcess
@@ -18,5 +19,6 @@ namespace neo::packet::process
 		void RangeAttackHit(packet::PacketObject* packet);
 		std::weak_ptr<server::ObjectManager> mObjectManager;
 		int32_t mChannel;
+		MYSQL* db;
 	};
 }

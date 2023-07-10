@@ -4,13 +4,14 @@
 
 
 #include<sw/redis++/redis.h>
-#include<json.h>
+#include<json.hpp>
 #include<system/NeoLog.h>
 #include<vector>
 
 neo::packet::process::LoginProcess::LoginProcess()
 {
-	//mRedis = new sw::redis::Redis(option);
+	//mRedis = new sw::redis::Redis("tcp://192.168.123.104:6379");
+	//sw::redis::Redis mRedis();
 }
 
 neo::packet::process::LoginProcess::~LoginProcess()
@@ -24,11 +25,11 @@ bool neo::packet::process::LoginProcess::Login(const P_C_REQ_LOGIN* loginData)
 		loginData->id.end());
 	//키값을 c_str 으로 해야함
 
-	sw::redis::Redis mRedis("tcp://192.168.123.104:6379");
 
-	auto uuid = mRedis.get(idStr.c_str());
-	if (uuid != nullopt && UuidCheck(loginData->uuid.get(), (*uuid).c_str()))
-	{
+
+	//auto uuid = mRedis->get(idStr.c_str());
+	//if (uuid != nullopt && UuidCheck(loginData->uuid.get(), (*uuid).c_str()))
+	if(1){
 		LOG_PRINT(LOG_LEVEL::LOG_INFO, L"%s Login Success\n", loginData->id.c_str());
 		return true;
 	}

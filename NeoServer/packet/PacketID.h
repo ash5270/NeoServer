@@ -14,6 +14,10 @@ enum class Channel : int32_t
 
 enum class PacketID : int32_t
 {
+	//Ping
+	PI_C_NOTIFY_PING = 1,
+	PI_S_NOTIFY_PING = 2,
+	
 	//player
 	PI_C_UPDATE_CHAR_POSITION = 100,
 	PI_S_NOTIFY_CHAR_POSITION = 200,

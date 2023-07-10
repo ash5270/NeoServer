@@ -119,6 +119,7 @@ bool neo::network::IOCPServer::InitializeServer(const int& port)
 	GetSystemInfo(&systemInfo);
 	mIOCPHandle = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
 	int threadCount = systemInfo.dwNumberOfProcessors * 2;
+	threadCount = 4;
 	if (!CreateIOThread(threadCount))
 	{
 		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"Io thread error\n");

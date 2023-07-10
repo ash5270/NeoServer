@@ -51,7 +51,8 @@ void neo::system::LogicThread::ThreadUpdate()
 	while (mIsLoop)
 	{
 		//패킷프로세스 시작
-		if (!mPacketQueue->Empty()) 
+		
+		while (!mPacketQueue->Empty())
 		{
 			packet::PacketObject* packetObj;
 			mPacketQueue->Dequeue(packetObj);
@@ -59,19 +60,17 @@ void neo::system::LogicThread::ThreadUpdate()
 				packetObj->packet->GetID())(packetObj);
 			delete packetObj;
 		}
-		else
-		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(2));
-		}
+		
 		loops = 0;
 		while (GetTickCount64() > next_game_tick && loops < MAX_FRAMESKIP)
 		{
 			mTime->Update();
-			ComponentUpdate(mTime->GetDeltaTime());
+			if(mObjectManager->GetSize()>0)
+				ComponentUpdate(mTime->GetDeltaTime());
 			next_game_tick += SKIP_TICKS;
 			loops++;
 		}
-		
+
 		interpolation = float(GetTickCount64() + SKIP_TICKS - next_game_tick) / float(SKIP_TICKS);
 	}
 

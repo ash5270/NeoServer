@@ -2,14 +2,15 @@
 #include"../gameobject/MonsterObject.h"
 #include"../gameobject/MapManager.h"
 #include"../gameobject/PlayerObject.h"
-#include"../database/DataBaseManager.h"
+
 neo::packet::process::EventProcess::EventProcess(const int32_t& channel, std::weak_ptr<server::ObjectManager> objectManager) :mObjectManager(objectManager), mChannel(channel)
 {
-	
+	 db = db::DataBaseManager::GetInstance().GetNewConnection();
 }
 
 neo::packet::process::EventProcess::~EventProcess()
 {
+	mysql_close(db);
 }
 
 void neo::packet::process::EventProcess::Process(packet::PacketObject* packet)
@@ -91,7 +92,7 @@ void neo::packet::process::EventProcess::AttackProcess(packet::PacketObject* pac
 
 			hitMonster->SetActive(false);
 
-			auto db = db::DataBaseManager::GetInstance().GetNewConnection();
+			
 			if (db)
 			{
 				if (!hittingObject.expired())
@@ -120,7 +121,6 @@ void neo::packet::process::EventProcess::AttackProcess(packet::PacketObject* pac
 						LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"MYSQL UPDATE ERROR\n");
 					}
 				}
-				mysql_close(db);
 			}
 		}
 	}
@@ -207,7 +207,6 @@ void neo::packet::process::EventProcess::RangeAttackHit(packet::PacketObject* pa
 
 			hitMonster->SetActive(false);
 
-			auto db = db::DataBaseManager::GetInstance().GetNewConnection();
 			if (db)
 			{
 				if (!hittingObject.expired())
@@ -236,7 +235,6 @@ void neo::packet::process::EventProcess::RangeAttackHit(packet::PacketObject* pa
 						LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"MYSQL UPDATE ERROR\n");
 					}
 				}
-				mysql_close(db);
 			}
 		}
 	}

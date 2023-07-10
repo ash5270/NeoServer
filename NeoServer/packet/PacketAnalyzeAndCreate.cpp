@@ -105,6 +105,10 @@ Packet* neo::packet::PacketFactory::PacketCreate(const PacketID& id)
 		packet = new P_C_REQ_ATTACK_RANGE_HIT_EVENT;
 		break;
 
+	case PacketID::PI_C_NOTIFY_PING:
+		packet = new P_C_NOTIFY_PING;
+		break;
+
 	default:
 		packet = nullptr;
 		break;

@@ -127,10 +127,12 @@ namespace neo::system
 			}
 		}
 
-		void Write(const Json::Value& json)
+		void Write(const nlohmann::json value)
 		{
-			Json::StreamWriterBuilder builder;
-			std::string jsonStr = Json::writeString(builder, json);
+			//Json::StreamWriterBuilder builder;
+			//Json::FastWriter writer;B
+			//std::string jsonStr = Json::writeString(builder, json);
+			std::string jsonStr = value.dump();
 			int32_t size = static_cast<int32_t>(jsonStr.size());
 			Write(size);
 			if (std::endian::native == std::endian::little)

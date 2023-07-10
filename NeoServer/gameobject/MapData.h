@@ -1,5 +1,6 @@
 #pragma once
-#include<json.h>
+#include<json.hpp>
+#include<stack>
 #include<unordered_map>
 #include<memory>
 #include"MonsterManager.h"
@@ -19,7 +20,7 @@ namespace neo::object
 		void End() override;
 
 	public:
-		Json::Value GetJsonGameObject(const std::wstring& name);
+		nlohmann::json GetJsonGameObject(const std::wstring& name);
 		std::unordered_map<std::wstring, weak_ptr<GameObject>>& GetInMapPlayers();
 		
 		void RegisterObject(const weak_ptr<GameObject>& object);

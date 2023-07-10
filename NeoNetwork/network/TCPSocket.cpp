@@ -43,7 +43,8 @@ neo::network::TCPSocket* neo::network::TCPSocket::AcceptEX(PVOID outputBuffer, L
     DWORD dwBytes;
     TCPSocket* socket = new TCPSocket();
     socket->CreateSocket();
-    socket->SetNoDelay(true);
+	if (!socket->SetNoDelay(true))
+		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"socket nodelay error\n");
     int result = 0; 
     result= ::AcceptEx(this->mSocket,socket->GetSOCKET(),
         outputBuffer,
@@ -85,7 +86,6 @@ int neo::network::TCPSocket::Recv(char* buffer, int len)
 
 int neo::network::TCPSocket::SetNoDelay(const bool& setOption)
 {
-   
     const int option = static_cast<int>(setOption);
     int result = setsockopt(mSocket, IPPROTO_TCP,
         TCP_NODELAY,

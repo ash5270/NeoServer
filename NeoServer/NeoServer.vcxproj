@@ -72,7 +72,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)\NeoNetwork;$(SolutionDir)\NeoUtil;$(IncludePath)</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)\NeoServer\json;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)\nlohmann;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)\NeoNetwork;$(SolutionDir)\NeoUtil;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>$(SolutionDir)\nlohmann;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,14 +128,18 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_HAS_STD_BYTE=0;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Redis;C:\Program Files\MySQL\MySQL Server 8.0\include;C:\Program Files\MySQL\MySQL Connector C++ 1.1.13\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files\MySQL\MySQL Connector C++ 1.1.13\lib\opt;C:\Program Files\MySQL\MySQL Server 8.0\lib;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn.lib;libmysql.lib;NeoNetwork.lib;NeoUtil.lib;redis++.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -156,10 +164,11 @@
     <ClCompile Include="packetprocess\EventProcess.cpp" />
     <ClCompile Include="packetprocess\LoginProcess.cpp" />
     <ClCompile Include="packetprocess\MonsterProcess.cpp" />
+    <ClCompile Include="packetprocess\UtilProcess.cpp" />
     <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp" />
     <ClCompile Include="packet\PacketProcess.cpp" />
     <ClCompile Include="system\HeartBeatSystem.cpp" />
-    <ClCompile Include="test_main.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasePacketThread.h" />
@@ -192,6 +201,7 @@
     <ClInclude Include="packetprocess\LoginProcess.h" />
     <ClInclude Include="packetprocess\MonsterProcess.h" />
     <ClInclude Include="packetprocess\PacketCommon.h" />
+    <ClInclude Include="packetprocess\UtilProcess.h" />
     <ClInclude Include="packet\Packet.h" />
     <ClInclude Include="packet\PacketAnalyzeAndCreate.h" />
     <ClInclude Include="packet\PacketID.h" />

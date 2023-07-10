@@ -25,5 +25,6 @@ namespace neo::packet::process
 		std::weak_ptr<object::MapManager> mMapmanager;
 		//current channel
 		int32_t mChannel;
+		MYSQL* db;
 	};
 }

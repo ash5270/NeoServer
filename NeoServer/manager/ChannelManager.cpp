@@ -45,20 +45,21 @@ void neo::object::ChannelManager::AddChannel(const std::wstring& name)
 	mChannels.push_back(make_unique<neo::object::ChannelInfo>(name, mChannelCount++));
 }
 
-Json::Value neo::object::ChannelManager::GetJsonAllChannelInfo()
+nlohmann::json neo::object::ChannelManager::GetJsonAllChannelInfo()
 {
-	Json::Value root; 
-	Json::Value array;
+	nlohmann::json root;
+	nlohmann::json array;
 	for (int i = 0; i < mChannels.size(); i++)
 	{
-		Json::Value channel;
+		nlohmann::json channel;
 		auto name = mChannels[i]->GetName();
-		channel["name"] = std::string().assign(name.begin(), name.end());
+		channel["name"] = std::string(name.begin(),name.end());
 		channel["userCount"] = mChannels[i]->GetSesssion().size();
 		channel["id"] = mChannels[i]->GetNumber();
-		array.append(std::move(channel));
+		array.push_back(channel);
 	}
 	root["array"] = array;
+
 	return root;
 }
 

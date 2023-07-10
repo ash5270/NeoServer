@@ -1,6 +1,6 @@
 #pragma once
 #include"PacketID.h"
-#include<json.h>
+#include<json.hpp>
 #include<memory>
 #include"../gameobject/CharPositionData.h"
 
@@ -10,6 +10,8 @@
 //201 -> Create
 //204 -> NoContent
 //404 -> NotFound
+
+
 
 
 class TestPacket : public Packet {
@@ -45,6 +47,59 @@ public:
 };
 
 
+class P_S_NOTIFY_PING :public Packet
+{
+public:
+	PacketID GetID()
+	{
+		return PacketID::PI_S_NOTIFY_PING;
+	}
+
+	int32_t GetSize()
+	{
+		return sizeof(int64_t);
+	}
+
+	int64_t time;
+
+	void Serialize(OutputMemoryStream& buffer)
+	{
+		HeaderSerialize(buffer);
+		buffer.Write(time);
+	}
+
+	void Deserialize(InputMemoryStream& buffer)
+	{
+		buffer.Read(time);
+	}
+};
+
+class P_C_NOTIFY_PING :public Packet
+{
+public:
+	PacketID GetID()
+	{
+		return PacketID::PI_C_NOTIFY_PING;
+	}
+
+	int32_t GetSize()
+	{
+		return sizeof(int64_t);
+	}
+
+	int64_t time;
+
+	void Serialize(OutputMemoryStream& buffer)
+	{
+		HeaderSerialize(buffer);
+		buffer.Write(time);
+	}
+
+	void Deserialize(InputMemoryStream& buffer)
+	{
+		buffer.Read(time);
+	}
+};
 
 class P_C_REQ_LOGIN : public Packet
 {
@@ -214,7 +269,7 @@ public:
 		return json.size();
 	}
 	//member values
-	Json::Value json;
+	nlohmann::json json;
 
 	//member function
 	void Serialize(OutputMemoryStream& buffer) override
@@ -344,7 +399,7 @@ public:
 
 	int32_t status;
 	std::wstring msg;
-	Json::Value json;
+	nlohmann::json json;
 
 	void Serialize(OutputMemoryStream& buffer) override
 	{
@@ -780,7 +835,7 @@ public:
 
 	int32_t monsterCode;
 	std::wstring msg;
-	Json::Value json;
+	nlohmann::json json;
 
 	void Serialize(OutputMemoryStream& buffer) override
 	{
