@@ -3,3 +3,10 @@
 서버 아키텍처 
 
 ### IOCP,C++ Server 
+
+
+### 사용한 라이브러리
+c++ nlohmann json  https://github.com/nlohmann/json  
+mysql connect 
+redis-plus-plus    https://github.com/sewenew/redis-plus-plus#windows-support
+
