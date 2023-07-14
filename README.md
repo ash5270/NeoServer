@@ -1,5 +1,6 @@
 # NeoServer
-![그림1](https://github.com/ash5270/NeoServer/assets/48472256/05d515c2-e226-421c-8012-68cf8b1cc552)
+![그림1](https://github.com/ash5270/NeoServer/assets/48472256/acf8dd28-52b7-4a9e-b2fa-e91b26aca701)
+
 서버 아키텍처 
 
 ### IOCP,C++ Server 
