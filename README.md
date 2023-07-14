@@ -1,4 +1,7 @@
 # NeoServer
+https://www.youtube.com/watch?v=VbYbnRQ0XWk
+영상 
+
 ![그림1](https://github.com/ash5270/NeoServer/assets/48472256/acf8dd28-52b7-4a9e-b2fa-e91b26aca701)
 
 서버 아키텍처 
