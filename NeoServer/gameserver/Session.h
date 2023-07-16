@@ -42,7 +42,6 @@ namespace neo::server {
 		size_t mRecvOffset =0 ;
 	private:
 		GameServer* mGameServer;
-
 		int count = 0;
 	};
 }

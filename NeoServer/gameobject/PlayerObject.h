@@ -46,9 +46,28 @@ namespace neo::object
 			return mLevel;
 		}
 
+		void Respwan() {
+			mHp = mInitHp;
+		}
+
+		void InitData(const int32_t& max_hp, const int32_t& hp, const int32_t& exp, const int32_t& level)
+		{
+			mInitHp = max_hp;
+			mInitExp = exp;
+			mInitLevel = level;
+
+			mHp = hp;
+			mExp = exp;
+			mLevel = level;
+		}
+
 	private:
-		int32_t mHp;
-		int32_t mExp;
-		int32_t mLevel;
+		int32_t mHp = 0;
+		int32_t mExp= 0;
+		int32_t mLevel=0;
+
+		int32_t mInitHp;
+		int32_t mInitExp;
+		int32_t mInitLevel;
 	};
 }

@@ -27,7 +27,22 @@ void neo::packet::process::EventProcess::Process(packet::PacketObject* packet)
 	{
 		RangeAttackHit(packet);
 	}
-
+	else if (packet->packet->GetID() == PacketID::PI_C_NOTIFY_RESPAWN)
+	{
+		auto respawnPacket = dynamic_cast<P_C_NOTIFY_RESPAWN*>(packet->packet);
+		auto playerPtr = mObjectManager.lock()->GetGameObject(respawnPacket->id);
+		if (!playerPtr.expired())
+		{
+			auto playerObject = std::dynamic_pointer_cast<object::PlayerObject>(playerPtr.lock());
+			playerObject->Respwan();
+			P_S_NOTIFY_CHAR_UPDATE update;
+			update.exp = playerObject->GetEXP();
+			update.hp = playerObject->GetHp();
+			update.level = playerObject->GetLevel();
+			playerObject->Session->SendPacket(update);
+		}
+		
+	}
 	delete packet->packet;
 }
 
@@ -35,21 +50,27 @@ void neo::packet::process::EventProcess::AttackProcess(packet::PacketObject* pac
 {
 	auto attackPacket = dynamic_cast<P_C_REQ_ATTACK_EVENT*>(packet->packet);
 
-	//서버에서 클라로 애니메이션 송신
-	P_S_NOTIFY_ATTACK_ANI_EVENT attackAniEvent;
-	attackAniEvent.player = attackPacket->attackUser;
-	attackAniEvent.dir = attackPacket->dir;
-	attackAniEvent.animationNumber = attackPacket->animation;
-
 	auto mapManager = mObjectManager.lock()->GetGameObject(L"mapManager").lock();
 	auto players = std::dynamic_pointer_cast<object::MapManager>(mapManager);
 	auto mapDataPtr = players->GetMapData(attackPacket->mapID).lock();
-	//for (auto player : players->GetInMapPlayers())
-	for (auto player : mapDataPtr->GetInMapPlayers())
+
+	//서버에서 클라로 애니메이션 송신
+	if (attackPacket->animation != 2)
 	{
-		auto copyPacket = attackAniEvent;
-		player.second.lock()->Session->SendPacket(copyPacket);
+		P_S_NOTIFY_ATTACK_ANI_EVENT attackAniEvent;
+		attackAniEvent.player = attackPacket->attackUser;
+		attackAniEvent.dir = attackPacket->dir;
+		attackAniEvent.animationNumber = attackPacket->animation;
+
+		for (const auto& player : mapDataPtr->GetInMapPlayers())
+		{
+			auto copyPacket = attackAniEvent;
+			player.second.lock()->Session->SendPacket(copyPacket);
+
+
+		}
 	}
+
 
 	//맞는 오브젝트가 생기는 경우
 	std::wstring hitName = attackPacket->hitObject;
@@ -72,7 +93,7 @@ void neo::packet::process::EventProcess::AttackProcess(packet::PacketObject* pac
 		LOG_PRINT(LOG_LEVEL::LOG_DEBUG, L"%s to %s from attack damage %d  hp : %d\n",
 			attackPacket->attackUser.c_str(), attackPacket->hitObject.c_str(), attackPacket->damage, hitMonster->GetHp());
 
-		for (auto player : players->GetMapData(attackPacket->mapID).lock()->GetInMapPlayers())
+		for (const auto& player : players->GetMapData(attackPacket->mapID).lock()->GetInMapPlayers())
 		{
 			auto copyPacket = attackEvent;
 			player.second.lock()->Session->SendPacket(copyPacket);
@@ -84,7 +105,7 @@ void neo::packet::process::EventProcess::AttackProcess(packet::PacketObject* pac
 			unregister.mapID = attackPacket->mapID;
 			unregister.name = hitMonster->Name;
 
-			for (auto player : players->GetMapData(attackPacket->mapID).lock()->GetInMapPlayers())
+			for (const auto& player : players->GetMapData(attackPacket->mapID).lock()->GetInMapPlayers())
 			{
 				auto copyPacket = unregister;
 				player.second.lock()->Session->SendPacket(copyPacket);
@@ -148,7 +169,7 @@ void neo::packet::process::EventProcess::RangeAttackProcess(packet::PacketObject
 	auto players = std::dynamic_pointer_cast<object::MapManager>(mapManager);
 	auto mapDataPtr = players->GetMapData(attackPacket->mapID).lock();
 	//for (auto player : players->GetInMapPlayers())
-	for (auto player : mapDataPtr->GetInMapPlayers())
+	for (const auto& player : mapDataPtr->GetInMapPlayers())
 	{
 		if (player.first == attackPacket->attackUser)
 			continue;
@@ -187,7 +208,7 @@ void neo::packet::process::EventProcess::RangeAttackHit(packet::PacketObject* pa
 		LOG_PRINT(LOG_LEVEL::LOG_DEBUG, L"%s to %s from attack damage %d  hp : %d\n",
 			hitAttack->attackUser.c_str(), hitAttack->hitObject.c_str(), hitAttack->damage, hitMonster->GetHp());
 
-		for (auto player : players->GetMapData(hitAttack->mapID).lock()->GetInMapPlayers())
+		for (const auto& player : players->GetMapData(hitAttack->mapID).lock()->GetInMapPlayers())
 		{
 			auto copyPacket = attackEvent;
 			player.second.lock()->Session->SendPacket(copyPacket);
@@ -199,7 +220,7 @@ void neo::packet::process::EventProcess::RangeAttackHit(packet::PacketObject* pa
 			unregister.mapID = hitAttack->mapID;
 			unregister.name = hitMonster->Name;
 
-			for (auto player : players->GetMapData(hitAttack->mapID).lock()->GetInMapPlayers())
+			for (const auto &player : players->GetMapData(hitAttack->mapID).lock()->GetInMapPlayers())
 			{
 				auto copyPacket = unregister;
 				player.second.lock()->Session->SendPacket(copyPacket);
@@ -210,7 +231,7 @@ void neo::packet::process::EventProcess::RangeAttackHit(packet::PacketObject* pa
 			if (db)
 			{
 				if (!hittingObject.expired())
-				{
+				{	
 					auto hittingPtr = hittingObject.lock();
 					auto playerPtr = std::dynamic_pointer_cast<object::PlayerObject>(hittingPtr);
 

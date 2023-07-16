@@ -109,6 +109,10 @@ Packet* neo::packet::PacketFactory::PacketCreate(const PacketID& id)
 		packet = new P_C_NOTIFY_PING;
 		break;
 
+	case PacketID::PI_C_NOTIFY_RESPAWN:
+		packet = new P_C_NOTIFY_RESPAWN;
+		break;
+
 	default:
 		packet = nullptr;
 		break;

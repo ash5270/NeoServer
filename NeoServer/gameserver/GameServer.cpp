@@ -12,8 +12,6 @@ neo::server::GameServer::GameServer() : IOCPServer()
 
 	//session pool create
 	mSessionPool = std::make_unique<SessionPool>(1024);
-
-	
 }
 
 neo::server::GameServer::~GameServer()
@@ -34,7 +32,8 @@ void neo::server::GameServer::InitPacketThread()
 
 void neo::server::GameServer::UpdateServer()
 {
-	
+	//각종 시스템 업데이트
+	LogSystem::GetInstance().Update();
 }
 
 IOCPSession* neo::server::GameServer::OnAccept(TCPSocket* socket, SocketAddress* addrInfo)

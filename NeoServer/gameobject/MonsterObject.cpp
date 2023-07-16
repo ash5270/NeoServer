@@ -1,9 +1,10 @@
 #include "MonsterObject.h"
 #include "MapData.h"
+#include"PlayerObject.h"
 #include<system/NeoLog.h>
 #include<random>
 
-neo::object::MonsterObject::MonsterObject() :mTime(0), mCurrentHp(0), mDamage(0), mNextPosition(), mStartPosition(),mHp(0)
+neo::object::MonsterObject::MonsterObject() :mMoveTimer(0), mCurrentHp(0), mDamage(0), mNextPosition(), mStartPosition(), mHp(0)
 {
 	mActive = true;
 }
@@ -15,7 +16,7 @@ neo::object::MonsterObject::~MonsterObject()
 
 void neo::object::MonsterObject::Update(const double& deltaTime)
 {
-	if (mTime > 7.0f)
+	if (mMoveTimer > 7.0f)
 	{
 		random_device rd;
 		mt19937_64 gen(rd());
@@ -33,36 +34,60 @@ void neo::object::MonsterObject::Update(const double& deltaTime)
 			mNextPosition.x = transform.position.x + x;
 
 		float y = dist(gen);
-		if (transform.position.y + y  > 7.0f)
+		if (transform.position.y + y > 7.0f)
 			mNextPosition.y = transform.position.y - y;
 		else if (transform.position.y + y < -7.0f)
 			mNextPosition.y = transform.position.y + (y * (-1.f));
 		else
 			mNextPosition.y = transform.position.y + y;
 
-		mTime = 0.0f;
+		mMoveTimer = 0.0f;
 	}
 
-	mTime += deltaTime;
-	transform.position = Vector2::Lerp(mStartPosition, mNextPosition, mTime / 5.0f);
+	mMoveTimer += deltaTime;
+	mAttackTimer += deltaTime;
+	transform.position = Vector2::Lerp(mStartPosition, mNextPosition, mMoveTimer / 5.0f);
 
 	if (MonsterManager.expired())
 		return;
 
- 	auto mapData = MonsterManager.lock()->GetMapData();
+	auto mapData = MonsterManager.lock()->GetMapData();
 	auto mapDataPtr = mapData.lock();
-	for (const auto& player : mapDataPtr->GetInMapPlayers())
-	{
-		float distance = Vector3::Distance(player.second.lock()->transform.position,
-			this->transform.position);
 
-		if (distance < 4.0f&& distance>1.0f)
+	if (mIsAttackTime && mAttackTimer > 2.0f)
+	{
+		mIsAttackTime = false;
+	}
+	
+	if (!mIsAttackTime)
+	{
+		for (const auto& player : mapDataPtr->GetInMapPlayers())
 		{
-			mNextPosition = player.second.lock()->transform.position;
-		/*	LOG_PRINT(LOG_LEVEL::LOG_INFO, L"player Check name : %s, dis: %f\n",
-				player.second.lock()->Name.c_str(), distance);*/
+			auto objectPtr = player.second.lock();
+			auto playerPtr = std::dynamic_pointer_cast<object::PlayerObject>(objectPtr);
+			float distance = Vector3::Distance(playerPtr->transform.position,
+				this->transform.position);
+			if (distance < 1.5f)
+			{
+				P_S_NOTIFY_CHAR_UPDATE update;
+				update.exp = playerPtr->GetEXP();
+				update.hp = playerPtr->GetHp();
+				update.level = playerPtr->GetLevel();
+				update.hp -= mDamage;
+				objectPtr->Session->SendPacket(update);
+
+				playerPtr->SetHp(update.hp);
+				mIsAttackTime = true;
+				mAttackTimer = 0.0f;
+			}
+
+			if (distance < 4.0f && distance>1.0f)
+			{
+				mNextPosition = player.second.lock()->transform.position;
+			}
 		}
 	}
+
 }
 
 void neo::object::MonsterObject::Start()

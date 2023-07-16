@@ -19,18 +19,13 @@ bool neo::system::LogSystem::InitSystem()
 bool neo::system::LogSystem::StartSystem()
 {
 	mIsUpdating = true;
-	mLogThread = std::thread(&LogSystem::Update, this);
 	this->OutPutLog(LogType::LOG_INFO, L"LogSystem Start...\n");
-
 	return true;
 }
 
 void neo::system::LogSystem::StopSystem()
 {
 	mIsUpdating = false;
-
-	if (mLogThread.joinable())
-		mLogThread.join();
 
 	::DeleteCriticalSection(&mCritical);
 }

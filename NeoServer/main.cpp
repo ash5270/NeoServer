@@ -90,6 +90,9 @@ int main()
 
 	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_REQ_ATTACK_RANGE_HIT_EVENT,
 		std::bind(&EventProcess::Process, event, std::placeholders::_1));
+
+	server.GetChannelThread()[1]->GetPacketProcess()->RegisterProcess(PacketID::PI_C_NOTIFY_RESPAWN,
+		std::bind(&EventProcess::Process, event, std::placeholders::_1));
 	
 	while (true)
 	{

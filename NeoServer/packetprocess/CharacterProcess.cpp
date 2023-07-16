@@ -90,7 +90,7 @@ void neo::packet::process::CharacterProcess::RegisterUser(const packet::PacketOb
 
 		std::string name = std::string().assign(registerPacket->name.begin(), registerPacket->name.end());
 		auto buffer = std::make_unique<char[]>(100);
-		auto len = sprintf_s(buffer.get(), 100, "SELECT char_level,char_exp,char_hp FROM user_character where char_name = '%s'", name.c_str());
+		auto len = sprintf_s(buffer.get(), 100, "SELECT char_level,char_exp,char_hp,char_max_hp FROM user_character where char_name = '%s'", name.c_str());
 		int result = mysql_query(db, buffer.get());
 		if (!result)
 		{
@@ -100,13 +100,12 @@ void neo::packet::process::CharacterProcess::RegisterUser(const packet::PacketOb
 			int32_t char_level = std::stoi(row[0]);
 			int32_t char_exp = std::stoi(row[1]);
 			int32_t char_hp = std::stoi(row[2]);
+			int32_t char_max_hp = std::stoi(row[3]);
 			LOG_PRINT(LOG_LEVEL::LOG_INFO, L"name : %s, level : %d, exp : %d, hp : %d\n",registerPacket->name.c_str(), char_level, char_exp, char_hp);
 		
 			auto player= manager->GetGameObject(registerPacket->name).lock();
 			auto playerPtr = std::dynamic_pointer_cast<object::PlayerObject>(player);
-			playerPtr->SetEXP(char_exp);
-			playerPtr->SetHp(char_hp);
-			playerPtr->SetLevel(char_level);
+			playerPtr->InitData(char_max_hp,char_hp, char_exp, char_level);
 		}
 	}
 }

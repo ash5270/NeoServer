@@ -37,6 +37,8 @@ namespace neo::object {
 		Vector2 mStartPosition;
 
 		//timer
-		float mTime =0.0f;
+		float mMoveTimer =0.0f;
+		float mAttackTimer = 0.0f;
+		bool mIsAttackTime = false;
 	};
 }

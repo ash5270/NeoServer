@@ -131,6 +131,35 @@ public:
 	}
 };
 
+
+class P_C_NOTIFY_RESPAWN : public Packet
+{
+public:
+	PacketID GetID() override
+	{
+		return PacketID::PI_C_NOTIFY_RESPAWN;
+	}
+	int32_t GetSize()override
+	{
+		return id.length() * sizeof(wchar_t);
+	}
+	//member values
+	std::wstring id;
+
+	//member function
+	void Serialize(OutputMemoryStream& buffer) override
+	{
+		HeaderSerialize(buffer);
+		buffer.Write(id);
+	}
+
+	void Deserialize(InputMemoryStream& buffer) override
+	{
+		buffer.Read(id);
+	}
+};
+
+
 class P_S_RES_LOGIN : public Packet
 {
 public:

@@ -34,11 +34,6 @@ namespace neo::server {
 		const int mLogicThreadCount = 2;
 		
 		Session* ses;
-		std::chrono::steady_clock::time_point start;
-		std::chrono::steady_clock::time_point end;
-		bool first = false;
-		int count = 0;
-	
 	};
 }
 
