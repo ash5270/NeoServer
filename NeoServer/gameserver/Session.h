@@ -2,6 +2,7 @@
 #include<network/IOCPSession.h>
 #include<LockFreeQueue.h>
 #include"../packet/Packet.h"
+#include"../packet/NeoPacket.h"
 using namespace neo::network;
 
 namespace neo::packet {
@@ -24,7 +25,8 @@ namespace neo::server {
 		void OnRecv(size_t transferSize) override;
 		void OnClose() override;
 
-		void SendPacket(Packet& packet);
+		void SendPacket(neo::NeoPacket& packet);
+
 	
 		void SetChannelId(const int& id)
 		{

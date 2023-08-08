@@ -11,7 +11,7 @@ neo::packet::PacketProcess::~PacketProcess()
 
 }
 
-void neo::packet::PacketProcess::RegisterProcess(const PacketID& packetID, std::function<void(packet::PacketObject*)>func)
+void neo::packet::PacketProcess::RegisterProcess(const PacketID& packetID, std::function<void(const neo::PacketObjPtr&)>func)
 {
 	//패킷 프로세스 추가 
 	if (mProcessMap.find(packetID) == mProcessMap.end())

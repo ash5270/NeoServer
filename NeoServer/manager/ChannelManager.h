@@ -21,8 +21,8 @@ namespace neo::object
 		nlohmann::json GetJsonAllChannelInfo();
 		std::vector<std::unique_ptr<ChannelInfo>>& GetChannels();
 
-		void AddUser(const int& channelID, neo::server::Session* session);
-		void RemoveUser(const int& channelID, neo::server::Session* session);
+		void AddUser(const int& channelID, unique_ptr<server::Session>& session);
+		void RemoveUser(const int& channelID, unique_ptr<server::Session>& session);
 	private:
 		const static int CHANNEL_SIZE = 2;
 		std::vector<std::unique_ptr<ChannelInfo>> mChannels;

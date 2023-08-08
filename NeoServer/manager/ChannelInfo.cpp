@@ -10,16 +10,16 @@ neo::object::ChannelInfo::~ChannelInfo()
 
 }
 
-void neo::object::ChannelInfo::RegisterChannel(server::Session* const session)
+void neo::object::ChannelInfo::RegisterChannel(unique_ptr<server::Session>& sesion)
 {
 	mSessions.push_back(session);
-	session->AddRef();
+	//ssion->AddRef();
 }
 
-void neo::object::ChannelInfo::UnregisterChannel(server::Session* const session)
+void neo::object::ChannelInfo::UnregisterChannel(unique_ptr<server::Session>& session)
 {
 	mSessions.remove(session);
-	session->RemoveRef();
+	//session->RemoveRef();
 }
 
  std::list<neo::server::Session *>& neo::object::ChannelInfo::GetSesssion() 

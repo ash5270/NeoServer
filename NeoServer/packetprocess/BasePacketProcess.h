@@ -5,6 +5,7 @@ namespace neo::packet::process
 	class BasePacketProcess
 	{
 	public:
-		virtual void Process(packet::PacketObject* packet) = 0;
+		virtual ~BasePacketProcess() = default;
+		virtual void Process(const neo::PacketObjPtr&) = 0;
 	};
 }

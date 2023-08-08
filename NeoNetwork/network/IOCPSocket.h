@@ -37,6 +37,7 @@ namespace neo::network
 
 		//thread 동작 유뮤
 		bool mIOThreadCheck;
+		int mTheadCount;
 	};
 
 }

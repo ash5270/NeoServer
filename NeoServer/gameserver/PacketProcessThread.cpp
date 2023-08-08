@@ -26,23 +26,20 @@ void neo::system::PacketProcessThread::Stop()
 void neo::system::PacketProcessThread::ThreadUpdate()
 {
     mIsLoop = true;
-    if (mPacketQueue == nullptr)
-        return;
 
     while (mIsLoop)
     {
-        if (mPacketQueue->Empty())
+        if (GetPopQueue().empty())
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            std::this_thread::sleep_for(std::chrono::microseconds(20));
             continue;
         }
         else
         {
-            packet::PacketObject* packetObj;
-            mPacketQueue->Dequeue(packetObj);
-            mPacketProcess->GetFunc(packetObj->packet->GetID())
-                (packetObj);
-            delete packetObj;
+            auto packetObject = std::move(GetPopQueue().front());
+            GetPopQueue().pop();
+            neo::PacketID packetId = packetObject->packet.header.packetID;
+            mPacketProcess->GetFunc(packetId)(std::move(packetObject));
         }
     }
 }

@@ -14,11 +14,7 @@ namespace neo::system
 	public:
 		void Start() override;
 		void Stop() override;
-		std::shared_ptr<util::system::LockFreeQueue<packet::PacketObject*>> GetPacketQueue() override
-		{
-			return mPacketQueue;
-		}
-
+		
 		packet::PacketProcess* GetPacketProcess() override
 		{
 			return mPacketProcess.get();

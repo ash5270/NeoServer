@@ -78,7 +78,6 @@ void neo::packet::process::CharacterProcess::RegisterUser(const packet::PacketOb
 {
 	auto registerPacket = dynamic_cast<P_C_REQ_CHARACTER_REGISTER*>(packet->packet);
 	auto manager = mObjectManager.lock();
-
 	std::shared_ptr<object::GameObject> player = std::make_shared<object::PlayerObject>();
 	manager->RegisterObject(registerPacket->name, player, packet->session);
 	MapRegisterUser(packet);

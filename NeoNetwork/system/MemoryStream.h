@@ -7,12 +7,13 @@
 
 #include"Buffer.h"
 #include"ByteSwaper.h"
+#include"NeoLog.h"
 namespace neo::system
 {
 	class MemoryStream
 	{
 	public:
-		MemoryStream(char* buffer, const int32_t capacity) : mBuffer(buffer), mCapacity(capacity), mHead(0) 
+		MemoryStream(char* buffer, const int32_t capacity) : mBuffer(buffer), mCapacity(capacity), mHead(0)
 		{
 
 		}
@@ -36,7 +37,13 @@ namespace neo::system
 		int32_t GetLength() const { return mHead; }
 		size_t GetCapacity() const { return mCapacity; }
 		void SetOffset(const int32_t& offset) { mHead = offset; }
-	
+		void AddOffset(const int32_t& offset)
+		{
+			if (mHead + offset > mCapacity)
+				LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"addoffset overflow...\n");
+			else
+				mHead += offset;
+		}
 	};
 }
 

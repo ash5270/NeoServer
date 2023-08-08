@@ -31,12 +31,7 @@ void neo::system::LogicThread::Stop()
 void neo::system::LogicThread::ThreadUpdate()
 {
 	mIsLoop = true;
-	if (mPacketQueue == nullptr)
-	{
-		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"Packet Queue Error...\n");
-		return;
-	}
-
+	
 	const int TICK_PER_SECOND = 25;
 	const int SKIP_TICKS = 1000 / TICK_PER_SECOND;
 	const int MAX_FRAMESKIP = 5;
@@ -51,14 +46,15 @@ void neo::system::LogicThread::ThreadUpdate()
 	while (mIsLoop)
 	{
 		//패킷프로세스 시작
+		if (GetPopQueue().empty())
+			SwapPacketQueue();
 		
-		while (!mPacketQueue->Empty())
+		while (!GetPopQueue().empty())
 		{
-			packet::PacketObject* packetObj;
-			mPacketQueue->Dequeue(packetObj);
-			mPacketProcess->GetFunc(
-				packetObj->packet->GetID())(packetObj);
-			delete packetObj;
+			auto packetObejct = std::move(GetPopQueue().front());
+			GetPopQueue().pop();
+			neo::PacketID packetId = packetObejct->packet.header.packetID;
+			mPacketProcess->GetFunc(packetId)(std::move(packetObejct));
 		}
 		
 		loops = 0;

@@ -68,7 +68,7 @@ std::vector<std::unique_ptr<neo::object::ChannelInfo>>& neo::object::ChannelMana
 	return mChannels;
 }
 
-void neo::object::ChannelManager::AddUser(const int& channelID, neo::server::Session* session)
+void neo::object::ChannelManager::AddUser(const int& channelID, unique_ptr<server::Session>& session)
 {
 	::EnterCriticalSection(&mCs);
 	int id = channelID - 1; 
@@ -77,7 +77,7 @@ void neo::object::ChannelManager::AddUser(const int& channelID, neo::server::Ses
 	::LeaveCriticalSection(&mCs);
 }
 
-void neo::object::ChannelManager::RemoveUser(const int& channelID, neo::server::Session* session)
+void neo::object::ChannelManager::RemoveUser(const int& channelID, unique_ptr<server::Session>& session)
 {
 	::EnterCriticalSection(&mCs);
 	int id = channelID;

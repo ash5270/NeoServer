@@ -3,10 +3,8 @@
 #pragma once
 #include<unordered_map>
 #include<functional>
-#include"PacketID.h"
-#include"LockFreeQueue.h"
-#include "PacketObject.h"
-
+#include"NeoPacket.h"
+#include"Packet.pb.h"
 using namespace neo::util::system;
 
 namespace neo::packet
@@ -17,9 +15,10 @@ namespace neo::packet
         PacketProcess();
         ~PacketProcess();
 
-        void RegisterProcess(const PacketID& packetID, std::function<void(PacketObject* )>func);
+        void RegisterProcess(const PacketID& packetID, std::function<void(const neo::PacketObjPtr&)>func);
         void UnRegisterProcee(const PacketID& pakcetID);
-        std::function<void(PacketObject*)> GetFunc(const PacketID& packetID)
+
+        std::function<void(std::unique_ptr<PacketObj>)> GetFunc(const PacketID& packetID)
         {
             if (mProcessMap.find(packetID) != mProcessMap.end())
             {
@@ -30,7 +29,7 @@ namespace neo::packet
         }
     private:
         //packet process 패킷 처리용
-        std::unordered_map <PacketID, std::function<void(PacketObject*)>> mProcessMap;
+        std::unordered_map <PacketID, std::function<void(std::unique_ptr<PacketObj>)>> mProcessMap;
         //loop condition
         bool mIsLoop = false;
     };

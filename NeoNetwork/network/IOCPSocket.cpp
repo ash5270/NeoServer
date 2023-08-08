@@ -11,7 +11,7 @@ UINT WINAPI CallIOThread(LPVOID ptr)
 	return 0;
 }
 
-neo::network::IOCPSocket::IOCPSocket()
+neo::network::IOCPSocket::IOCPSocket() : mTheadCount(0)
 {
 	//thread 실행 여부
 	mIOThreadCheck = true;
@@ -21,13 +21,24 @@ neo::network::IOCPSocket::~IOCPSocket()
 {
 	mIOThreadCheck = false;
 	WSACleanup();
+
+	for(int i=0; i< mTheadCount; i++)
+	{
+		if (WAIT_OBJECT_0 != ::WaitForSingleObject(mIOThreadHandle[i], INFINITE))
+		{
+			exit(0);
+		}
+		::CloseHandle(mIOThreadHandle[i]);
+	}
+
+
 }
 
 bool neo::network::IOCPSocket::CreateIOThread(size_t numThread)
 {
 	UINT32 threadId;
 	mIOThreadHandle = std::make_unique<HANDLE[]>(numThread);
-
+	mTheadCount = numThread;
 	wprintf_s(L"Create Thread : %d\n", numThread);
 
 	for (int i = 0; i < numThread; i++)

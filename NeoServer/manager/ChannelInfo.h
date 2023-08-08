@@ -11,8 +11,8 @@ namespace neo::object
 		ChannelInfo(const std::wstring& name, const int32_t number);
 		~ChannelInfo();
 
-		void RegisterChannel(server::Session* const session);
-		void UnregisterChannel(server::Session* const session);
+		void RegisterChannel(unique_ptr<server::Session>& session);
+		void UnregisterChannel(unique_ptr<server::Session>& session);
 		std::list<server::Session *>& GetSesssion() ;
 		const std::wstring GetName();
 		const int32_t GetNumber()const;

@@ -32,6 +32,7 @@
     <ClInclude Include="ObjectPool.h">
       <Filter>SYSTEM</Filter>
     </ClInclude>
+    <ClInclude Include="UtfToUnicode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test.cpp" />

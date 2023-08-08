@@ -47,7 +47,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
@@ -72,7 +72,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)\NeoNetwork;$(SolutionDir)\NeoUtil;$(IncludePath)</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)\nlohmann;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)\nlohmann;E:\Code\vcpkg-2023.06.20\installed\x64-windows\include;$(ReferencePath);$(ExternalIncludePath)</ExternalIncludePath>
+    <ReferencePath>
+    </ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)\NeoNetwork;$(SolutionDir)\NeoUtil;$(IncludePath)</IncludePath>
@@ -113,13 +115,13 @@
       <PreprocessorDefinitions>_HAS_STD_BYTE=0;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Redis;C:\Program Files\MySQL\MySQL Server 8.0\include;C:\Program Files\MySQL\MySQL Connector C++ 1.1.13\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Redis;C:\Program Files\MySQL\MySQL Server 8.0\include;C:\Program Files\MySQL\MySQL Connector C++ 1.1.13\include;$(ReferencePath)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Program Files\MySQL\MySQL Connector C++ 1.1.13\lib\opt;C:\Program Files\MySQL\MySQL Server 8.0\lib;$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mysqlcppconn.lib;libmysql.lib;NeoNetwork.lib;NeoUtil.lib;jsoncpp.lib;redis++.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\MySQL\MySQL Connector C++ 1.1.13\lib\opt;C:\Program Files\MySQL\MySQL Server 8.0\lib;$(SolutionDir)$(Platform)\$(Configuration)\;E:\Code\vcpkg-2023.06.20\installed\x64-windows\debug\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn.lib;libmysql.lib;NeoNetwork.lib;NeoUtil.lib;jsoncpp.lib;redis++.lib;libprotobufd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,10 +167,13 @@
     <ClCompile Include="packetprocess\LoginProcess.cpp" />
     <ClCompile Include="packetprocess\MonsterProcess.cpp" />
     <ClCompile Include="packetprocess\UtilProcess.cpp" />
+    <ClCompile Include="packet\Packet.pb.cc" />
     <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp" />
+    <ClCompile Include="packet\NeoPacketFactory.cpp" />
     <ClCompile Include="packet\PacketProcess.cpp" />
     <ClCompile Include="system\HeartBeatSystem.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="test_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasePacketThread.h" />
@@ -202,8 +207,11 @@
     <ClInclude Include="packetprocess\MonsterProcess.h" />
     <ClInclude Include="packetprocess\PacketCommon.h" />
     <ClInclude Include="packetprocess\UtilProcess.h" />
+    <ClInclude Include="packet\NeoPacket.h" />
     <ClInclude Include="packet\Packet.h" />
+    <ClInclude Include="packet\Packet.pb.h" />
     <ClInclude Include="packet\PacketAnalyzeAndCreate.h" />
+    <ClInclude Include="packet\NeoPacketFactory.h" />
     <ClInclude Include="packet\PacketID.h" />
     <ClInclude Include="packet\PacketObject.h" />
     <ClInclude Include="packet\PacketProcess.h" />

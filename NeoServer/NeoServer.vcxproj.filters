@@ -75,6 +75,13 @@
     <ClCompile Include="packetprocess\UtilProcess.cpp">
       <Filter>PACKETPROCESS</Filter>
     </ClCompile>
+    <ClCompile Include="packet\NeoPacketFactory.cpp">
+      <Filter>PACKET</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\Packet.pb.cc">
+      <Filter>PACKET</Filter>
+    </ClCompile>
+    <ClCompile Include="test_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GAMEOBJECT">
@@ -215,6 +222,15 @@
     </ClInclude>
     <ClInclude Include="packetprocess\UtilProcess.h">
       <Filter>PACKETPROCESS</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\NeoPacketFactory.h">
+      <Filter>PACKET</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\NeoPacket.h">
+      <Filter>PACKET</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\Packet.pb.h">
+      <Filter>PACKET</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

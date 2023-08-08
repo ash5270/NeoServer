@@ -9,12 +9,9 @@ namespace neo::packet::process
 	public:
 		ChannelProcess();
 		~ChannelProcess();
-		virtual void Process(packet::PacketObject* packet) override;
+		virtual void Process(const neo::PacketObjPtr&) override;
 	private:
 		void ChannelInfoRespone(const packet::PacketObject* packet);
 		void ChannelRegister(const packet::PacketObject* packet);
-
-		
 	};
-
 }

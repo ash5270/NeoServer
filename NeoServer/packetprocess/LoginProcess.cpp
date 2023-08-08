@@ -1,12 +1,11 @@
 #include "LoginProcess.h"
 #include"../manager/ChannelManager.h"
 #include"../packet/Packet.h"
-
-
 #include<sw/redis++/redis.h>
 #include<json.hpp>
 #include<system/NeoLog.h>
 #include<vector>
+#include<UtfToUnicode.h>
 
 neo::packet::process::LoginProcess::LoginProcess()
 {
@@ -16,30 +15,23 @@ neo::packet::process::LoginProcess::LoginProcess()
 
 neo::packet::process::LoginProcess::~LoginProcess()
 {
-	
+
 }
 
-bool neo::packet::process::LoginProcess::Login(const P_C_REQ_LOGIN* loginData)
+bool neo::packet::process::LoginProcess::Login(const std::unique_ptr<P_C_REQ_LOGIN>& packet)
 {
-	auto idStr = std::string().assign(loginData->id.begin(),
-		loginData->id.end());
+	auto idWStr = Utf8ToUnicode(packet->id());
 	//키값을 c_str 으로 해야함
-
-
-
-	//auto uuid = mRedis->get(idStr.c_str());
-	//if (uuid != nullopt && UuidCheck(loginData->uuid.get(), (*uuid).c_str()))
-	if(1){
-		LOG_PRINT(LOG_LEVEL::LOG_INFO, L"%s Login Success\n", loginData->id.c_str());
+	auto uuid = mRedis->get(packet->id().c_str());
+	if (uuid != nullopt && UuidCheck(packet->uuid().c_str(), (*uuid).c_str())) {
+		LOG_PRINT(LOG_LEVEL::LOG_INFO, L"%s Login Success\n", packet->id().c_str());
 		return true;
 	}
 	else
 	{
-		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"%s Login Fail info\n", loginData->id.c_str());
+		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"%s Login Fail info\n", packet->id().c_str());
 		return false;
 	}
-
-	return false;
 }
 
 bool neo::packet::process::LoginProcess::UuidCheck(const char* lUuid, const char* rUuid)
@@ -54,33 +46,57 @@ bool neo::packet::process::LoginProcess::UuidCheck(const char* lUuid, const char
 	return true;
 }
 
-void neo::packet::process::LoginProcess::SendResultMsg(const packet::PacketObject* packet, const std::wstring& msg, const int32_t& statusCode)
+void neo::packet::process::LoginProcess::SendResultMsg(const std::unique_ptr<neo::server::Session>& session,
+	const std::wstring& msg,
+	const PacketResult& statusCode)
 {
-	P_S_RES_LOGIN respone;
-	respone.msg = msg;
-	respone.status = statusCode;
-
-	packet->session->SendPacket(respone);
+	//utf-8로 인코딩
+	auto resultMsg = UnicodeToUtf8(msg);
+	if(!resultMsg.has_value())
+	{
+		LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"Unicode parsing error, %s\n", __FUNCTION__);
+		return;
+	}
+	
+	//프로토 버퍼 생성
+	std::unique_ptr<P_S_RES_LOGIN> responePayload = std::make_unique<P_S_RES_LOGIN>();
+	responePayload->set_msg(resultMsg.value());
+	responePayload->set_result(statusCode);
+	//패킷 생성
+	NeoPacket respone = CreateNewPacket(PI_S_RES_LOGIN,responePayload.release());
+	session->SendPacket(respone);
 }
 
-void neo::packet::process::LoginProcess::Process(packet::PacketObject* packet)
+void neo::packet::process::LoginProcess::SendChannelInfo(const std::unique_ptr<neo::server::Session>& session)
 {
-	if (packet->packet->GetID() == PacketID::PI_C_REQ_LOGIN)
+	std::unique_ptr<P_S_NOTIFY_CHANNEL_INFO> notifyPayload = std::make_unique<P_S_NOTIFY_CHANNEL_INFO>();
+	for(const auto& ptr :object::ChannelManager::GetInstance().GetChannels())
 	{
-		auto loginPacket = dynamic_cast<P_C_REQ_LOGIN*>(packet->packet);
+		auto channel = notifyPayload->add_chaanelinfos();
+		channel->set_name(ptr->GetName());
+		channel->set_channelid(ptr->GetNumber());
+		channel->set_usercount(static_cast<int32_t>(ptr->GetSesssion().size()));
+	}
+	NeoPacket respone = CreateNewPacket(PI_S_NOTIFY_CHANNEL_INFO, notifyPayload.release());
+	session->SendPacket(respone);
+}
+
+void neo::packet::process::LoginProcess::Process(const neo::PacketObjPtr& packetObjPtr)
+{
+	if (packetObjPtr->packet.header.packetID == PacketID::PI_C_REQ_LOGIN)
+	{
+		auto castPacket = static_cast<P_C_REQ_LOGIN*>(packetObjPtr->packet.payload.release());
+		std::unique_ptr<P_C_REQ_LOGIN> loginPacket(castPacket);
 		if (Login(loginPacket))
 		{
-			SendResultMsg(packet, L"Login Success", 202);
-			P_S_NOTIFY_CHANNEL_INFO channelInfo;
-			channelInfo.json = object::ChannelManager::GetInstance().GetJsonAllChannelInfo();
-			packet->session->SendPacket(channelInfo);
+			SendResultMsg(packetObjPtr->session, L"Login Success", PacketResult::SUCCESS);
+			SendChannelInfo(packetObjPtr->session);
 		}
-		else {
-			SendResultMsg(packet, L"Login Failed", 404);
+		else
+		{
+			SendResultMsg(packetObjPtr->session, L"Login Failed", PacketResult::FAILED);
 		}
 	}
-
-	delete packet->packet;
 }
 
 

@@ -26,6 +26,7 @@
     <ClInclude Include="Test.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
     <ClInclude Include="MPMCQueue.h" />
+    <ClInclude Include="UtfToUnicode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test.cpp" />
