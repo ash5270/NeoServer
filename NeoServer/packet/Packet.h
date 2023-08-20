@@ -47,57 +47,59 @@ public:
 };
 
 
-class P_S_NOTIFY_PING :public Packet
-{
+class P_S_NOTIFY_PING
+	: public Packet {
 public:
-	PacketID GetID()
-	{
+	PacketID GetID() {
 		return PacketID::PI_S_NOTIFY_PING;
 	}
-
-	int32_t GetSize()
-	{
-		return sizeof(int64_t);
+	int32_t GetSize() {
+		size_t size = 0;
+		size += sizeof(int64_t);
+		return static_cast<int32_t>(size);
 	}
 
 	int64_t time;
 
-	void Serialize(OutputMemoryStream& buffer)
-	{
+
+	void Serialize(OutputMemoryStream& buffer) {
 		HeaderSerialize(buffer);
 		buffer.Write(time);
+
 	}
 
-	void Deserialize(InputMemoryStream& buffer)
-	{
+	void Deserialize(InputMemoryStream& buffer) {
+		int32_t size = 0;
 		buffer.Read(time);
+
 	}
 };
 
-class P_C_NOTIFY_PING :public Packet
-{
+
+class P_C_NOTIFY_PING: public Packet {
 public:
-	PacketID GetID()
-	{
+	PacketID GetID() {
 		return PacketID::PI_C_NOTIFY_PING;
 	}
-
-	int32_t GetSize()
-	{
-		return sizeof(int64_t);
+	int32_t GetSize() {
+		size_t size = 0;
+		size += sizeof(int64_t);
+		return static_cast<int32_t>(size);
 	}
 
 	int64_t time;
 
-	void Serialize(OutputMemoryStream& buffer)
-	{
+
+	void Serialize(OutputMemoryStream& buffer) {
 		HeaderSerialize(buffer);
 		buffer.Write(time);
+
 	}
 
-	void Deserialize(InputMemoryStream& buffer)
-	{
+	void Deserialize(InputMemoryStream& buffer) {
+		int32_t size = 0;
 		buffer.Read(time);
+
 	}
 };
 
