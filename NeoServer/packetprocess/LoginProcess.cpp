@@ -24,13 +24,9 @@ bool neo::packet::process::LoginProcess::Login(const P_C_REQ_LOGIN* loginData)
 	auto idStr = std::string().assign(loginData->id.begin(),
 		loginData->id.end());
 	//키값을 c_str 으로 해야함
-
-
-
-	//auto uuid = mRedis->get(idStr.c_str());
-	//if (uuid != nullopt && UuidCheck(loginData->uuid.get(), (*uuid).c_str()))
-	if(1){
-		LOG_PRINT(LOG_LEVEL::LOG_INFO, L"%s Login Success\n", loginData->id.c_str());
+	auto uuid = mRedis->get(idStr.c_str());
+	if (uuid != nullopt && UuidCheck(loginData->uuid.get(), (*uuid).c_str()))
+	{	LOG_PRINT(LOG_LEVEL::LOG_INFO, L"%s Login Success\n", loginData->id.c_str());
 		return true;
 	}
 	else

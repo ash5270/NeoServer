@@ -163,7 +163,6 @@
     <ClCompile Include="packetprocess\CharacterProcess.cpp" />
     <ClCompile Include="packetprocess\EventProcess.cpp" />
     <ClCompile Include="packetprocess\LoginProcess.cpp" />
-    <ClCompile Include="packetprocess\MonsterProcess.cpp" />
     <ClCompile Include="packetprocess\UtilProcess.cpp" />
     <ClCompile Include="packet\PacketAnalyzeAndCreate.cpp" />
     <ClCompile Include="packet\PacketProcess.cpp" />
@@ -199,7 +198,6 @@
     <ClInclude Include="packetprocess\CharacterProcess.h" />
     <ClInclude Include="packetprocess\EventProcess.h" />
     <ClInclude Include="packetprocess\LoginProcess.h" />
-    <ClInclude Include="packetprocess\MonsterProcess.h" />
     <ClInclude Include="packetprocess\PacketCommon.h" />
     <ClInclude Include="packetprocess\UtilProcess.h" />
     <ClInclude Include="packet\Packet.h" />

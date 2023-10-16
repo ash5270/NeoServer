@@ -51,9 +51,6 @@
     <ClCompile Include="gameobject\MonsterObject.cpp">
       <Filter>GAMEOBJECT\monster</Filter>
     </ClCompile>
-    <ClCompile Include="packetprocess\MonsterProcess.cpp">
-      <Filter>PACKETPROCESS</Filter>
-    </ClCompile>
     <ClCompile Include="gameserver\Time.cpp">
       <Filter>GAMESERVER</Filter>
     </ClCompile>
@@ -185,9 +182,6 @@
     </ClInclude>
     <ClInclude Include="gameobject\MonsterObject.h">
       <Filter>GAMEOBJECT\monster</Filter>
-    </ClInclude>
-    <ClInclude Include="packetprocess\MonsterProcess.h">
-      <Filter>PACKETPROCESS</Filter>
     </ClInclude>
     <ClInclude Include="gameserver\Time.h">
       <Filter>GAMESERVER</Filter>

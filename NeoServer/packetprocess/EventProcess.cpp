@@ -142,6 +142,7 @@ void neo::packet::process::EventProcess::AttackProcess(packet::PacketObject* pac
 						LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"MYSQL UPDATE ERROR\n");
 					}
 				}
+				mysql_free_result(res);
 			}
 		}
 	}
@@ -256,6 +257,7 @@ void neo::packet::process::EventProcess::RangeAttackHit(packet::PacketObject* pa
 						LOG_PRINT(LOG_LEVEL::LOG_ERROR, L"MYSQL UPDATE ERROR\n");
 					}
 				}
+				mysql_free_result(res);
 			}
 		}
 	}

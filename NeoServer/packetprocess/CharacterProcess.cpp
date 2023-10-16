@@ -9,7 +9,6 @@
 neo::packet::process::CharacterProcess::CharacterProcess(const int32_t& channel, std::weak_ptr<server::ObjectManager> objectManager) :mObjectManager(objectManager), mChannel(channel)
 {
 	 db = db::DataBaseManager::GetInstance().GetNewConnection();
-
 }
 
 neo::packet::process::CharacterProcess::~CharacterProcess()
@@ -108,6 +107,7 @@ void neo::packet::process::CharacterProcess::RegisterUser(const packet::PacketOb
 			playerPtr->InitData(char_max_hp,char_hp, char_exp, char_level);
 		}
 	}
+	mysql_free_result(res);
 }
 
 void neo::packet::process::CharacterProcess::MapRegisterUser(const packet::PacketObject* packet)
